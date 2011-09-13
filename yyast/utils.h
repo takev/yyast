@@ -4,6 +4,14 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+typedef uint32_t fourcc_t;
+
+/** Convert a fourcc string into an 32 bit integer.
+ * @param s    A four character string.
+ * @returns    An integer representing a four character string.
+ */
+uint32_t fourcc(char *s);
+
 /** Align to a 32 bit boundary.
  * @param x    A size of an object in memory
  * @returns    Either the size if it was aligned, or the next larger size that is aligned.
@@ -16,7 +24,7 @@ size_t ya_align32(size_t x);
  * @param out      The pre allocated memory the UCS-4 string should be entered, worst case is in_size * 4.
  * @returns        The number of UCS-4 characters emited.
  */
-size_t ya_utf8_to_ucs4(const uint8_t *in, size_t in_size, uint32_t *out);
+size_t ya_utf8_to_ucs4(const char *_in, size_t in_size, uint32_t *out);
 
 /** Escape characters in a string.
  * The original string is modified by this function.

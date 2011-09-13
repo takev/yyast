@@ -1,15 +1,15 @@
 
-AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-long-long -Wno-unused -std=c99
+AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-long-long -Wno-unused -Wno-multichar -std=c99
 
 DEFAULT_INCLUDES=-I$(top_builddir)
 
 lib_LTLIBRARIES = libyyast.la
 
 libyyast_la_LDFLAGS = -version-info $(SHARED_VERSION_INFO)
-libyyast_la_SOURCES = yyast.c utils.c count.c token.c node.c
+libyyast_la_SOURCES = yyast.c utils.c error.c count.c token.c node.c convenience.c
 
 library_includedir=$(includedir)/yyast-$(VERSION)/yyast
-nobase_library_include_HEADERS = yyast.h types.h utils.h count.h token.h node.h
+nobase_library_include_HEADERS = yyast.h types.h error.h utils.h count.h token.h node.h convenience.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = yyast.pc

@@ -21,7 +21,9 @@
  * @param ...   A list of tokens to be included in this node.
  * @returns     A node
  */
-#define NODE(first, last, type, ...)    ya_node(first, last, type, ##__VA_ARGS__, END)
+#define NODE(first, last, type, ...)    ya_node(first, last, type, __VA_ARGS__, END)
+
+#define EMPTYNODE(first, last, type)    ya_node(first, last, type, END)
 
 /** Define a list of tokens.
  * Used in yacc to create a list of tokens. When adding a list to an other list or node, the contents
@@ -32,7 +34,11 @@
  * @param ...   A list of tokens to be included in this node.
  * @returns     A list
  */
-#define LIST(first, last, ...)          ya_list(first, last, ##__VA_ARGS__, END)
+#define LIST(first, last, ...)          ya_list(first, last, __VA_ARGS__, END)
+
+/** Define an empty list.
+ */
+#define EMPTYLIST                       ya_list(END, END, END)
 
 /** Create taken for a floating point literal.
  * The token is of type 'real', and contains the decoded number as a 64 bit floating point.

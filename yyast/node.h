@@ -50,9 +50,4 @@ ya_t ya_list(ya_t start, ya_t end, ...);
  */
 ya_t ya_count(char *s, size_t s_length);
 
-#define PASS                            ya_pass()
-#define END                             ya_end()
-#define NODE(first, lya, type, ...)    ya_node(first, lya, type, ##__VA_ARGS__, END)
-#define LIST(first, lya, ...)          ya_list(first, lya, ##__VA_ARGS__, END)
-
 #endif

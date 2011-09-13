@@ -6,5 +6,7 @@
 #include <yyast/count.h>
 #include <yyast/token.h>
 #include <yyast/node.h>
+#include <yyast/error.h>
+#include <yyast/convenience.h>
 
 #endif

@@ -6,7 +6,7 @@ includedir=${prefix}/include
 Name: yyast
 Description: An abstract syntax tree file generator for yacc.
 Requires:
-Version: ${VERSION}
-Libs: -L${libdir} -lyyast-${VERSION}
-Cflags: -I${includedir}/yyast-${VERSION}
+Version: @VERSION@
+Libs: -L${libdir} -lyyast-@VERSION@
+Cflags: -I${includedir}/yyast-@VERSION@
 
