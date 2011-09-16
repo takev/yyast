@@ -20,12 +20,13 @@ dnl    * If any interfaces have been removed since the last public release, then
 SHARED_VERSION_INFO=0:0:0
 AC_SUBST(SHARED_VERSION_INFO)
 
-
 AC_PROG_CXX
 AC_PROG_LEX
 AC_PROG_YACC
 AC_PROG_INSTALL
 AC_PROG_LIBTOOL
+
+AC_C_BIGENDIAN
 
 AC_CONFIG_HEADERS([yyast/config.h])
 AC_CONFIG_FILES([Makefile yyast/Makefile yyast/yyast.pc])
