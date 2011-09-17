@@ -135,7 +135,11 @@ ya_t ya_generic_node(ya_t *first, ya_t *last, fourcc_t type, va_list ap)
             memcpy(&(self.node->data[self_offset]), item->node->data, item_size);
             self_offset+= item_size;
         }
-        free(item->node);
+
+        if (item->type.i != YA_PASS.i) {
+            // Only free the node if it was allocated by malloc, @pas are singletons.
+            free(item->node);
+        }
     }
 
     va_end(ap2);
