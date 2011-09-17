@@ -19,6 +19,10 @@
 #include <stdint.h>
 #include <yyast/types.h>
 
+/** Host to network long long.
+ */
+unsigned long long htonll(unsigned long long x);
+
 /** Convert a fourcc string into an 32 bit integer.
  * @param s    A four character string.
  * @returns    An integer representing a four character string.
@@ -50,5 +54,13 @@ size_t ya_utf8_to_ucs4(const char *_in, size_t in_size, uint32_t *out);
  * @returns              The number of characters after decoding.
  */
 size_t ya_string_escape(uint32_t *string, size_t string_length, int raw);
+
+/** Strip extension from filename and replace with new extension.
+ *
+ * @param filename      The original filename.
+ * @param new_extension The new extension to append.
+ * @returns             Filename with new extension, allocated.
+ */
+char *ya_new_extension(char *filename, char *new_extension);
 
 #endif

@@ -16,6 +16,7 @@
 #include <stdio.h>
 #include <getopt.h>
 #include <yyast/main.h>
+#include <yyast/utils.h>
 
 extern FILE *yyin;
 int yyparse();
@@ -72,6 +73,11 @@ void ya_parse_options(int argc, char *argv[])
     }
 
     ya_input_filename = argv[0];
+
+    if (ya_output_filename == NULL) {
+        // output file was not explicityly set, therfor we generate it from the input filename.
+        ya_output_filename = ya_new_extension(ya_input_filename, ".ya");        
+    }
 }
 
 int ya_main(int argc, char *argv[])

@@ -17,6 +17,43 @@
 
 #include <yyast/types.h>
 
+/** Define an unsued parameter in a node or list.
+ */
+#define END &YA_NODE_END
+
+/** This is the sentinal to be used as the last parameter of ya_node() and ya_list().
+ * In yacc, you will use NODE() and LIST() which will append END implicitly.
+ */
+#define PASS &YA_NODE_PASS
+
+/** Define a new node.
+ * Used in a yacc action to start a new node.
+ *
+ * @param first The first literal, used to mark the position of the literal in the text.
+ * @param last  The first literal, used to mark the position of the literal in the text.
+ * @param type  The type/name of the literal, type 0 is reserved by list.
+ * @param ...   A list of literals to be included in this node.
+ * @returns     A node
+ */
+#define NODE(first, last, type, ...)    ya_node(first, last, fourcc(type), __VA_ARGS__, END)
+
+#define EMPTYNODE(first, last, type)    ya_node(first, last, fourcc(type), END)
+
+/** Define a list of literals.
+ * Used in yacc to create a list of literals. When adding a list to an other list or node, the contents
+ * of the list is appended to the node and list.
+ *
+ * @param first The first literal, used to mark the position of the literal in the text.
+ * @param last  The first literal, used to mark the position of the literal in the text.
+ * @param ...   A list of literals to be included in this node.
+ * @returns     A list
+ */
+#define LIST(first, last, ...)          ya_list(first, last, __VA_ARGS__, END)
+
+/** Define an empty list.
+ */
+#define EMPTYLIST                       ya_list(END, END, END)
+
 /** Create an empty node.
  * It denotes an empty node.
  */

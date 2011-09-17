@@ -21,7 +21,6 @@
 #include <yyast/literal.h>
 #include <yyast/node.h>
 #include <yyast/error.h>
-#include <yyast/convenience.h>
 #include <yyast/main.h>
 
 #endif

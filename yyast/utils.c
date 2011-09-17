@@ -15,10 +15,23 @@
 
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdio.h>
+#include <errno.h>
 #include <sys/types.h>
 #include <string.h>
-#include "yyast/utils.h"
-#include "yyast/error.h"
+
+#include <yyast/config.h>
+#include <yyast/utils.h>
+#include <yyast/error.h>
+
+unsigned long long htonll(unsigned long long x)
+{
+#ifdef WORDS_BIGENDIAN
+    return x;
+#else
+    return __builtin_bswap64(x);
+#endif
+}
 
 fourcc_t fourcc(char *s)
 {
@@ -157,5 +170,29 @@ size_t ya_string_escape(uint32_t *string, size_t string_size, int raw)
     }
 
     return j;
+}
+
+char *ya_new_extension(char *filename, char *new_extension)
+{
+    char   *filename_result;
+    // Copy the string to strip the extension.
+    char   *filename_copy = strdup(filename);
+    // Find the last dot in the filename.
+    char   *last_dot = strrchr(filename_copy, '.');
+
+    if (last_dot) {
+        // Set the last dot in the filename_copy to a nul terminating character.
+        *last_dot = 0;
+    }
+
+    // Append the new extension to the filename_copy without the last extension.
+    if (asprintf(&filename_result, "%s.%s", filename_copy, new_extension) == -1) {
+        perror("Could not allocate filename with extension\n");
+        abort();
+    }
+
+    free(filename_copy);
+
+    return filename_result;
 }
 
