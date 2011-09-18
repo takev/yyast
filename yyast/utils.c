@@ -42,78 +42,62 @@ size_t ya_align64(size_t x)
     }
 }
 
-size_t ya_utf8_to_ucs4(const char *in, size_t in_size, uint32_t *out)
+size_t ya_string_escape(uint8_t *string, size_t string_size, int raw)
 {
-    union {
-        char    i;
-        uint8_t u;
-    } c_in;
-    uint32_t      i, j;
-    uint32_t      c_out = 0;
-
-    for (i = 0, j = 0; i < in_size; i++) {
-        c_in.i = in[i];
-
-        if ((c_in.u & 0xc0) != 0x80) {
-            // The next byte is an UTF-8 continuation. So write out the character.
-            if (c_out) {
-                out[j++] = c_out;
-                c_out = 0;
-             }
-        }
-
-        if (c_in.u < 128) {
-            c_out = c_in.u;
-        } else if ((c_in.u & 0xe0) == 0xc0) {
-            c_out = c_in.u & 0x1f;
-        } else if ((c_in.u & 0xf0) == 0xe0) {
-            c_out = c_in.u & 0x0f;
-        } else if ((c_in.u & 0xf8) == 0xf0) {
-            c_out = c_in.u & 0x07;
-        } else if ((c_in.u & 0xfc) == 0xf8) {
-            c_out = c_in.u & 0x03;
-        } else if ((c_in.u & 0xfe) == 0xfc) {
-            c_out = c_in.u & 0x01;
-        } else if ((c_in.u & 0xc0) == 0x80) {
-            c_out = (c_out << 6) | (c_in.u & 0x3f);
-        }
-    }
-
-    // Write the lya character out.
-    if (c_out) {
-        out[j++] = c_out;
-        c_out = 0;
-    }
-
-    return j;
-}
-
-size_t ya_string_escape(uint32_t *string, size_t string_size, int raw)
-{
-    uint32_t c;
-    uint32_t i, j;
-    int      escape = 0;
-    int      base = 0;
-    int      count = 0;
-    int      hex_code = 0;
+    uint8_t         c;
+    unsigned int    i, j;
+    int             escape = 0;
+    int             base = 0;
+    int             count = 0;
+    int32_t         code_point = 0;
 
     for (i = 0, j = 0; i < string_size; i++) {
         c = string[i];
         if (count) {
             // We have a hex digit to decode.
             if (c >= '0' && c <= '9') {
-                hex_code = (hex_code << 4) | (c - '0');
+                code_point = (code_point << 4) | (c - '0');
             } else if (c >= 'a' && c <= 'f') {
-                hex_code = (hex_code << 4) | (c - 'a' + 10);
+                code_point = (code_point << 4) | (c - 'a' + 10);
             } else if (c >= 'A' && c <= 'F') {
-                hex_code = (hex_code << 4) | (c - 'A' + 10);
+                code_point = (code_point << 4) | (c - 'A' + 10);
             } else {
                 ya_error("Could not decode hex escape character.");
             }
 
-            // If this is the lya digit to expect, then add it as a character.
+            // If this is the last digit to expect, then add it as a character.
             if (--count == 0) {
-                string[j++] = hex_code;
+                if        (code_point <= 0x7f) {
+                    string[j++] = code_point;
+                } else if (code_point <= 0x7ff) {
+                    string[j++] = 0xc0 | ((code_point >> 6) & 0x1f);
+                    string[j++] = 0x80 | ((code_point     ) & 0x3f);
+                } else if (code_point <= 0xffff) {
+                    string[j++] = 0xe0 | ((code_point >> 12) & 0x0f);
+                    string[j++] = 0x80 | ((code_point >>  6) & 0x3f);
+                    string[j++] = 0x80 | ((code_point      ) & 0x3f);
+                } else if (code_point <= 0x1fffff) {
+                    string[j++] = 0xf0 | ((code_point >> 18) & 0x07);
+                    string[j++] = 0x80 | ((code_point >> 12) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >>  6) & 0x3f);
+                    string[j++] = 0x80 | ((code_point      ) & 0x3f);
+                } else if (code_point <= 0x3ffffff) {
+                    string[j++] = 0xf8 | ((code_point >> 24) & 0x03);
+                    string[j++] = 0x80 | ((code_point >> 18) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >> 12) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >>  6) & 0x3f);
+                    string[j++] = 0x80 | ((code_point      ) & 0x3f);
+                } else if (code_point <= 0x7fffffff) {
+                    string[j++] = 0xfc | ((code_point >> 30) & 0x01);
+                    string[j++] = 0x80 | ((code_point >> 24) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >> 18) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >> 12) & 0x3f);
+                    string[j++] = 0x80 | ((code_point >>  6) & 0x3f);
+                    string[j++] = 0x80 | ((code_point      ) & 0x3f);
+                } else {
+                    ya_error("Could not encode code point %lli.", (long long)code_point);
+                }
+                string[j++] = code_point;
             }
 
         } else if (escape) {
@@ -140,9 +124,9 @@ size_t ya_string_escape(uint32_t *string, size_t string_size, int raw)
                 case '"': string[j++] = '"';  break;
                 case '/': string[j++] = '/';  break;
                 case '\\': string[j++] = '\\';  break;
-                case 'x': base = 16; count = 2; hex_code = 0; break;
-                case 'u': base = 16; count = 4; hex_code = 0; break;
-                case 'U': base = 16; count = 8; hex_code = 0; break;
+                case 'x': base = 16; count = 2; code_point = 0; break;
+                case 'u': base = 16; count = 4; code_point = 0; break;
+                case 'U': base = 16; count = 8; code_point = 0; break;
                 default:  string[j++] = '\\'; string[j++] = c;
                 }
             }

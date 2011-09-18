@@ -141,22 +141,14 @@ ya_t ya_int(char *buf, size_t buf_size)
 static ya_t ya_generic_string(char *buf, size_t buf_size, fourcc_t type, int raw)
 {
     ya_t            r;
-    uint32_t        *string = malloc(buf_size * sizeof (uint32_t));
-    size_t          string_size = ya_utf8_to_ucs4(buf, buf_size, string);
+    uint8_t         *string = (uint8_t *)strndup(buf, buf_size);
+    size_t          string_size = strlen((char *)string);
     unsigned int    i;
 
-    fprintf(stderr, "1 string size %zu\n", string_size);
     string_size = ya_string_escape(string, string_size, raw);
-    fprintf(stderr, "2 string size %zu\n", string_size);
+    r = ya_literal(type, string, string_size);
 
-    // The string needs to be converted to big endian format.
-    for (i = 0; i < string_size; i++) {
-        string[i] = htonl(string[i]);
-    }
-
-    r = ya_literal(type, string, string_size * sizeof (uint32_t));
     free(string);
-
     return r;
 }
 
