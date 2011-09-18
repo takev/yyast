@@ -18,6 +18,15 @@
 #include <yyast/types.h>
 #include <yyast/utils.h>
 
+#define FCC_F64 fourcc('#','f','6','4')
+#define FCC_I64 fourcc('#','i','6','4')
+#define FCC_U64 fourcc('#','u','6','4')
+#define FCC_STR fourcc('#','s','t','r')
+#define FCC_RE fourcc('#','r','e',' ')
+#define FCC_ID fourcc('#','i','d',' ')
+#define FCC_ASM fourcc('#','a','s','m')
+#define FCC_DOC fourcc('#','d','o','c')
+
 /** Create an literal.
  *
  * @param type      fourcc code for the ya leaf

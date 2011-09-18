@@ -32,7 +32,7 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
 {
     ya_t r = {
         .type = type,
-        .size = buf_size + sizeof (ya_node_t),
+        .size = ya_align64(buf_size + sizeof (ya_node_t)),  // The outer size is the allocated size.
         .start = ya_previous_position,
         .end = ya_current_position
     };
@@ -40,14 +40,14 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
     fprintf(stderr, "literal %i:%i-%i:%i, '%c%c%c%c'\n",
         r.start.line, r.start.column,
         r.end.line, r.end.column,
-        type.c[0], type.c[1], type.c[2], type.c[3]
+        (char)((r.type >> 24) & 0xff), (char)((r.type >> 16) & 0xff), (char)((r.type >> 8) & 0xff), (char)(r.type & 0xff)
     );
 
     // Allocate memory aligned to 32 bit. We need to use calloc so that we don't accidently
     // leak information into the output file.
-    r.node = calloc(1, ya_align32(r.size));
-    r.node->size           = htonl(r.size);
-    r.node->type.i         = htonl(r.type.i);
+    r.node = calloc(1, r.size);
+    r.node->length         = htonl(buf_size + sizeof (ya_node_t));  // The inner length is the length of header+data.
+    r.node->type           = htonl(r.type);
     r.node->start.position = htonl(r.start.position);
     r.node->start.line     = htonl(r.start.line);
     r.node->start.column   = htonl(r.start.column);
@@ -55,6 +55,8 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
     r.node->end.line       = htonl(r.end.line);
     r.node->end.column     = htonl(r.end.column);
     memcpy(r.node->data, buf, buf_size);
+    // Set padding bytes to zero, so as not to leak data. For security purposes.
+    memset(&r.node->data[buf_size], 0, ya_align64(buf_size) - buf_size);
     return r;
 }
 
@@ -87,7 +89,7 @@ ya_t ya_real(char *buf, size_t buf_size)
     }
 
     t.u = htonll(t.u);
-    return ya_literal(fourcc("#f64"), &t.u, sizeof (t.u));
+    return ya_literal(FCC_F64, &t.u, sizeof (t.u));
 }
 
 ya_t ya_int(char *buf, size_t buf_size)
@@ -133,7 +135,7 @@ ya_t ya_int(char *buf, size_t buf_size)
     }
 
     t.u = htonll(t.u);
-    return ya_literal(negative ? fourcc("#i64") : fourcc("#u64"), &t.u, sizeof (t.u));
+    return ya_literal(negative ? FCC_I64 : FCC_U64, &t.u, sizeof (t.u));
 }
 
 static ya_t ya_generic_string(char *buf, size_t buf_size, fourcc_t type, int raw)
@@ -143,7 +145,9 @@ static ya_t ya_generic_string(char *buf, size_t buf_size, fourcc_t type, int raw
     size_t          string_size = ya_utf8_to_ucs4(buf, buf_size, string);
     unsigned int    i;
 
+    fprintf(stderr, "1 string size %zu\n", string_size);
     string_size = ya_string_escape(string, string_size, raw);
+    fprintf(stderr, "2 string size %zu\n", string_size);
 
     // The string needs to be converted to big endian format.
     for (i = 0; i < string_size; i++) {
@@ -158,31 +162,31 @@ static ya_t ya_generic_string(char *buf, size_t buf_size, fourcc_t type, int raw
 
 ya_t ya_string(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#str"), 0);
+    return ya_generic_string(buf, buf_size, FCC_STR, 0);
 }
 
 ya_t ya_raw_string(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#str"), 1);
+    return ya_generic_string(buf, buf_size, FCC_STR, 1);
 }
 
 ya_t ya_regex(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#re "), 2);
+    return ya_generic_string(buf, buf_size, FCC_RE, 2);
 }
 
 ya_t ya_name(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#id "), 1);
+    return ya_generic_string(buf, buf_size, FCC_ID, 1);
 }
 
 ya_t ya_assembly(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#asm"), 1);
+    return ya_generic_string(buf, buf_size, FCC_ASM, 1);
 }
 
 ya_t ya_comment(char *buf, size_t buf_size)
 {
-    return ya_generic_string(buf, buf_size, fourcc("#doc"), 1);
+    return ya_generic_string(buf, buf_size, FCC_DOC, 1);
 }
 

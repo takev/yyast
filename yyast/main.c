@@ -17,6 +17,7 @@
 #include <getopt.h>
 #include <yyast/main.h>
 #include <yyast/utils.h>
+#include <yyast/node.h>
 
 extern FILE *yyin;
 int yyparse();
@@ -82,9 +83,16 @@ void ya_parse_options(int argc, char *argv[])
 
 int ya_main(int argc, char *argv[])
 {
+    FILE *out;
+
     ya_parse_options(argc, argv);
     yyin = fopen(ya_input_filename, "r");
     yyparse();
     fclose(yyin);
+
+    out = fopen(ya_output_filename, "w");
+    ya_node_save(out, &ya_start);
+    fclose(out);
+
     return 0;
 }

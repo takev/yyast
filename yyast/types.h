@@ -19,16 +19,15 @@
 #include <stdlib.h>
 #include <stdint.h>
 
-typedef union {
-    uint32_t    i;
-    char        c[4];
-} fourcc_t;
+typedef uint32_t fourcc_t;
 
-extern const fourcc_t YA_END;
-extern const fourcc_t YA_PASS;
-extern const fourcc_t YA_SSAP;
-extern const fourcc_t YA_LIST;
-extern const fourcc_t YA_COUNT;
+/** Convert 4 characters to a fourcc integer.
+ */
+#define fourcc(x, y, z, w) ((((((x << 8) | y) << 8) | z) << 8) | w)
+
+/** Convert a 4 character string to a fourcc integer.
+ */
+#define fourcc_str(s) fourcc(s[0], s[1], s[2], s[3])
 
 /** Position in the text file.
  */
@@ -44,11 +43,11 @@ typedef struct ya_position_s ya_position_t;
  * in the end.
  */
 struct ya_node_s {
+    fourcc_t        type;   //< Type big-endian fourcc.
+    uint32_t        length; //< Length inclding header, but excluding padding in big-endian.
     ya_position_t   start;  //< Start position values in big-endian.
     ya_position_t   end;    //< End position values in big-endian.
-    fourcc_t        type;   //< Type big-endian fourcc.
-    uint32_t        size;   //< Size including header in big-endian.
-    uint32_t        data[]; //< Data aligned to 32 bit and sized to 32 bit. Includes padding bytes.
+    char            data[]; //< Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end.
 } __attribute__((packed));
 typedef struct ya_node_s ya_node_t;
 
@@ -56,10 +55,10 @@ typedef struct ya_node_s ya_node_t;
  * Passing this whole structure around the stack makes it easier for the user of this library.
  */
 typedef struct {
-    fourcc_t        type;   //< Type in fourcc
-    uint32_t        size;   //< Size including header
-    ya_position_t   start;  //< Start position value
-    ya_position_t   end;    //< End position value
+    fourcc_t        type;   //< Type in fourcc.
+    uint32_t        size;   //< Size including header and padding.
+    ya_position_t   start;  //< Start position value.
+    ya_position_t   end;    //< End position value.
     ya_node_t       *node;  //< The complete data, including the header.
 } ya_t;
 

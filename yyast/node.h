@@ -15,7 +15,14 @@
 #ifndef YA_NODE_H
 #define YA_NODE_H
 
+#include <stdio.h>
 #include <yyast/types.h>
+
+#define FCC_END fourcc('@','e','n','d')
+#define FCC_PASS fourcc('@','p','a','s')
+#define FCC_SSAP fourcc('s','a','p','@')
+#define FCC_COUNT fourcc('@','c','n','t')
+#define FCC_LIST fourcc('@','l','s','t')
 
 /** Define an unsued parameter in a node or list.
  */
@@ -35,9 +42,9 @@
  * @param ...   A list of literals to be included in this node.
  * @returns     A node
  */
-#define NODE(first, last, type, ...)    ya_node(first, last, fourcc(type), __VA_ARGS__, END)
+#define NODE(first, last, type, ...)    ya_node(first, last, fourcc_str(type), __VA_ARGS__, END)
 
-#define EMPTYNODE(first, last, type)    ya_node(first, last, fourcc(type), END)
+#define EMPTYNODE(first, last, type)    ya_node(first, last, fourcc_str(type), END)
 
 /** Define a list of literals.
  * Used in yacc to create a list of literals. When adding a list to an other list or node, the contents
@@ -65,6 +72,7 @@ extern ya_t YA_NODE_END;
  */
 extern ya_t YA_NODE_PASS;
 
+
 /** Create an ya node.
  * Create a node from subnodes.
  * This also free memory used by the subnodes.
@@ -85,6 +93,14 @@ ya_t ya_node(ya_t *start, ya_t *end, fourcc_t type, ...);
  * @returns     A new AST NODE.
  */
 ya_t ya_list(ya_t *start, ya_t *end, ...);
+
+/** Save the node to a file.
+ *
+ * @param output_file   A file pointer of an file open for writing.
+ * @parma node          The node to be saved to file.
+ */
+void ya_node_save(FILE *output_file, ya_t *node);
+
 
 /** Count characters.
  * This functions keeps track of byte position, line and column.

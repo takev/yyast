@@ -23,17 +23,11 @@
  */
 unsigned long long htonll(unsigned long long x);
 
-/** Convert a fourcc string into an 32 bit integer.
- * @param s    A four character string.
- * @returns    An integer representing a four character string.
- */
-fourcc_t fourcc(char *s);
-
-/** Align to a 32 bit boundary.
+/** Align to a 64 bit boundary.
  * @param x    A size of an object in memory
  * @returns    Either the size if it was aligned, or the next larger size that is aligned.
  */
-size_t ya_align32(size_t x);
+size_t ya_align64(size_t x);
 
 /** Convert an UTF-8 string into an UCS-4 string.
  * @param in       The UTF-8 string to convert.

@@ -56,7 +56,7 @@ ya_t ya_count(char *s, size_t s_length)
         }
     }
     r.size = 0;
-    r.type = YA_COUNT;
+    r.type = FCC_COUNT;
     r.start = ya_previous_position;
     r.end = ya_current_position;
     r.node = NULL;

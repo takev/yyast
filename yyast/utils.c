@@ -33,21 +33,12 @@ unsigned long long htonll(unsigned long long x)
 #endif
 }
 
-fourcc_t fourcc(char *s)
-{
-    fourcc_t r;
-    int      i;
-
-    memcpy(r.c, s, sizeof (fourcc_t));
-    return r;
-}
-
-size_t ya_align32(size_t x)
+size_t ya_align64(size_t x)
 {
     if (sizeof (x) == 4) {
-        return (x + 3) & 0xfffffffc;
+        return (x + 7) & 0xfffffff8;
     } else {
-        return (x + 3) & 0xfffffffffffffffc;
+        return (x + 7) & 0xfffffffffffffff8;
     }
 }
 
