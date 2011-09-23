@@ -35,8 +35,7 @@ ya_t YA_NODE_END = {
 };
 
 ya_node_t YA_NODE_NODE_PASS = {
-    .start  = {.position = 0, .line = 0, .column = 0},
-    .end    = {.position = 0, .line = 0, .column = 0},
+    .position= 0xffffffffffffffffULL,
 #ifdef WORDS_BIGENDIAN
     .type   = FCC_PASS,
     .length = 0x00000020
@@ -102,12 +101,7 @@ ya_t ya_generic_node(ya_t *first, ya_t *last, fourcc_t type, va_list ap)
     self.node = calloc(1, self.size);
     self.node->type           = htonl(self.type);
     self.node->length         = htonl(self.size);
-    self.node->start.position = htonl(self.start.position);
-    self.node->start.line     = htonl(self.start.line);
-    self.node->start.column   = htonl(self.start.column);
-    self.node->end.position   = htonl(self.end.position);
-    self.node->end.line       = htonl(self.end.line);
-    self.node->end.column     = htonl(self.end.column);
+    self.node->position       = htonll(short_position(self.start, self.end));
 
     // Add the content of the items to the new list.
     for (item = va_arg(ap2, ya_t *); item->type != FCC_END; item = va_arg(ap2, ya_t *)) {

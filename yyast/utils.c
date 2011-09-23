@@ -20,27 +20,9 @@
 #include <sys/types.h>
 #include <string.h>
 
-#include <yyast/config.h>
 #include <yyast/utils.h>
 #include <yyast/error.h>
 
-unsigned long long htonll(unsigned long long x)
-{
-#ifdef WORDS_BIGENDIAN
-    return x;
-#else
-    return __builtin_bswap64(x);
-#endif
-}
-
-size_t ya_align64(size_t x)
-{
-    if (sizeof (x) == 4) {
-        return (x + 7) & 0xfffffff8;
-    } else {
-        return (x + 7) & 0xfffffffffffffff8;
-    }
-}
 
 size_t ya_string_escape(uint8_t *string, size_t string_size, int raw)
 {

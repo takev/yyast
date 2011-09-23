@@ -18,8 +18,11 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <sys/param.h>
 
 typedef uint32_t fourcc_t;
+
+
 
 /** Convert 4 characters to a fourcc integer.
  */
@@ -38,16 +41,32 @@ struct ya_position_s {
 } __attribute__((packed));
 typedef struct ya_position_s ya_position_t;
 
+/** Compressed position in the text file.
+ * This value can be encoded in two different ways:
+ *
+ * bit 63      ( 1 bit )    0 - Both begin and end position with limited range.
+ * bit 40-62   (23 bits)    Byte offset of start position.
+ * bit 24-39   (16 bits)    Line of the begin position.
+ * bit 16-23   ( 8 bits)    Column of the begin position.
+ * bit  8-15   ( 8 bits)    Number of lines between begin and end position.
+ * bit  0- 7   ( 8 bits)    Column of the end position.
+ *
+ * bit 63      ( 1 bit )    1 - Only begin position with extended range.
+ * bit 32-62   (31 bits)    Byte offset of start position.
+ * bit  8-31   (24 bits)    Line of the begin position.
+ * bit  0- 7   ( 8 bits)    Column of the begin position.
+ */
+typedef uint64_t ya_short_position_t;
+
 /** The data as it will be when writing this node and its subnodes to disk.
  * This structure is allocated and free-ed as it passed along. In priciple it shouldn't leak
  * in the end.
  */
 struct ya_node_s {
-    fourcc_t        type;   //< Type big-endian fourcc.
-    uint32_t        length; //< Length inclding header, but excluding padding in big-endian.
-    ya_position_t   start;  //< Start position values in big-endian.
-    ya_position_t   end;    //< End position values in big-endian.
-    char            data[]; //< Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end.
+    fourcc_t            type;       //< Type big-endian fourcc.
+    uint32_t            length;     //< Length inclding header, but excluding padding in big-endian.
+    ya_short_position_t position;   //< Position of the token.
+    char                data[];     //< Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end.
 } __attribute__((packed));
 typedef struct ya_node_s ya_node_t;
 
@@ -63,6 +82,31 @@ typedef struct {
 } ya_t;
 
 extern ya_t ya_start;
+
+/** Convert positions into a compressed position.
+ * @param s   Start position
+ * @param e   End position
+ * @returns   Begin (and End) position compressed into 64 bits.
+ */
+inline ya_short_position_t short_position(ya_position_t s, ya_position_t e)
+{
+    ya_short_position_t p = 0;
+
+    if (s.position <= 0x7fffff && s.line <= 0xffff) {
+        p = (uint64_t)s.position << 40;
+        p|= (uint64_t)s.line << 24;
+        p|= MIN((uint64_t)s.column, 0xffULL) << 16;
+        p|= MIN((uint64_t)e.line - s.line, 0xffULL) << 8;
+        p|= MIN((uint64_t)e.column, 0xffULL);
+    } else {
+        p = 0x8000000000000000;
+        p|= MIN((uint64_t)s.position, 0x7fffffffULL) << 32;
+        p|= MIN((uint64_t)s.line, 0xffffffULL) << 8;
+        p|= MIN((uint64_t)s.column, 0xffULL);
+    }
+    return p;
+}
+
 
 /** Lex and Yacc needs to know what type should be used. To pass tokens and nodes around.
  */

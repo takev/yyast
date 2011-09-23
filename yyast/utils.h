@@ -18,16 +18,42 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <yyast/types.h>
+#include <yyast/config.h>
 
 /** Host to network long long.
  */
-unsigned long long htonll(unsigned long long x);
+inline unsigned long long htonll(unsigned long long x)
+{
+#ifdef WORDS_BIGENDIAN
+    return x;
+#else
+    return __builtin_bswap64(x);
+#endif
+}
+
+/** Network to host long long.
+ */
+inline unsigned long long ntohll(unsigned long long x)
+{
+#ifdef WORDS_BIGENDIAN
+    return x;
+#else
+    return __builtin_bswap64(x);
+#endif
+}
 
 /** Align to a 64 bit boundary.
  * @param x    A size of an object in memory
  * @returns    Either the size if it was aligned, or the next larger size that is aligned.
  */
-size_t ya_align64(size_t x);
+inline size_t ya_align64(size_t x)
+{
+    if (sizeof (x) == 4) {
+        return (x + 7) & 0xfffffff8;
+    } else {
+        return (x + 7) & 0xfffffffffffffff8;
+    }
+}
 
 /** Escape characters in a string.
  * The original string is modified by this function.

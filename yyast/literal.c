@@ -48,12 +48,7 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
     r.node = calloc(1, r.size);
     r.node->length         = htonl(buf_size + sizeof (ya_node_t));  // The inner length is the length of header+data.
     r.node->type           = htonl(r.type);
-    r.node->start.position = htonl(r.start.position);
-    r.node->start.line     = htonl(r.start.line);
-    r.node->start.column   = htonl(r.start.column);
-    r.node->end.position   = htonl(r.end.position);
-    r.node->end.line       = htonl(r.end.line);
-    r.node->end.column     = htonl(r.end.column);
+    r.node->position       = htonll(short_position(r.start, r.end));
     memcpy(r.node->data, buf, buf_size);
     // Set padding bytes to zero, so as not to leak data. For security purposes.
     memset(&r.node->data[buf_size], 0, ya_align64(buf_size) - buf_size);
