@@ -30,6 +30,7 @@ void ya_error(const char *message, ...)
 
     fprintf(stderr, "line %i:%i, %s\n", ya_current_position.line, ya_current_position.column, msg);
 
-    free(ap);
+    free(msg);
+    exit(1);
 }
 

@@ -36,7 +36,7 @@
 ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size);
 
 /** Create literal for a floating point literal.
- * The literal is of type '#f64', and contains the decoded number as a 64 bit floating point.
+ * The literal is of type '\#f64', and contains the decoded number as a 64 bit floating point.
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -45,7 +45,7 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size);
 ya_t ya_real(char *buf, size_t buf_size);
 
 /** Create literal for an integer literal.
- * The literal is of type '#i64' or '#u64', and contains the decoded number as a 64 bit integer,
+ * The literal is of type '\#i64' or '\#u64', and contains the decoded number as a 64 bit integer,
  * or 64 bit unsigned integer.
  *
  * @param buf       Literal as string.
@@ -55,8 +55,8 @@ ya_t ya_real(char *buf, size_t buf_size);
 ya_t ya_int(char *buf, size_t buf_size);
 
 /** Create literal for a string literal.
- * The literal is of type '#str', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \n, \r, \t, \x??, \u????, \U????????, \\, \", \/
+ * The literal is of type '\#str', and contains a unescaped string encoded as UCS-4.
+ * Escape sequences which are recognized are: \\n, \\r, \\t, \\x??, \\u????, \\U????????, \\\\, \\", \\/
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -65,8 +65,8 @@ ya_t ya_int(char *buf, size_t buf_size);
 ya_t ya_string(char *buf, size_t buf_size);
 
 /** Create literal for a raw string literal.
- * The literal is of type '#str', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \"
+ * The literal is of type '\#str', and contains a unescaped string encoded as UCS-4.
+ * Escape sequences which are recognized are: \\"
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -75,8 +75,8 @@ ya_t ya_string(char *buf, size_t buf_size);
 ya_t ya_raw_string(char *buf, size_t buf_size);
 
 /** Create literal for a regex literal.
- * The literal is of type '#re ', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \/
+ * The literal is of type '\#re ', and contains a unescaped string encoded as UCS-4.
+ * Escape sequences which are recognized are: \\/
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -85,7 +85,7 @@ ya_t ya_raw_string(char *buf, size_t buf_size);
 ya_t ya_regex(char *buf, size_t buf_size);
 
 /** Create literal for a name.
- * The literal is of type '#id ', and contains a string encoded as UCS-4.
+ * The literal is of type '\#id ', and contains a string encoded as UCS-4.
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -94,7 +94,7 @@ ya_t ya_regex(char *buf, size_t buf_size);
 ya_t ya_name(char *buf, size_t buf_size);
 
 /** Create literal for assembly.
- * The literal is of type '#asm', and contains a string encoded as UCS-4.
+ * The literal is of type '\#asm', and contains a string encoded as UCS-4.
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.
@@ -103,7 +103,7 @@ ya_t ya_name(char *buf, size_t buf_size);
 ya_t ya_assembly(char *buf, size_t buf_size);
 
 /** Create literal for comments.
- * The literal is of type '#doc', and contains a string encoded as UCS-4.
+ * The literal is of type '\#doc', and contains a string encoded as UCS-4.
  *
  * @param buf       Literal as string.
  * @param buf_size  String size.

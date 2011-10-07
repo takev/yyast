@@ -37,12 +37,6 @@ ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
         .end = ya_current_position
     };
 
-    fprintf(stderr, "literal %i:%i-%i:%i, '%c%c%c%c'\n",
-        r.start.line, r.start.column,
-        r.end.line, r.end.column,
-        (char)((r.type >> 24) & 0xff), (char)((r.type >> 16) & 0xff), (char)((r.type >> 8) & 0xff), (char)(r.type & 0xff)
-    );
-
     // Allocate memory aligned to 32 bit. We need to use calloc so that we don't accidently
     // leak information into the output file.
     r.node = calloc(1, r.size);
@@ -70,17 +64,14 @@ ya_t ya_real(char *buf, size_t buf_size)
     t.d = strtold(buf, &endptr);
     if (buf == endptr) {
         ya_error("Could not convert real value '%s'", buf);
-        exit(1);
     }
 
     if ((t.d == HUGE_VALL || t.d == -HUGE_VALL) && errno == ERANGE) {
         ya_error("Could not convert real value '%s', overflow", buf);
-        exit(1);
     }
 
     if ((t.d == 0.0 || t.d == -0.0) && errno == ERANGE) {
         ya_error("Could not convert real value '%s', underflow", buf);
-        exit(1);
     }
 
     t.u = htonll(t.u);
@@ -114,17 +105,14 @@ ya_t ya_int(char *buf, size_t buf_size)
     t.u = strtoull(&buf[i], &endptr, base);
     if (&buf[i] == endptr) {
         ya_error("Could not convert int value '%s'", buf);
-        exit(1);
     }
     if (t.u == ULLONG_MAX && errno == ERANGE) {
         ya_error("Could not convert int value '%s', overflow", buf);
-        exit(1);
     }
 
     if (negative) {
         if (t.u > INT64_MAX) {
             ya_error("Could not convert int value '%s', overflow", buf);
-            exit(1);
         }
         t.i = -t.u;
     }

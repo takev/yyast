@@ -20,6 +20,15 @@
 extern ya_position_t ya_previous_position;
 extern ya_position_t ya_current_position;
 
+/** Count characters.
+ * This functions keeps track of byte position, line and column.
+ * The byte, line and columns are zero index.
+ * This function works with UTF-8.
+ *
+ * @param s         The string to analyze
+ * @param s_length  The length of the string in bytes.
+ * @returns         An initialized ya structure without a node.
+ */
 ya_t ya_count(char *s, size_t s_length);
 
 /** Count columns and lines for each token found by lex.

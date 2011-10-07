@@ -24,12 +24,12 @@
 #define FCC_COUNT fourcc('@','c','n','t')
 #define FCC_LIST fourcc('@','l','s','t')
 
-/** Define an unsued parameter in a node or list.
+/** This is the sentinal to be used as the last parameter of ya_node() and ya_list().
+ * In yacc, you will use NODE() and LIST() which will append END implicitly.
  */
 #define END &YA_NODE_END
 
-/** This is the sentinal to be used as the last parameter of ya_node() and ya_list().
- * In yacc, you will use NODE() and LIST() which will append END implicitly.
+/** Define an unsued parameter in a node or list.
  */
 #define PASS &YA_NODE_PASS
 
@@ -77,6 +77,8 @@ extern ya_t YA_NODE_PASS;
  * Create a node from subnodes.
  * This also free memory used by the subnodes.
  *
+ * @param start Start token, for position calculation.
+ * @param end   End token, for position calculation.
  * @param type  fourcc code for the ya node
  *              When type is 0 the header is not preserved when used as subnode.
  * @param ...   The subnodes, ending with NULL
@@ -89,6 +91,8 @@ ya_t ya_node(ya_t *start, ya_t *end, fourcc_t type, ...);
  * was passed as seperate items.
  * This also free memory used by the subnodes.
  *
+ * @param start Start token, for position calculation.
+ * @param end   End token, for position calculation.
  * @param ...   The subnodes, ending with NULL
  * @returns     A new AST NODE.
  */
@@ -97,20 +101,8 @@ ya_t ya_list(ya_t *start, ya_t *end, ...);
 /** Save the node to a file.
  *
  * @param output_file   A file pointer of an file open for writing.
- * @parma node          The node to be saved to file.
+ * @param node          The node to be saved to file.
  */
 void ya_node_save(FILE *output_file, ya_t *node);
-
-
-/** Count characters.
- * This functions keeps track of byte position, line and column.
- * The byte, line and columns are zero index.
- * This function works with UTF-8.
- *
- * @param s         The string to analyze
- * @param s_length  The length of the string in bytes.
- * @returns         An initialized ya structure without a node.
- */
-ya_t ya_count(char *s, size_t s_length);
 
 #endif

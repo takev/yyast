@@ -30,7 +30,7 @@ void ya_usage(int exit_code)
     exit(exit_code);
 }
 
-void ya_parse_options(int argc, char *argv[])
+void ya_parse_options(int argc, char *argv[], char *extension)
 {
     int             ch;
     struct option   longopts[] = {
@@ -77,15 +77,15 @@ void ya_parse_options(int argc, char *argv[])
 
     if (ya_output_filename == NULL) {
         // output file was not explicityly set, therfor we generate it from the input filename.
-        ya_output_filename = ya_new_extension(ya_input_filename, ".ya");        
+        ya_output_filename = ya_new_extension(ya_input_filename, extension);
     }
 }
 
-int ya_main(int argc, char *argv[])
+int ya_main(int argc, char *argv[], char *extension)
 {
     FILE *out;
 
-    ya_parse_options(argc, argv);
+    ya_parse_options(argc, argv, extension);
     yyin = fopen(ya_input_filename, "r");
     yyparse();
     fclose(yyin);

@@ -59,7 +59,7 @@ inline size_t ya_align64(size_t x)
  * The original string is modified by this function.
  *
  * @param string         The UTF-8 string with escape characters.
- * @param string_length  The number of characters in the string.
+ * @param string_size    The number of bytes in the UTF-8 string.
  * @param raw            When 0 standard escape sequence is decoded.
  *                       When 1 only the double quote escape \" is decoded.
  *                       When 2 only the double quote slash \/ is decoded.

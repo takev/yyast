@@ -48,6 +48,11 @@ void print_fourcc(fourcc_t type)
 
 off_t node_decode(char *buf, size_t buf_size, unsigned int level)
 {
+    if (buf_size < sizeof (ya_node_t)) {
+        fprintf(stdout, "!error size to small to decode header.\n");
+        exit(1);
+    }
+
     ya_node_t           *node = (ya_node_t *)buf;
     fourcc_t            type = ntohl(node->type);
     ya_short_position_t position = ntohll(node->position);
@@ -65,7 +70,10 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         exit(1);
     }
 
-    if (position < 0x8000000000000000) {
+    if (position == 0xffffffffffffffff) {
+        fprintf(stdout, "                  ");
+
+    } else if (position < 0x8000000000000000) {
         fprintf(stdout, "%4llu:%3llu -%4llu:%3llu",
             ((position >> 24) & 0xffffL) + 1,
             ((position >> 16) & 0xffULL) + 1,
@@ -128,7 +136,7 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
     } else {
         // we continue until a header will not fit in the data anymore.
         fprintf(stdout, "\n");
-        while (inner_offset + sizeof (ya_node_t) < inner_size) {
+        while (inner_offset < inner_size) {
             // decode the inner nodes.
             inner_offset+= node_decode(&node->data[inner_offset], inner_size - inner_offset, level + 1);
         }

@@ -38,10 +38,10 @@ ya_node_t YA_NODE_NODE_PASS = {
     .position= 0xffffffffffffffffULL,
 #ifdef WORDS_BIGENDIAN
     .type   = FCC_PASS,
-    .length = 0x00000020
+    .length = 0x00000010
 #else
     .type   = FCC_SSAP,
-    .length = 0x20000000
+    .length = 0x10000000
 #endif
 };
 
@@ -49,6 +49,7 @@ ya_t YA_NODE_PASS = {
     .start = {.position = 0, .line = 0, .column = 0},
     .end   = {.position = 0, .line = 0, .column = 0},
     .type  = FCC_PASS,
+    .size  = 0x10,
     .node  = &YA_NODE_NODE_PASS
 };
 
@@ -63,21 +64,8 @@ ya_t ya_generic_node(ya_t *first, ya_t *last, fourcc_t type, va_list ap)
 
     va_copy(ap2, ap);
 
-    if (type == FCC_LIST) {
-        fprintf(stderr, "list");
-    } else {
-        fprintf(stderr, "node");
-    }
-
-    fprintf(stderr, " %i:%i-%i:%i, '%c%c%c%c'\n",
-        first->start.line, first->start.column,
-        last->end.line, last->end.column,
-        (char)((type >> 24) & 0xff), (char)((type >> 16) & 0xff), (char)((type >> 8) & 0xff), (char)(type & 0xff)
-    );
-
     // Calculate the size of the content.
     for (item = va_arg(ap, ya_t *); item->type != FCC_END; item = va_arg(ap, ya_t *)) {
-        fprintf(stderr, "- '%c%c%c%c'\n", (char)((item->type >> 24) & 0xff), (char)((item->type >> 16) & 0xff), (char)((item->type >> 8) & 0xff), (char)(item->type & 0xff));
         switch (item->type) {
         case FCC_COUNT:
             fprintf(stderr, "Found '@cnt' token, which is only allowed for line counting\n");
@@ -130,7 +118,6 @@ ya_t ya_generic_node(ya_t *first, ya_t *last, fourcc_t type, va_list ap)
 
     va_end(ap2);
 
-    fprintf(stderr, "+ size %lu\n", (long unsigned int)self.size);
     return self;
 }
 

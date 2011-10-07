@@ -20,6 +20,9 @@ dnl    * If any interfaces have been removed since the last public release, then
 SHARED_VERSION_INFO=0:0:0
 AC_SUBST(SHARED_VERSION_INFO)
 
+DX_HTML_FEATURE(ON)
+DX_INIT_DOXYGEN(yyast, doxygen.cfg)
+
 AC_PROG_CXX
 AC_PROG_LEX
 AC_PROG_YACC

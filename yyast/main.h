@@ -15,6 +15,6 @@
 #ifndef YA_MAIN_H
 #define YA_MAIN_H
 
-int ya_main(int argc, char *argv[]);
+int ya_main(int argc, char *argv[], char *extension);
 
 #endif
