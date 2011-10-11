@@ -11,6 +11,7 @@ stamp-h1
 *.pc
 *.o
 *.lo
+*.bak
 
 autom4te.cache
 buildutils
