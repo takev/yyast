@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "yyast/yyast.h"
+#include <yyast/yyast.h>
 
 ya_t ya_start;
 

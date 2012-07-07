@@ -1,7 +1,8 @@
 
-AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=c99
+DEFAULT_INCLUDES=-I$(top_srcdir)
 
-DEFAULT_INCLUDES=-I$(top_builddir)
+AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=c99 $(DEFAULT_INCLUDES)
+
 
 lib_LTLIBRARIES = libyyast.la
 bin_PROGRAMS = yadump
@@ -14,7 +15,7 @@ yadump_SOURCES = yadump.c
 #yadump_LDADD = -lyyast
 
 library_includedir=$(includedir)/yyast-$(VERSION)/yyast
-nobase_library_include_HEADERS = yyast.h types.h error.h utils.h count.h literal.h node.h main.h config.h
+library_include_HEADERS = yyast.h types.h error.h utils.h count.h literal.h node.h main.h config.h
 
 pkgconfigdir = $(libdir)/pkgconfig
 pkgconfig_DATA = yyast.pc
