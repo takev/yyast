@@ -1,0 +1,95 @@
+
+Include in lexer.l
+==================
+%{
+#include <yyast/yyast.h>
+#include "parser.h"
+%}
+
+\"(\\.|[^\"])*\"                        { yylval = ya_string(&yytext[1], yyleng - 2); return T_STRING; }
+r\"(\\.|[^\"])*\"                       { yylval = ya_raw_string(&yytext[2], yyleng - 3); return T_STRING; }
+"/"[^/* ](\\.|[^/\n])*"/"               { yylval = ya_regex(&yytext[1], yyleng - 2); return T_REGEX; }
+{L}{LD}*                                { yylval = ya_name(yytext, yyleng); return T_NAME; }
+
+[-+]?{D}+                               |
+[-+]?0[oO]{O}+                          |
+[-+]?0[dD]{D}+                          |
+[-+]?0[xX]{H}+                          |
+[-+]?0[bB]{B}+                          { yylval = ya_int(yytext, yyleng); return T_INTEGER; }
+
+[-+]INFINITY                            |
+[-+]NAN                                 |
+[-+]?{D}+{E}?                           |
+[-+]?{D}*"."{D}+{E}?                    |
+[-+]?{D}+"."{D}*{E}?                    |
+[-+]?0[xX]{H}+{P}?                      |
+[-+]?0[xX]{H}*"."{D}+{P}?               |
+[-+]?0[xX]{H}+"."{D}*{P}?               { yylval = ya_real(yytext, yyleng); return T_REAL; }
+
+
+
+Include in parser.y
+===================
+%{
+#include <yyast/yyast.h>
+
+int yylex();
+void yyerror(const char *message);
+%}
+
+/* Dictionary content. */
+ditem
+    : expression ':' expression                     { $$ = NODE(&$1, &$3, "ditm", &$1, &$3); }
+    ;
+
+ditem_list
+    : ditem                                         { $$ = LIST(&$1, &$1, &$1); }
+    | ditem_list ',' ditem                          { $$ = LIST(&$1, &$3, &$1, &$3); }
+    ;
+
+dictionary_content
+    : ':'                                           { $$ = EMPTYLIST; }
+    | ditem_list                                    { $$ = $1; }
+    | ditem_list ','                                { $$ = $1; }
+    ;
+
+module
+    : module_content                                { ya_start = $$ = NODE(&$1, &$1, "modu", &$1); }
+    ;
+
+%%
+
+void yyerror(const char *message)
+{
+    ya_error(message);
+}
+
+int main(int argc, char *argv[])
+{
+    return ya_main(argc, argv, "tap");
+}
+
+
+Include in Makefile.am
+======================
+AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-long-long -Wno-unused -Wno-multichar -std=c99 $(YYAST_CFLAGS)
+AM_YFLAGS = -d
+
+DEFAULT_INCLUDES=-I$(top_srcdir)
+
+BUILT_SOURCES = parser.h
+
+bin_PROGRAMS = compiler
+
+compiler_SOURCES = lexer.l parser.h
+compiler_LDADD = $(YYAST_LIBS)
+
+Inlclude in configure.ac
+========================
+
+AC_PROG_LEX
+AC_PROG_YACC
+
+PKG_CHECK_MODULES([YYAST], [yyast >= 0.1])
+
+
