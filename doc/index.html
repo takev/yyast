@@ -11,21 +11,41 @@
 The saved AST is designed to be easily parsed by compilers.
 </p>
 
+<h2>Reason for change</h2>
+<p>In the first version of yyast the file format was not formalized and it was more to see if the
+design would work. During the work on tumomo it has proved itself. However I missed the line control
+mechanism available in C/C++ for tracking line in sources of generated code.
+</p>
+<p>Adding the filename to each node would needlessly increase the footprint of the resulting file.
+Therefor a list of filenames is added to the file header and each node has an index into this list.
+</p>
+<p>Line numbers and column numbers are 32 bit, which is also the maximum size in LLVM. Line numbers
+and columns start at 1. 0 is used to denote an unknown line or column.
+</p>
+<p>The original file format used FourCC for the name of each node, EightCC will give a little bit more
+room without complicating the format with variable sized strings.
+</p>
+<p>The file format is carefully aligned so that when the file is mapped into memory it can be directly
+accessed with unaligned reads without causing bus faults on some CPU architectures.
+</p>
+
 <h2>File format</h2>
 <p>This is a description of version 2 of the file format. Version 1 was not documented.
 </p>
-<p>All fields are naturally aligned.
+<p>All Nodes are aligned to 64 bit boundary. All fields in the header are packed. All integer
+fields are in big endian.
 </p>
 
 <h3>File Header</h3>
 
 <table>
-<tr><th>type</th>    <th>description</th></tr>
-<tr><td>EightCC</td> <td>Magic for this file format. 'yyast 02'</td></tr>
-<tr><td>EightCC</td> <td>Magic for the parsed language.</td></tr>
-<tr><td>uint32_t</td><td>Nr of parsed file names.</td></tr>
-<tr><td>UTF-8[]</td> <td>parsed file names.</td></tr>
-<tr><td>Node</td>    <td>AST of parsed document.</td></tr>
+<tr><th>type</th>      <th>description</th></tr>
+<tr><td>EightCC</td>   <td>Magic for this file format. 'yyast 02'</td></tr>
+<tr><td>EightCC</td>   <td>Magic for the parsed language.</td></tr>
+<tr><td>uint32_t</td>  <td>Nr of parsed file names.</td></tr>
+<tr><td>UTF-8[]</td>   <td>parsed file names.</td></tr>
+<tr><td>uint8_t[]</td> <td>optional padding to align the next field to a 64 bit boundary</td></tr>
+<tr><td>Node</td>      <td>AST of parsed document.</td></tr>
 </table>
 
 <h3>Node Header</h3>
@@ -34,7 +54,7 @@ The saved AST is designed to be easily parsed by compilers.
 <tr><th>type</th>     <th>description</th></tr>
 <tr><td>EightCC</td>  <td>Magic for this node. 64 bit aligned</td></tr>
 <tr><td>uint64_t</td> <td>Data size.</td></tr>
-<tr><td>uint32_t</td> <td>Line number. The top mode line is zero.</td></tr>
+<tr><td>uint32_t</td> <td>Line number. The top most line is 1.</td></tr>
 <tr><td>uint32_t</td> <td>Column number. The left most column is zero</td></tr>
 <tr><td>uint32_t</td> <td>File number. The first file (the main file) is zero.</td></tr>
 <tr><td>uint16_t</td> <td>Reserved, must be zero.</td></tr>
