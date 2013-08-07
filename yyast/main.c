@@ -27,6 +27,15 @@ char *ya_input_filename = NULL;
 
 void ya_usage(int exit_code)
 {
+    fprintf(stderr, "Usage:\n");
+    fprintf(stderr, "  application -h\n");
+    fprintf(stderr, "  application [-c] [-o output file] input file\n");
+    fprintf(stderr, "\n");
+    fprintf(stderr, "Options:\n");
+    fprintf(stderr, "  -h   Show help message\n");
+    fprintf(stderr, "  -c   Compile, this option is ignored\n");
+    fprintf(stderr, "  -o   Set the output file, the default is the same as the input file\n");
+    fprintf(stderr, "\n");
     exit(exit_code);
 }
 
@@ -86,11 +95,17 @@ int ya_main(int argc, char *argv[], char *extension)
     FILE *out;
 
     ya_parse_options(argc, argv, extension);
-    yyin = fopen(ya_input_filename, "r");
+    if ((yyin = fopen(ya_input_filename, "r")) == NULL) {
+        perror("Could not open input file");
+        return -1;
+    }
     yyparse();
     fclose(yyin);
 
-    out = fopen(ya_output_filename, "w");
+    if ((out = fopen(ya_output_filename, "w")) == NULL) {
+        perror("Could not open output file");
+        return -1;
+    }
     ya_node_save(out, &ya_start);
     fclose(out);
 
