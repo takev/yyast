@@ -92,13 +92,11 @@ ya_t ya_int(char *buf, size_t buf_size)
     }
 
     if (buf[i] == '0') {
-        i++;
-        base = 8;
-        switch (buf[i]) {
-        case 'x': case 'X': i++; base = 16; break;
-        case 'd': case 'D': i++; base = 10; break;
-        case 'o': case 'O': i++; base =  8; break;
-        case 'b': case 'B': i++; base =  2; break;
+        switch (buf[i + 1]) {
+        case 'x': case 'X': i+= 2; base = 16; break;
+        case 'd': case 'D': i+= 2; base = 10; break;
+        case 'o': case 'O': i+= 2; base =  8; break;
+        case 'b': case 'B': i+= 2; base =  2; break;
         }
     }
 
