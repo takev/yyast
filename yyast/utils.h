@@ -20,6 +20,38 @@
 #include <yyast/types.h>
 #include <yyast/config.h>
 
+typedef union {
+    uint128_t   v;
+    struct {
+        uint64_t v[2];
+    } in;
+} bswap128_t;
+
+inline uint128_t bswap128(uint128_t x)
+{
+    bswap128_t  tmp128;
+    uint64_t    tmp64;
+
+    tmp128.v = x;
+
+    tmp64          = __builtin_bswap64(tmp128.in.v[0]);
+    tmp128.in.v[0] = __builtin_bswap64(tmp128.in.v[1]);
+    tmp128.in.v[1] = tmp64;
+
+    return tmp128.v;
+}
+
+/** Host to network long long long (128)
+ */
+inline uint128_t htonlll(uint128_t x)
+{
+#ifdef WORDS_BIGENDIAN
+    return x;
+#else
+    return bswap128(x);
+#endif
+}
+
 /** Host to network long long.
  */
 inline unsigned long long htonll(unsigned long long x)
@@ -30,6 +62,8 @@ inline unsigned long long htonll(unsigned long long x)
     return __builtin_bswap64(x);
 #endif
 }
+
+inline 
 
 /** Network to host long long.
  */

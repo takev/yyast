@@ -18,33 +18,26 @@
 #include <stdio.h>
 #include <yyast/types.h>
 
-#define FCC_END fourcc('@','e','n','d')
-#define FCC_PASS fourcc('@','p','a','s')
-#define FCC_SSAP fourcc('s','a','p','@')
-#define FCC_COUNT fourcc('@','c','n','t')
-#define FCC_LIST fourcc('@','l','s','t')
 
 /** This is the sentinal to be used as the last parameter of ya_node() and ya_list().
  * In yacc, you will use NODE() and LIST() which will append END implicitly.
  */
-#define END &YA_NODE_END
+#define END             &YA_NODE_END
 
-/** Define an unsued parameter in a node or list.
+/** Define a pass node.
+ * A pass node is used when one of the ordered childs of a node needs to be empty.
  */
-#define PASS &YA_NODE_PASS
+#define PASS            ya_pass()
 
 /** Define a new node.
  * Used in a yacc action to start a new node.
  *
- * @param first The first literal, used to mark the position of the literal in the text.
- * @param last  The first literal, used to mark the position of the literal in the text.
  * @param type  The type/name of the literal, type 0 is reserved by list.
  * @param ...   A list of literals to be included in this node.
  * @returns     A node
  */
-#define NODE(first, last, type, ...)    ya_node(first, last, fourcc_str(type), __VA_ARGS__, END)
-
-#define EMPTYNODE(first, last, type)    ya_node(first, last, fourcc_str(type), END)
+#define NODE(name, ...)  ya_node(name, __VA_ARGS__, END)
+#define EMPTYNODE(name)  ya_node(name, END)
 
 /** Define a list of literals.
  * Used in yacc to create a list of literals. When adding a list to an other list or node, the contents
@@ -55,48 +48,41 @@
  * @param ...   A list of literals to be included in this node.
  * @returns     A list
  */
-#define LIST(first, last, ...)          ya_list(first, last, __VA_ARGS__, END)
+#define LIST(...)        ya_list("", __VA_ARGS__, END)
+#define EMPTYLIST        ya_list("", END)
 
-/** Define an empty list.
- */
-#define EMPTYLIST                       ya_list(END, END, END)
-
-/** Create an empty node.
- * It denotes an empty node.
+/** Create an end node.
+ * This is a sentinal which should be passed as the last parameter of
+ * ya_node() or ya_list()
  */
 extern ya_t YA_NODE_END;
 
-/** Create an end node.
- * This is a sentinal which should be passed as the lya parameter of
- * ya_node() or ya_list()
+/** Create a pass node.
+ * A pass node is used for empty entries in an ordered node child list.
  */
-extern ya_t YA_NODE_PASS;
-
+ya_t ya_pass();
 
 /** Create an ya node.
  * Create a node from subnodes.
  * This also free memory used by the subnodes.
  *
- * @param start Start token, for position calculation.
- * @param end   End token, for position calculation.
  * @param type  fourcc code for the ya node
  *              When type is 0 the header is not preserved when used as subnode.
  * @param ...   The subnodes, ending with NULL
  * @returns     A new AST NODE.
  */
-ya_t ya_node(ya_t *start, ya_t *end, fourcc_t type, ...);
+ya_t ya_node(const char * restrict name, ...);
 
 /** Create an ya node.
  * Create a list of subnodes, when included in a list or node, it expands as if the contents
  * was passed as seperate items.
  * This also free memory used by the subnodes.
  *
- * @param start Start token, for position calculation.
- * @param end   End token, for position calculation.
+ * @param type  fourcc code for the ya node
  * @param ...   The subnodes, ending with NULL
  * @returns     A new AST NODE.
  */
-ya_t ya_list(ya_t *start, ya_t *end, ...);
+ya_t ya_list(const char * restrict name, ...);
 
 /** Save the node to a file.
  *

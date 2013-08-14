@@ -28,24 +28,29 @@
 #include <yyast/utils.h>
 #include <yyast/error.h>
 
-ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size)
+ya_t ya_literal(const char * restrict name, ya_type_t type, const void * restrict buf, size_t buf_size)
 {
+    size_t aligned_buf_size = ya_align64(buf_size);
+
     ya_t r = {
         .type = type,
-        .size = ya_align64(buf_size + sizeof (ya_node_t)),  // The outer size is the allocated size.
-        .start = ya_previous_position,
-        .end = ya_current_position
+        .size = sizeof (ya_node_t) + aligned_buf_size,  // The outer size is the allocated size.
+        .position = ya_previous_position,
     };
 
     // Allocate memory aligned to 32 bit. We need to use calloc so that we don't accidently
     // leak information into the output file.
     r.node = calloc(1, r.size);
-    r.node->length         = htonl(buf_size + sizeof (ya_node_t));  // The inner length is the length of header+data.
-    r.node->type           = htonl(r.type);
-    r.node->position       = htonll(short_position(r.start, r.end));
+    r.node->name             = htonll(ya_create_name(name));
+    r.node->size             = htonll(sizeof (ya_node_t) + aligned_buf_size);  // The inner length is the length of header+data.
+    r.node->type             = r.type;
+    r.node->position.file    = htonl(r.position.file);
+    r.node->position.line    = htonl(r.position.line);
+    r.node->position.column  = htonl(r.position.column);
+
     memcpy(r.node->data, buf, buf_size);
     // Set padding bytes to zero, so as not to leak data. For security purposes.
-    memset(&r.node->data[buf_size], 0, ya_align64(buf_size) - buf_size);
+    memset(&r.node->data[buf_size], 0, aligned_buf_size - buf_size);
     return r;
 }
 
@@ -56,7 +61,7 @@ typedef union {
     int64_t     i;
 } translate_t;
 
-ya_t ya_real(char *buf, size_t buf_size)
+ya_t ya_binary_float(const char * restrict name, const char * restrict buf, size_t buf_size, int base, int nr_bits)
 {
     translate_t t;
     char        *endptr;
@@ -75,91 +80,71 @@ ya_t ya_real(char *buf, size_t buf_size)
     }
 
     t.u = htonll(t.u);
-    return ya_literal(FCC_F64, &t.u, sizeof (t.u));
+    return ya_literal(name, YA_NODE_TYPE_BINARY_FLOAT, &t.u, sizeof (t.u));
 }
 
-ya_t ya_int(char *buf, size_t buf_size)
+ya_t ya_integer(const char * restrict name, ya_type_t type, const char * restrict buf, size_t buf_size, int base)
 {
-    int         i = 0;
-    int         negative = 0;
-    int         base = 10;
-    char        *endptr;
-    translate_t t;
+    int                 i = 0;
+    char                c;
+    uint128_t           value;
+    uint128_t           value128;
+    uint64_t            value64;
+    int                 digit;
 
-    switch (buf[i]) {
-    case '-': i++; negative = 1; break;
-    case '+': i++; negative = 0; break;
-    }
+    value = 0;
+    for (i = 0; i < buf_size; i++) {
+        c = buf[i];
 
-    if (buf[i] == '0') {
-        switch (buf[i + 1]) {
-        case 'x': case 'X': i+= 2; base = 16; break;
-        case 'd': case 'D': i+= 2; base = 10; break;
-        case 'o': case 'O': i+= 2; base =  8; break;
-        case 'b': case 'B': i+= 2; base =  2; break;
+        if (base == 32) {
+            // RFC 4648, Base-32
+            if      (c >= 'a' && c <= 'z')  { digit = c - 'a';      }
+            else if (c >= 'A' && c <= 'Z')  { digit = c - 'A';      }
+            else if (c >= '2' && c <= '7')  { digit = c - '2' + 26; }
+            else                            { digit = base;         }
+
+        } else if (base >= 37 && base <= 64) {
+            // RFC 4648, Base-64
+            if      (c >= 'A' && c <= 'Z')  { digit = c - 'A';      }
+            else if (c >= 'a' && c <= 'z')  { digit = c - 'a' + 26; }
+            else if (c >= '0' && c <= '9')  { digit = c - '0' + 52; }
+            else if (c == '+'            )  { digit = 62;           }
+            else if (c == '/'            )  { digit = 63;           }
+            else                            { digit = base;         }
+
+        } else if (base >= 0 && base <= 36) {
+            // RFC 4648, Base-16
+            if      (c >= '0' && c <= '9')  { digit = c - '0';      }
+            else if (c >= 'A' && c <= 'Z')  { digit = c - 'A' + 10; }
+            else if (c >= 'a' && c <= 'z')  { digit = c - 'a' + 10; }
+            else                            { digit = base;         }
+
+        } else {
+            fprintf(stderr, "ya_integer does not implement a base above 64.\n");
+            abort();
+        }
+
+        if (digit < base) {
+            // Only characters inside the alphabet are processed, all other characters are ignored.
+            value *= base;
+            if (value + digit < value) {
+                ya_error("Overflow of integer literal");
+            }
+            value += digit;
         }
     }
 
-    t.u = strtoull(&buf[i], &endptr, base);
-    if (&buf[i] == endptr) {
-        ya_error("Could not convert int value '%s'", buf);
+    if (value <= UINT64_MAX) {
+        value64 = htonll(value);
+        return ya_literal(name, type, &value64, sizeof(value64));
+    } else {
+        value128 = htonlll(value);
+        return ya_literal(name, type, &value128, sizeof(value128));
     }
-    if (t.u == ULLONG_MAX && errno == ERANGE) {
-        ya_error("Could not convert int value '%s', overflow", buf);
-    }
-
-    if (negative) {
-        if (t.u > INT64_MAX) {
-            ya_error("Could not convert int value '%s', overflow", buf);
-        }
-        t.i = -t.u;
-    }
-
-    t.u = htonll(t.u);
-    return ya_literal(negative ? FCC_I64 : FCC_U64, &t.u, sizeof (t.u));
 }
 
-static ya_t ya_generic_string(char *buf, size_t buf_size, fourcc_t type, int raw)
+ya_t ya_text(const char * restrict name, const char * restrict buf, size_t buf_size)
 {
-    ya_t            r;
-    uint8_t         *string = (uint8_t *)strndup(buf, buf_size);
-    size_t          string_size = strlen((char *)string);
-    unsigned int    i;
-
-    string_size = ya_string_escape(string, string_size, raw);
-    r = ya_literal(type, string, string_size);
-
-    free(string);
-    return r;
-}
-
-ya_t ya_string(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_STR, 0);
-}
-
-ya_t ya_raw_string(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_STR, 1);
-}
-
-ya_t ya_regex(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_RE, 2);
-}
-
-ya_t ya_name(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_ID, 1);
-}
-
-ya_t ya_assembly(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_ASM, 1);
-}
-
-ya_t ya_comment(char *buf, size_t buf_size)
-{
-    return ya_generic_string(buf, buf_size, FCC_DOC, 1);
+    return ya_literal(name, YA_NODE_TYPE_TEXT, buf, buf_size);
 }
 

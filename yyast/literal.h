@@ -18,97 +18,52 @@
 #include <yyast/types.h>
 #include <yyast/utils.h>
 
-#define FCC_F64 fourcc('#','f','6','4')
-#define FCC_I64 fourcc('#','i','6','4')
-#define FCC_U64 fourcc('#','u','6','4')
-#define FCC_STR fourcc('#','s','t','r')
-#define FCC_RE fourcc('#','r','e',' ')
-#define FCC_ID fourcc('#','i','d',' ')
-#define FCC_ASM fourcc('#','a','s','m')
-#define FCC_DOC fourcc('#','d','o','c')
+#define YA_INTEGER_POSITIVE 0
+#define YA_INTEGER_NEGATIVE 1
 
-/** Create an literal.
+/** Create an literal node.
  *
- * @param type      fourcc code for the ya leaf
+ * @param name      name of the node.
+ * @param type      type of leaf node.
  * @param buf       The memory which needs to be copied.
  * @param buf_size  The amount of memory to be copied.
  */
-ya_t ya_literal(fourcc_t type, void *buf, size_t buf_size);
+ya_t ya_literal(const char * restrict name, ya_type_t type, const void * restrict buf, size_t buf_size);
 
-/** Create literal for a floating point literal.
- * The literal is of type '\#f64', and contains the decoded number as a 64 bit floating point.
+/** Create literal node from floating point literal string.
  *
+ * @param name      name of the node.
+ * @param buf       Literal as string.
+ * @param buf_size  String size.
+ * @param base            
+ * @param nr_bits   Nr of bits in the floating point format, only 64 bits is supported.
+ * @returns         The decoded literal node.
+ */
+ya_t ya_binary_float(const char * restrict name, const char * restrict buf, size_t buf_size, int base, int nr_bits);
+
+/** Create literal from an integer literal string.
+ * The RFC 4648 is used as a guide for encoding integers.
+ *
+ * - Base  0,                has no alphabet, it always yields zero.
+ * - Base  1-31 and 33-36,   These bases are encoded following an extended Base-16
+ * - Base 32,                Base-32 is encoding
+ * - Base 37-64              These bases are encoded following Base-64
+ *
+ * @param name      name of the node.
+ * @param buf       Literal as string.
+ * @param buf_size  String size.
+ * @param base      The base of the literal. 0-64
+ * @returns         The decoded literal.
+ */
+ya_t ya_integer(const char * restrict name, ya_type_t type, const char * restrict buf, size_t buf_size, int base);
+
+/** Create text literal node for a string literal.
+ *
+ * @param name      name of the node.
  * @param buf       Literal as string.
  * @param buf_size  String size.
  * @returns         The decoded literal.
  */
-ya_t ya_real(char *buf, size_t buf_size);
-
-/** Create literal for an integer literal.
- * The literal is of type '\#i64' or '\#u64', and contains the decoded number as a 64 bit integer,
- * or 64 bit unsigned integer.
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_int(char *buf, size_t buf_size);
-
-/** Create literal for a string literal.
- * The literal is of type '\#str', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \\n, \\r, \\t, \\x??, \\u????, \\U????????, \\\\, \\", \\/
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_string(char *buf, size_t buf_size);
-
-/** Create literal for a raw string literal.
- * The literal is of type '\#str', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \\"
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_raw_string(char *buf, size_t buf_size);
-
-/** Create literal for a regex literal.
- * The literal is of type '\#re ', and contains a unescaped string encoded as UCS-4.
- * Escape sequences which are recognized are: \\/
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_regex(char *buf, size_t buf_size);
-
-/** Create literal for a name.
- * The literal is of type '\#id ', and contains a string encoded as UCS-4.
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_name(char *buf, size_t buf_size);
-
-/** Create literal for assembly.
- * The literal is of type '\#asm', and contains a string encoded as UCS-4.
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_assembly(char *buf, size_t buf_size);
-
-/** Create literal for comments.
- * The literal is of type '\#doc', and contains a string encoded as UCS-4.
- *
- * @param buf       Literal as string.
- * @param buf_size  String size.
- * @returns         The decoded literal.
- */
-ya_t ya_comment(char *buf, size_t buf_size);
+ya_t ya_text(const char * restrict name, const char * restrict buf, size_t buf_size);
 
 #endif
