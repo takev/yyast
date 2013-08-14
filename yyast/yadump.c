@@ -36,13 +36,17 @@ void indent(unsigned int level)
     }
 }
 
-void print_fourcc(fourcc_t type)
+void print_name(ya_name_t name)
 {
-    fprintf(stdout, "%c%c%c%c",
-        (type >> 24) & 0xff,
-        (type >> 16) & 0xff,
-        (type >>  8) & 0xff,
-        (type      ) & 0xff
+    fprintf(stdout, "'%c%c%c%c%c%c%c%c'",
+        (char)(name >> 56) & 0xff,
+        (char)(name >> 48) & 0xff,
+        (char)(name >> 40) & 0xff,
+        (char)(name >> 32) & 0xff,
+        (char)(name >> 24) & 0xff,
+        (char)(name >> 16) & 0xff,
+        (char)(name >>  8) & 0xff,
+        (char)(name      ) & 0xff
     );
 }
 
@@ -54,9 +58,10 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
     }
 
     ya_node_t           *node = (ya_node_t *)buf;
-    fourcc_t            type = ntohl(node->type);
-    ya_short_position_t position = ntohll(node->position);
-    size_t              inner_size = ntohl(node->length) - sizeof (ya_node_t);
+    ya_name_t           name = ntohll(node->name);
+    ya_type_t           type = node->type;
+    ya_position_t       position = {.file = ntohl(node->position.file), .line = ntohl(node->position.line), .column = ntohl(node->position.column)};
+    size_t              inner_size = ntohll(node->size) - sizeof (ya_node_t);
     off_t               inner_offset = 0;
     type64_t            t64;
     char                *s;
@@ -70,80 +75,65 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         exit(1);
     }
 
-    if (position == 0xffffffffffffffff) {
-        fprintf(stdout, "                  ");
+    fprintf(stdout, "%2lu:%4lu:%3lu", (long)position.file, (long)position.line, (long)position.column);
 
-    } else if (position < 0x8000000000000000) {
-        fprintf(stdout, "%4llu:%3llu -%4llu:%3llu",
-            ((position >> 24) & 0xffffL) + 1,
-            ((position >> 16) & 0xffULL) + 1,
-            ((position >> 24) & 0xffffL) + ((position >> 8) & 0xffUL) + 1,
-            ((position      ) & 0xffULL) + 1
-        );
-
-    } else {
-        fprintf(stdout, "%4llu:%3llu          ",
-            ((position >> 8) & 0xffffffULL) + 1,
-            ((position     ) & 0xffULL) + 1
-        );
-    }
-
-    fprintf(stdout, " (%4llu)", (unsigned long long)inner_size);
+    fprintf(stdout, " (%6llu)", (unsigned long long)inner_size);
 
     indent(level);
     fprintf(stdout, " ");
-    print_fourcc(type);
+    print_name(name);
 
-    if ((type >> 24) == '#') {
-        // This is a literal, decode the ones we know, show bytes of the ones we don't.
-        switch (type) {
-        case fourcc('#','i','6','4'):
+    switch (type) {
+    case YA_NODE_TYPE_POSITIVE_INTEGER:
+        if (inner_size == sizeof (t64)) {
             memcpy(t64.c, node->data, sizeof (t64));
             t64.u = ntohll(t64.u);
-            fprintf(stdout, " %lli\n", t64.i);
-            break;
-        case fourcc('#','u','6','4'):
+            fprintf(stdout, " +%lli\n", t64.i);
+        } else {
+            fprintf(stdout, " +i%i\n", (int)inner_size);
+        }
+        break;
+    case YA_NODE_TYPE_NEGATIVE_INTEGER:
+        if (inner_size == sizeof (t64)) {
             memcpy(t64.c, node->data, sizeof (t64));
             t64.u = ntohll(t64.u);
-            fprintf(stdout, " %llu\n", t64.u);
-            break;
-        case fourcc('#','f','6','4'):
+            fprintf(stdout, " -%llu\n", t64.u);
+        } else {
+            fprintf(stdout, " -i%i\n", (int)inner_size);
+        }
+        break;
+    case YA_NODE_TYPE_BINARY_FLOAT:
+        if (inner_size == sizeof (t64)) {
             memcpy(t64.c, node->data, sizeof (t64));
             t64.u = ntohll(t64.u);
             fprintf(stdout, " %lf\n", t64.d);
-            break;
-        case fourcc('#','s','t','r'):
-        case fourcc('#','r','e',' '):
-        case fourcc('#','i','d',' '):
-        case fourcc('#','a','s','m'):
-        case fourcc('#','d','o','c'):
-            s = strndup(node->data, inner_size);
-            fprintf(stdout, " '%s'\n", s);
-            free(s);
-            break;
-        default:
-            // print all the bytes.
-            for (; inner_offset < inner_size; inner_offset++) {
-                if ((inner_offset % 32) == 0) {
-                    fprintf(stdout, "\n");
-                    indent(level + 1);
-                    fprintf(stdout, "                         ");
-                }
-                fprintf(stdout, " 0x%02hhx", node->data[inner_offset]);
-            }
-            fprintf(stdout, "\n");
+        } else {
+            fprintf(stdout, " bf%i\n", (int)inner_size);
         }
-    } else {
+        break;
+    case YA_NODE_TYPE_TEXT:
+        s = strndup(node->data, inner_size);
+        fprintf(stdout, " \"%s\"\n", s);
+        free(s);
+        break;
+    case YA_NODE_TYPE_PASS:
+        fprintf(stdout, " pass\n");
+        break;
+    case YA_NODE_TYPE_BRANCH:
         // we continue until a header will not fit in the data anymore.
         fprintf(stdout, "\n");
         while (inner_offset < inner_size) {
             // decode the inner nodes.
             inner_offset+= node_decode(&node->data[inner_offset], inner_size - inner_offset, level + 1);
         }
+        break;
+    default:
+        fprintf(stderr, " *unknown*\n");
+        break;
     }
 
     // Return the actual size occupied.
-    return ya_align64(ntohl(node->length));
+    return ya_align64(ntohll(node->size));
 }
 
 int main(int argc, char *argv[])

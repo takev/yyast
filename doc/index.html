@@ -30,29 +30,28 @@ accessed with unaligned reads without causing bus faults on some CPU architectur
 </p>
 
 <h2>File format</h2>
-<p>This is a description of version 2 of the file format. Version 1 was not documented.
+<p>The file starts with a special node called 'yyast 13'. It has two child nodes, the
+first is the special '@header' node, the second node is the top level node of the
+parsed file.
 </p>
+
+<h3>File Header</h3>
+<table>
+<tr><th>name</th><th>parent</th><th>description</th></tr>
+<tr><td>yyast 13</td><td></td><td>File level node.</td></tr>
+<tr><td>@header</td><td>yyast 13</td><td>Header node.</td></tr>
+<tr><td>@files</td><td>@header</td><td>A list of source files. Those files names in line control commands.</td></tr>
+<tr><td>@file</td><td>@files</td><td>A text leaf node, containing the filename of a source file.</td></tr>
+</table>
+
+<h3>Node Header</h3>
 <p>All Nodes are aligned to 64 bit boundary. All fields in the header are packed. All integer
 fields are in big endian.
 </p>
 
-<h3>File Header</h3>
-
-<table>
-<tr><th>type</th>      <th>description</th></tr>
-<tr><td>EightCC</td>   <td>Magic for this file format. 'yyast 02'</td></tr>
-<tr><td>EightCC</td>   <td>Magic for the parsed language.</td></tr>
-<tr><td>uint32_t</td>  <td>Nr of parsed file names.</td></tr>
-<tr><td>UTF-8[]</td>   <td>parsed file names.</td></tr>
-<tr><td>uint8_t[]</td> <td>optional padding to align the next field to a 64 bit boundary</td></tr>
-<tr><td>Node</td>      <td>AST of parsed document.</td></tr>
-</table>
-
-<h3>Node Header</h3>
-
 <table>
 <tr><th>type</th>     <th>description</th></tr>
-<tr><td>EightCC</td>  <td>Magic for this node. 64 bit aligned</td></tr>
+<tr><td>EightCC</td>  <td>Name of this node.</td></tr>
 <tr><td>uint64_t</td> <td>Data size.</td></tr>
 <tr><td>uint32_t</td> <td>Line number. The top most line is 1.</td></tr>
 <tr><td>uint32_t</td> <td>Column number. The left most column is zero</td></tr>
@@ -63,35 +62,25 @@ fields are in big endian.
 <tr><td></td>         <td>Data. 64 bit aligned</td></tr>
 </table>
 
-<h3>Node type 0: branch node</h3>
-<p>A branch node contains as its data, a ordered list of child nodes.
-</p>
+<h3>Node Types</h3>
 
-<h3>Node type 1: empty leaf node</h3>
-<p>A leaf node containing no data.
-</p>
+<table>
+<tr><th>Name</th><th>Value</th><th>Description</th></tr>
+<tr><td>NODE_TYPE_PASS</td><td>0</td><td>A unused positional parameter, as a child node.</td></tr>
+<tr><td>NODE_TYPE_EMPTY</td><td>0</td><td>A node without data or children.</td></tr>
+<tr><td>NODE_TYPE_BRANCH</td><td>0</td><td>A node with children.</td></tr>
+<tr><td>NODE_TYPE_TEXT</td><td>0</td><td>A node with a null terminated UTF-8 text string, with null padding for 64 bit alignment.</td></tr>
+<tr><td>NODE_TYPE_POSITIVE_INTEGER</td><td></td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 butes.</td></tr>
+<tr><td>NODE_TYPE_NEGATIVE_INTEGER</td><td></td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 butes. The integer has an implicit negative sign.</td></tr>
+<tr><td>NODE_TYPE_BINARY_FLOAT</td><td></td><td>A 'big-endian' IEEE 754 floating point number in "binary 64" or "binary 128" format.</td></tr>
+<tr><td>NODE_TYPE_DECIMAL_FLOAT</td><td></td><td>A 'big-endian' IEEE 754 floating point number in "decimal 64" or "decimal 128" format.</td></tr>
+</table>
 
-<h3>Node type 2: text</h3>
-<p>A text node contains a null terminated UTF-8 string. The string may need to be padded with additional null
-bytes to yield data that is a multiple of 8 bytes in size. The data size will include the additional padding.
-</p>
+<h2>API</h2>
 
-<h3>Node type 3: positive integer</h3>
-<p>An unsigned integer represented in big endian format. The size of the integer is a multiple of 8 bytes.
-</p>
+<h3>Node</h3>
 
-<h3>Node type 4: negative integer</h3>
-<p>An unsigned integer represented in big endian format. The size of the integer is a multiple of 8 bytes.
-The integer has an implicit negative sign.
-</p>
-
-<h3>Node type 5: IEEE 754 binary floating point</h3>
-<p>The real number is represented in binary64 or binary128 format, in big endian format (sign/exponent first, mantissa last).
-</p>
-
-<h3>Node type 6: IEEE 754 decimal floating point</h3>
-<p>The real number is represented in decimal64 or decimal128 format, in big endian format (sign/exponent first, mantissa last).
-</p>
+<h3>List of Nodes</h3>
 
 </body>
 </html>
