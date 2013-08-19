@@ -29,16 +29,9 @@
 #include <yyast/count.h>
 
 ya_t YA_NODE_DEFAULT = {
-    .type  = YA_NODE_TYPE_END,
+    .type  = YA_NODE_TYPE_NULL,
     .position = {.line = UINT32_MAX, .column = UINT32_MAX, .file = UINT32_MAX},
     .size  = sizeof (ya_node_t),
-    .node  = NULL
-};
-
-ya_t YA_NODE_END = {
-    .type  = YA_NODE_TYPE_END,
-    .position = {.line = UINT32_MAX, .column = UINT32_MAX, .file = UINT32_MAX},
-    .size  = 0,
     .node  = NULL
 };
 
@@ -54,7 +47,7 @@ ya_t ya_generic_nodev(const char * restrict name, ya_type_t type, va_list ap)
 
     // Calculate the size and position of the content.
     self.type = type;
-    for (item = va_arg(ap, ya_t *); item->type != YA_NODE_TYPE_END; item = va_arg(ap, ya_t *)) {
+    for (item = va_arg(ap, ya_t *); item != NULL; item = va_arg(ap, ya_t *)) {
         if (self.position.file == UINT32_MAX && item->position.file != UINT32_MAX) {
             // The first node which has a file (not UINT32_MAX) is used for where self is located.
             self.position.file   = item->position.file;
@@ -98,7 +91,7 @@ ya_t ya_generic_nodev(const char * restrict name, ya_type_t type, va_list ap)
     self.node->position.column   = htonl(self.position.column);
 
     // Add the content of the items to the new list.
-    for (item = va_arg(ap2, ya_t *); item->type != YA_NODE_TYPE_END; item = va_arg(ap2, ya_t *)) {
+    for (item = va_arg(ap2, ya_t *); item != NULL; item = va_arg(ap2, ya_t *)) {
         switch (item->type) {
         case YA_NODE_TYPE_COUNT:
             fprintf(stderr, "Found YA_NODE_TYPE_COUNT token, which is only allowed for line counting\n");
@@ -144,12 +137,7 @@ ya_t ya_generic_node(const char * restrict name, ya_type_t type, ...)
     return r;
 }
 
-ya_t ya_pass()
-{
-    return ya_generic_node("pass", YA_NODE_TYPE_PASS, END);
-}
-
-ya_t ya_node(const char * restrict name, ...)
+ya_t ya_branch(const char * restrict name, ...)
 {
     ya_t   r;
     va_list ap;

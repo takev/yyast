@@ -75,9 +75,13 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         exit(1);
     }
 
-    fprintf(stdout, "%2lu:%4lu:%3lu", (long)position.file, (long)position.line, (long)position.column);
+    if (position.file != UINT32_MAX) {
+        fprintf(stdout, "%2lu:%4lu:%3lu", (long)position.file, (long)position.line, (long)position.column);
+    } else {
+        fprintf(stdout, "           ");
+    }
 
-    fprintf(stdout, " (%6llu)", (unsigned long long)inner_size);
+    fprintf(stdout, " (%8llu)", (unsigned long long)inner_size);
 
     indent(level);
     fprintf(stdout, " ");
@@ -116,7 +120,7 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         fprintf(stdout, " \"%s\"\n", s);
         free(s);
         break;
-    case YA_NODE_TYPE_PASS:
+    case YA_NODE_TYPE_NULL:
         fprintf(stdout, " pass\n");
         break;
     case YA_NODE_TYPE_BRANCH:

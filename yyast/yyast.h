@@ -18,8 +18,9 @@
 #include <yyast/types.h>
 #include <yyast/utils.h>
 #include <yyast/count.h>
-#include <yyast/literal.h>
 #include <yyast/node.h>
+#include <yyast/leaf.h>
+#include <yyast/header.h>
 #include <yyast/error.h>
 #include <yyast/main.h>
 

@@ -15,6 +15,7 @@
 
 #include <sys/types.h>
 #include <yyast/node.h>
+#include <yyast/leaf.h>
 #include <yyast/count.h>
 #include <yyast/utils.h>
 
@@ -97,11 +98,12 @@ void ya_reposition(char *s, size_t s_length)
     ya_previous_position = ya_current_position;
 
     if (s == s_filename) {
-        fprintf(stderr, "ya_reposition unexpected characters.");
+        fprintf(stderr, "ya_reposition unexpected characters.\n");
         abort();
     }
 
-    ya_current_position.line = line - 2; // 1 because of zero index, 2 because of line feed after reposition command.
+    ya_current_position.column = 0;
+    ya_current_position.line = line - 1; // 1 because of zero index, 2 because of line feed after reposition command.
 
     if (*s_filename == ' ') {
         // This will contain a filename. Skip of the space and the quote. Strip the trailing quote.
@@ -109,5 +111,33 @@ void ya_reposition(char *s, size_t s_length)
 
         ya_current_position.file = ya_get_file_nr(filename);
     }
+}
+
+ya_t ya_get_filenames(void)
+{
+    ya_t    filename;
+    ya_t    filename_list = YA_EMPTYLIST;
+    ya_t    filenames;
+    int     i;
+
+    for (i = 0; i < ya_nr_filenames; i++) {
+        filename = ya_text("#file", ya_filenames[i], strlen(ya_filenames[i]));
+        ya_clear_position(&filename);
+        filename_list = YA_LIST(&filename_list, &filename);
+    }
+
+    filenames = YA_BRANCH("#files", &filename_list);
+    ya_clear_position(&filenames);
+    return filenames;
+}
+
+void ya_clear_position(ya_t *node)
+{
+    node->position.column = UINT32_MAX;
+    node->position.line = UINT32_MAX;
+    node->position.file = UINT32_MAX;
+    node->node->position.column = UINT32_MAX;
+    node->node->position.line = UINT32_MAX;
+    node->node->position.file = UINT32_MAX;
 }
 

@@ -1,86 +1,326 @@
 <?xml version="1.0" encoding="utf-8"?>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-<title>YYAST</title>
+<title>YYAST - Manual</title>
 <link rel="stylesheet" type="text/css" href="style/base.css"/>
 </head>
 <body>
-<h1>YYAST - Documentation</h1>
+<h1>YYAST - Manual</h1>
 <p class="author">by Take Vos (2013)</p>
-<p>YYAST is a library which completes lex and yacc by adding an abstract syntax tree (AST) generator.
+<p>YYAST is a library which completes Lex and Yacc by adding an Abstract Syntax Tree (AST) generator.
 The saved AST is designed to be easily parsed by compilers.
 </p>
+<p><i>You can find the <a href="../doxygen-doc/html/index.html">doxygen reference documentation here</a>.</i>
+</p>
 
-<h2>Reason for change</h2>
-<p>In the first version of yyast the file format was not formalized and it was more to see if the
-design would work. During the work on tumomo it has proved itself. However I missed the line control
-mechanism available in C/C++ for tracking line in sources of generated code.
+<h2>Description</h2>
+<p>I really like writing parsers using Lex and Yacc, but found that I had to create and AST for each
+language I was developing. Therefor I created this library which you can use directly inside the lex
+and yacc files. It was designed so you write as little as code as possible in these files, so it
+does not distract from the grammar of the language.
 </p>
-<p>Adding the filename to each node would needlessly increase the footprint of the resulting file.
-Therefor a list of filenames is added to the file header and each node has an index into this list.
+<p>The second problem I tried to solve; is that I would like to use high level programming
+languages for writing compilers. However integrating Lex and Yacc with for example Python is
+problematic. The parser created with this library will create files which are very easy to
+write a parser for in most languages.
 </p>
-<p>Line numbers and column numbers are 32 bit, which is also the maximum size in LLVM. Line numbers
-and columns start at 1. 0 is used to denote an unknown line or column.
-</p>
-<p>The original file format used FourCC for the name of each node, EightCC will give a little bit more
-room without complicating the format with variable sized strings.
-</p>
-<p>The file format is carefully aligned so that when the file is mapped into memory it can be directly
-accessed with unaligned reads without causing bus faults on some CPU architectures.
-</p>
+
+<h2>Features</h2>
+<ul>
+ <li>Easy to parse AST, fixed size node metadata and aligned to 64 bit.</li>
+ <li>ya_main() includes loading, saving and command line parsing.</li>
+ <li>Tracking of line and column for displaying accurate compiler errors.</li>
+ <li>Line control allows a compiler to track original source with generated code.</li>
+ <li>Literal parsing for text, integers and floating point numbers.</li>
+ <li>Easy assembly of lists and branch nodes.</li>
+</ul>
 
 <h2>File format</h2>
-<p>The file starts with a special node called 'yyast 13'. It has two child nodes, the
-first is the special '@header' node, the second node is the top level node of the
-parsed file.
+<p>A file consists of a single Abstract Syntax Tree, described by nested nodes. All nodes are structured in
+the same way to facilitate easy parsing.
 </p>
 
-<h3>File Header</h3>
-<table>
-<tr><th>name</th><th>parent</th><th>description</th></tr>
-<tr><td>yyast 13</td><td></td><td>File level node.</td></tr>
-<tr><td>@header</td><td>yyast 13</td><td>Header node.</td></tr>
-<tr><td>@files</td><td>@header</td><td>A list of source files. Those files names in line control commands.</td></tr>
-<tr><td>@file</td><td>@files</td><td>A text leaf node, containing the filename of a source file.</td></tr>
-</table>
+<p>The root node acts like the header of the file, child nodes of the root contain the metadata of the file.
+The last child node of the root is the AST of the parsed file.
+</p>
 
-<h3>Node Header</h3>
-<p>All Nodes are aligned to 64 bit boundary. All fields in the header are packed. All integer
-fields are in big endian.
+<h3>Node</h3>
+<p>Every node in the file has the same structure. All Nodes are aligned to 64 bit boundary to ease parsing
+of the file when it is read in memory, some processors disallow reads from unaligned fields.
+All integer fields are in big endian, big endian is defacto standard for storage and transmission of information.
+The following table shows the header of every node.
 </p>
 
 <table>
 <tr><th>type</th>     <th>description</th></tr>
-<tr><td>EightCC</td>  <td>Name of this node.</td></tr>
-<tr><td>uint64_t</td> <td>Data size.</td></tr>
-<tr><td>uint32_t</td> <td>Line number. The top most line is 1.</td></tr>
+<tr><td>EightCC</td>  <td>Node name.</td></tr>
+<tr><td>uint64_t</td> <td>Node Size.</td></tr>
+<tr><td>uint32_t</td> <td>Line number. The top most line is zero.</td></tr>
 <tr><td>uint32_t</td> <td>Column number. The left most column is zero</td></tr>
 <tr><td>uint32_t</td> <td>File number. The first file (the main file) is zero.</td></tr>
 <tr><td>uint16_t</td> <td>Reserved, must be zero.</td></tr>
 <tr><td>uint8_t</td>  <td>Reserved, must be zero.</td></tr>
 <tr><td>uint8_t</td>  <td>Node type.</td></tr>
-<tr><td></td>         <td>Data. 64 bit aligned</td></tr>
 </table>
 
-<h3>Node Types</h3>
+<h3>Name</h3>
+<p>Every node has a user defined name of 8 characters. Names that have less characters are padded with
+white spaces. A name which starts with an at '@' character are reserved by the yyast library for use
+as metadata in the header.
+</p>
+
+<p>The following table shows the currently reserved named.
+</p>
+<table>
+<tr><th>name</th><th>parent</th><th>type</th><th>description</th></tr>
+<tr><td>@ya 2013</td><td></td><td>branch</td><td>Root node.</td></tr>
+<tr><td>@files</td><td>@ya 2013</td><td>branch</td><td>A list of original source files.</td></tr>
+<tr><td>@file</td><td>@files</td><td>text</td><td>Filename of an original source file.</td></tr>
+<tr><td>@null</td><td></td><td>null</td><td>A leaf node which implying that the optional child
+is not in use.</td></tr>
+</table>
+
+<h3>Node Size</h3>
+<p>The size in bytes of the complete node; header + data. The data must be in multiple of 64 bits.
+</p>
+
+<h3>Position: line, column, file number</h3>
+<p>The position in the parsed file where the node was found. The first character in the file will
+have line zero, column zero. The first file (zero) is the main source file. The line and column
+numbers are 32 bit, this is the same size as LLVM line and column tracking.
+</p>
+<p>Using line control it is possible for generated code to reference the original source code. The
+filenames of these original sources are located in the header.
+</p>
+<p>If part of the location is unknown or out of bounds, then these fields will be set to 0xffffffff.
+</p>
+
+<h3>Node type</h3>
+<p>The node type describes how the data of a node is structured.
+</p>
 
 <table>
 <tr><th>Name</th><th>Value</th><th>Description</th></tr>
-<tr><td>NODE_TYPE_PASS</td><td>0</td><td>A unused positional parameter, as a child node.</td></tr>
-<tr><td>NODE_TYPE_EMPTY</td><td>0</td><td>A node without data or children.</td></tr>
-<tr><td>NODE_TYPE_BRANCH</td><td>0</td><td>A node with children.</td></tr>
-<tr><td>NODE_TYPE_TEXT</td><td>0</td><td>A node with a null terminated UTF-8 text string, with null padding for 64 bit alignment.</td></tr>
-<tr><td>NODE_TYPE_POSITIVE_INTEGER</td><td></td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 butes.</td></tr>
-<tr><td>NODE_TYPE_NEGATIVE_INTEGER</td><td></td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 butes. The integer has an implicit negative sign.</td></tr>
-<tr><td>NODE_TYPE_BINARY_FLOAT</td><td></td><td>A 'big-endian' IEEE 754 floating point number in "binary 64" or "binary 128" format.</td></tr>
-<tr><td>NODE_TYPE_DECIMAL_FLOAT</td><td></td><td>A 'big-endian' IEEE 754 floating point number in "decimal 64" or "decimal 128" format.</td></tr>
+<tr><td>null</td><td>0</td><td>A unused positional parameter, as a child node. Its name is '@null'.</td></tr>
+<tr><td>leaf</td><td>1</td><td>A node without data or children.</td></tr>
+<tr><td>branch</td><td>2</td><td>A node with children. All children are concatenated into the data of this node.</td></tr>
+<tr><td>text</td><td>3</td><td>A node with a null terminated UTF-8 text string, with null padding for 64 bit alignment.</td></tr>
+<tr><td>positive integer</td><td>4</td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 bytes.</td></tr>
+<tr><td>negative integer</td><td>5</td><td>An unsigned integer in big endian format. The size of the integer is a multiple of 8 bytes. The integer has an implicit negative sign.</td></tr>
+<tr><td>binary float</td><td>6</td><td>A 'big-endian' IEEE 754 floating point number in "binary64" or "binary128" format.</td></tr>
+<tr><td>decimal float</td><td>7</td><td>A 'big-endian' IEEE 754 floating point number in "decimal64" or "decimal128" format.</td></tr>
+<tr><td>list</td><td>254</td><td>A temporary list node. This node is never written to file. Its name is '@list'.</td></tr>
+<tr><td>count</td><td>255</td><td>A temporary line count node. This node is never written to file. Its name is '@count'.</td></tr>
 </table>
 
+<h3>Reserved</h3>
+<p>These fields are unused for now and must contain zeros for forward compatibility reasons.
+</p>
+
 <h2>API</h2>
+<p>This is a short introduction to the YYAST API, you can find more detailed information in the
+<a href="../doxygen-doc/html/index.html">doxygen generated reference</a>.
+<h3>Include file</h3>
+<p>The function prototypes and macros to be used within lex and yacc are located in the yyast/yyast.h header file.
+This file should be included in both the lex and yacc grammar files.
+</p>
+<p>For flex:
+</p>
+<pre>
+%{
+#include &lt;yyast/yyast.h&gt;
+%}
+%option noyywrap
+%%
+</pre>
 
-<h3>Node</h3>
+<p>For bison:
+</p>
+<pre>
+%{
+#include &lt;yyast/yyast.h&gt;
+int yylex();
+void yyerror(const char *message);
+%}
+%defines
+%error-verbose
+%verbose
+%%
+</pre>
 
-<h3>List of Nodes</h3>
+<h3>Main</h3>
+<p>YYAST includes a main function to create a basic parser application which outputs and AST. You can use this
+function by adding the following to the epilogue of the yacc grammar file. The third argument of
+<a href="../doxygen-doc/html/main_8c.html">ya_main</a>() is the extension given to the AST file when the name
+of the AST file is not given on the command line.
+</p>
+<pre>
+%%
+void yyerror(const char *message)
+{
+    <a href="../doxygen-doc/html/error_8c.html">ya_error</a>(message);
+}
+
+int main(int argc, char *argv[])
+{
+    return <a href="../doxygen-doc/html/main_8c.html">ya_main</a>(argc, argv, "tap");
+}
+</pre>
+
+<h3>Literals</h3>
+<h4>Literals In Lex</h4>
+<p>Literals are interpreted by the lexer and passed to parser as a node, through <strong>yylval</strong>. YYAST includes
+a set of literal construction functions to parse common types of literals.
+</p>
+<table>
+<tr><th>function</th><th>description</th></tr>
+<tr><td><a href="../doxygen-doc/html/leaf_8c.html">ya_literal</a>(name, type, buf, buf_len)</td><td>A generic literal function for encoding user defined types..</td></tr>
+<tr><td><a href="../doxygen-doc/html/leaf_8c.html">ya_text</a>(name, str, str_len)</td><td>A text literal, used for strings and identifiers.</td></tr>
+<tr><td><a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>(name, str, str_len, base)</td><td>A positive integer literal.</td></tr>
+<tr><td><a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>(name, str, str_len, base)</td><td>A negative integer literal.</td></tr>
+<tr><td><a href="../doxygen-doc/html/leaf_8c.html">ya_binary_float</a>(name, type, str, str_len, base, size)</td><td>A binary float literal.</td></tr>
+</table>
+
+<p>An example for a set of negative and positive integer literals of different bases.</p>
+<pre>
+{D}+       { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>("int", &amp;yytext[0], yyleng - 0, 10); return T_INT; }
+-{D}+      { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>("int", &amp;yytext[1], yyleng - 1, 10); return T_INT; }
+0[bB]{D}+  { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>("int", &amp;yytext[2], yyleng - 2,  2); return T_INT; }
+-0[bB]{D}+ { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>("int", &amp;yytext[3], yyleng - 3,  2); return T_INT; }
+0[oO]{D}+  { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>("int", &amp;yytext[2], yyleng - 2,  8); return T_INT; }
+-0[oO]{D}+ { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>("int", &amp;yytext[3], yyleng - 3,  8); return T_INT; }
+0[dD]{D}+  { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>("int", &amp;yytext[2], yyleng - 2, 10); return T_INT; }
+-0[dD]{D}+ { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>("int", &amp;yytext[3], yyleng - 3, 10); return T_INT; }
+0[xX]{D}+  { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_positive_integer</a>("int", &amp;yytext[2], yyleng - 2, 16); return T_INT; }
+-0[xX]{D}+ { yylval = <a href="../doxygen-doc/html/leaf_8c.html">ya_negative_integer</a>("int", &amp;yytext[3], yyleng - 3, 16); return T_INT; }
+</pre>
+
+<h4>Literals In Yacc</h4>
+<p>Since literals are already converted to proper nodes in Lex, the literal value can simply be assigned to $$.
+</p>
+
+<pre>
+expr : T_INT      { $$ = $1; }
+     | T_REAL     { $$ = $1; }
+     | T_STRING   { $$ = $1; }
+     ;
+</pre>
+
+<h3>Branches</h3>
+<p>The YA_BRANCH function creates a new node with the childs given as arguments. The number
+of childs given on th argument is variable. The position of the branch is set to the same
+position of a child that appeared most early in the source file.
+</p>
+
+<pre>
+expr : expr '+' expr            { $$ = YA_BRANCH("+", &amp;$1, &amp;$3); }
+     | expr '-' expr            { $$ = YA_BRANCH("-", &amp;$1, &amp;$3); }
+     | expr '?' expr ':' expr   { $$ = YA_BRANCH("?:", &amp;$1, &amp;$3, &amp;$5); }
+     ;
+</pre>
+
+<h4>Optional children.</h4>
+<p>In some cases a child of the branch is optional, which mirrors optional parts in the grammar of
+an expression or a statement. In the following example the for loop has an optional else block.
+You can mark an unused child with YA_NULL.
+</p>
+
+<pre>
+statement
+    : T_FOR expression T_IN expression '{' block_content '}' {
+        $$ = YA_BRANCH("for ", &amp;$2, &amp;$4, &amp;$6, YA_NULL);
+    }
+    | T_FOR expression T_IN expression '{' block_content '}' T_ELSE '{' block_content '}' {
+        $$ = YA_BRANCH("for ", &amp;$2, &amp;$4, &amp;$6, &amp;$10);
+    }
+    ;
+</pre>
+
+<h4>Lists of children.</h4>
+<p>In the previous case we have seen that YA_BRANCH can accept variable children based on the grammar.
+But there are also cases where the number of children to a branch are variable based on the source file.
+</p>
+We use the YA_LIST function to assemble a temporary node. When an YA_LIST node is given as an argument
+to YA_LIST or YA_BRANCH then the children of YA_LIST become direct children of the node.
+For example a list literal is build up by the grammar in small steps.
+The result of this example is a single "list" branch node, with each expression branch node as a direct
+child of this node.
+</p>
+
+<pre>
+list_item       : expr                           { $$ = $1; }
+                ;
+
+list_item_list  : list_item                      { $$ = YA_LIST(&amp;$1); }
+                | list_item_list ',' list_item   { $$ = YA_LIST(&amp;$1, &amp;$3); }
+                ;
+
+list_content    :                                { $$ = YA_EMPTYLIST; }
+                | ','                            { $$ = YA_EMPTYLIST; }
+                | list_item_list                 { $$ = &amp;1; }
+                | list_item_list ','             { $$ = &amp;1; }
+                ;
+
+expr            : '[' list_content ']'           { $$ = YA_BRANCH("list", &amp;$2); }
+                ;
+
+</pre>
+
+<h3>Leafs</h3>
+<p>For the times you have a statement that act like a leave but isn't a literal.
+</p>
+
+<pre>
+statement : T_BREAK ';'     { $$ = YA_LEAF("break"); }
+          | T_CONTINUE ';'  { $$ = YA_LEAF("continue"); }
+          ;
+</pre>
+
+<h3>Top level</h3>
+<p>The file is created by YA_HEADER, the result is passed to <strong>ya_start</strong>. It will cause the basic structure
+of the AST file to be created, including a list of filenames of the source code that is being tracked. YA_HEADER accepts
+a single node as argument. In the example below we see a source file that can have import statements, class definitions
+and functions at the top level. These are all nodes which are children of the top level "module" node.
+</p>
+
+<pre>
+%start module
+%%
+module_item
+    : T_IMPORT fqname ';' {
+        $$ = YA_BRANCH("import", &amp;$2, YA_NULL);
+    }
+    | T_IMPORT fqname T_AS T_NAME ';' {
+        $$ = YA_BRANCH("import", &amp;$2, &amp;$4);
+    }
+    | T_CLASS T_NAME '{' class_content '}' {
+        $$ = YA_BRANCH("class", &amp;$2, YA_NULL, &amp;$4);
+    }
+    | T_CLASS T_NAME '(' sub_classes ')' '{' class_content '}' {
+        $$ = YA_BRANCH("class", &amp;$2, &amp;$4, &amp;$7);
+    }
+    | T_NAME '(' def_arguments ')' '{' block_content '}' {
+        $$ = YA_BRANCH("function", &amp;$1, &amp;$3, &amp;$6);
+    }
+    ;
+
+module_list
+    : module_item                 { $$ = YA_LIST(&amp;$1); }
+    | module_list module_item     { $$ = YA_LIST(&amp;$1, &amp;$2); }
+    ;
+
+module_content
+    :                             { $$ = YA_EMPTYLIST; }
+    | module_list                 { $$ = YA_LIST(&amp;$1); }
+    ;
+
+module
+    : module_content {
+        $$ = YA_BRANCH("module", &amp;$1);
+        ya_start = YA_HEADER(&amp;$$);
+    }
+    ;
+</pre>
 
 </body>
 </html>
