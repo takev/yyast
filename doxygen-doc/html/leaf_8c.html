@@ -42,9 +42,8 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structya__t.html">ya_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="leaf_8c.html#3d5858be2920c79cbb318d121fd1380c">ya_literal</a> (const char *restrict name, <a class="el" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, const void *restrict buf, size_t buf_size)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create an literal node.  <a href="#3d5858be2920c79cbb318d121fd1380c"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structya__t.html">ya_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="leaf_8c.html#17adddad913b75584738498c8e1a077b">ya_binary_float</a> (const char *restrict name, const char *restrict buf, size_t buf_size, int base, int nr_bits)</td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structya__t.html">ya_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="leaf_8c.html#dd0a658602db05fc9724e64912dd148d">ya_binary_float</a> (const char *restrict name, const char *restrict buf, size_t buf_size __attribute__((unused)), int base __attribute__((unused)), int nr_bits __attribute__((unused)))</td></tr>
 
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create literal node from floating point literal string.  <a href="#17adddad913b75584738498c8e1a077b"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structya__t.html">ya_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="leaf_8c.html#e153002eb7f3a546fcee4fd939db0a0e">ya_integer</a> (const char *restrict name, <a class="el" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, const char *restrict buf, size_t buf_size, int base)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create literal from an integer literal string.  <a href="#e153002eb7f3a546fcee4fd939db0a0e"></a><br></td></tr>
@@ -65,7 +64,7 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Create literal from an negative integer literal string.  <a href="#19b64920e54edc663120ab05676b915d"></a><br></td></tr>
 </table>
 <hr><h2>Function Documentation</h2>
-<a class="anchor" name="17adddad913b75584738498c8e1a077b"></a><!-- doxytag: member="leaf.c::ya_binary_float" ref="17adddad913b75584738498c8e1a077b" args="(const char *restrict name, const char *restrict buf, size_t buf_size, int base, int nr_bits)" -->
+<a class="anchor" name="dd0a658602db05fc9724e64912dd148d"></a><!-- doxytag: member="leaf.c::ya_binary_float" ref="dd0a658602db05fc9724e64912dd148d" args="(const char *restrict name, const char *restrict buf, size_t buf_size __attribute__((unused)), int base __attribute__((unused)), int nr_bits __attribute__((unused)))" -->
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
@@ -84,20 +83,20 @@
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">size_t&nbsp;</td>
-          <td class="paramname"> <em>buf_size</em>, </td>
+          <td class="paramtype">size_t buf_size &nbsp;</td>
+          <td class="paramname"> <em>__attribute__</em>(unused), </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>base</em>, </td>
+          <td class="paramtype">int base &nbsp;</td>
+          <td class="paramname"> <em>__attribute__</em>(unused), </td>
         </tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">int&nbsp;</td>
-          <td class="paramname"> <em>nr_bits</em></td><td>&nbsp;</td>
+          <td class="paramtype">int nr_bits &nbsp;</td>
+          <td class="paramname"> <em>__attribute__</em>(unused)</td><td>&nbsp;</td>
         </tr>
         <tr>
           <td></td>
@@ -109,18 +108,6 @@
 <div class="memdoc">
 
 <p>
-Create literal node from floating point literal string. 
-<p>
-<dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>name</em>&nbsp;</td><td>name of the node. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>buf</em>&nbsp;</td><td>Literal as string. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>buf_size</em>&nbsp;</td><td>String size. </td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>base</em>&nbsp;</td><td></td></tr>
-    <tr><td valign="top"></td><td valign="top"><em>nr_bits</em>&nbsp;</td><td>Nr of bits in the floating point format, only 64 bits is supported. </td></tr>
-  </table>
-</dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>The decoded literal node. </dd></dl>
 
 <p>Definition at line <a class="el" href="leaf_8c-source.html#l00064">64</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
@@ -478,8 +465,7 @@ Create text literal node for a string literal.
 </div>
 </div><p>
 </div>
-<hr size="1"><address style="text-align: right;"><small>Generated on Sun Aug 18 14:28:04 2013 for yyast-0.2 by&nbsp;
-<a href="http://www.doxygen.org/index.html">
-<img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6 </small></address>
+<hr size="1"><address style="text-align: right;"><small>
+Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

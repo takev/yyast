@@ -374,8 +374,8 @@
       <type>ya_t</type>
       <name>ya_binary_float</name>
       <anchorfile>leaf_8c.html</anchorfile>
-      <anchor>17adddad913b75584738498c8e1a077b</anchor>
-      <arglist>(const char *restrict name, const char *restrict buf, size_t buf_size, int base, int nr_bits)</arglist>
+      <anchor>dd0a658602db05fc9724e64912dd148d</anchor>
+      <arglist>(const char *restrict name, const char *restrict buf, size_t buf_size __attribute__((unused)), int base __attribute__((unused)), int nr_bits __attribute__((unused)))</arglist>
     </member>
     <member kind="function">
       <type>ya_t</type>
