@@ -230,7 +230,6 @@
 #
 #     DX_CLEANFILES = \
 #         @DX_DOCDIR@/@PACKAGE@.tag \
-#         -r \
 #         $(DX_CLEAN_HTML) \
 #         $(DX_CLEAN_CHM) \
 #         $(DX_CLEAN_CHI) \

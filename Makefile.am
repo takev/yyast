@@ -3,7 +3,6 @@ SUBDIRS = yyast
 
 include am/doxygen.am
 
-MOSTLYCLEANFILES = $(DX_CLEANFILES)
 EXTRA_DIST = autogen.sh $(DX_CONFIG)
 
 doc: doxygen-run
@@ -11,5 +10,5 @@ doc: doxygen-run
 clean: clean-recursive doxygen-clean
 
 doxygen-clean:
-	@rm -f $(DX_CLEANFILES)
+	-rm -fr $(DX_CLEANFILES)
 
