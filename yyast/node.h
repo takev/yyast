@@ -18,67 +18,56 @@
 #include <stdio.h>
 #include <yyast/types.h>
 
-
-/** This is the sentinal to be used as the last parameter of ya_node() and ya_list().
- * In yacc, you will use NODE() and LIST() which will append END implicitly.
- */
-#define END             &YA_NODE_END
-
-/** Define a pass node.
- * A pass node is used when one of the ordered childs of a node needs to be empty.
- */
-#define PASS            ya_pass()
-
 /** Define a new node.
  * Used in a yacc action to start a new node.
+ * If a list is added to a branch, then the nodes of the list are added to the created
+ * node, instead of the list itself.
  *
- * @param type  The type/name of the literal, type 0 is reserved by list.
- * @param ...   A list of literals to be included in this node.
+ * @param name  Name of the node
+ * @param ...   A set of nodes, leaves or lists to be included in this node.
  * @returns     A node
  */
-#define NODE(name, ...)  ya_node(name, __VA_ARGS__, END)
-#define EMPTYNODE(name)  ya_node(name, END)
+#define YA_BRANCH(name, ...)  ya_branch(name, __VA_ARGS__, NULL)
 
-/** Define a list of literals.
- * Used in yacc to create a list of literals. When adding a list to an other list or node, the contents
+/** A branch that is empty.
+ * Used if a node normally has children, except in this case.
+ *
+ * @param name  Name of the node.
+ * @return      A empty node.
+ */
+#define YA_EMPTYBRANCH(name)  ya_branch(name, NULL)
+
+/** Define a list of nodes.
+ * Used in yacc to create a list of nodes. When adding a list to an other list or node, the contents
  * of the list is appended to the node and list.
  *
- * @param first The first literal, used to mark the position of the literal in the text.
- * @param last  The first literal, used to mark the position of the literal in the text.
  * @param ...   A list of literals to be included in this node.
  * @returns     A list
  */
-#define LIST(...)        ya_list("", __VA_ARGS__, END)
-#define EMPTYLIST        ya_list("", END)
+#define YA_LIST(...)        ya_list("@list", __VA_ARGS__, NULL)
 
-/** Create an end node.
- * This is a sentinal which should be passed as the last parameter of
- * ya_node() or ya_list()
+/** An empty list contains no nodes, but can be used to start a sequence of nodes in the grammar.
  */
-extern ya_t YA_NODE_END;
-
-/** Create a pass node.
- * A pass node is used for empty entries in an ordered node child list.
- */
-ya_t ya_pass();
+#define YA_EMPTYLIST        ya_list("@list", NULL)
 
 /** Create an ya node.
  * Create a node from subnodes.
- * This also free memory used by the subnodes.
+ * This will free memory used by the subnodes.
+ * If a list is added to a branch, then the nodes of the list are added to the created
+ * node, instead of the list itself.
  *
- * @param type  fourcc code for the ya node
- *              When type is 0 the header is not preserved when used as subnode.
+ * @param name  Name of the node.
  * @param ...   The subnodes, ending with NULL
  * @returns     A new AST NODE.
  */
-ya_t ya_node(const char * restrict name, ...);
+ya_t ya_branch(const char * restrict name, ...);
 
 /** Create an ya node.
  * Create a list of subnodes, when included in a list or node, it expands as if the contents
  * was passed as seperate items.
  * This also free memory used by the subnodes.
  *
- * @param type  fourcc code for the ya node
+ * @param name  Name of the node. This should be '\@list' because this function is called from the YA_LIST macro.
  * @param ...   The subnodes, ending with NULL
  * @returns     A new AST NODE.
  */

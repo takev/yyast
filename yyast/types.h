@@ -26,25 +26,24 @@ typedef __uint128_t uint128_t;
 typedef uint64_t ya_name_t;
 typedef uint8_t  ya_type_t;
 
-#define YA_NODE_TYPE_PASS              0
-#define YA_NODE_TYPE_EMPTY             1
-#define YA_NODE_TYPE_BRANCH            2
-#define YA_NODE_TYPE_TEXT              3
-#define YA_NODE_TYPE_POSITIVE_INTEGER  4
-#define YA_NODE_TYPE_NEGATIVE_INTEGER  5
-#define YA_NODE_TYPE_BINARY_FLOAT      6
-//#define YA_NODE_TYPE_DECIMAL_FLOAT     7
+#define YA_NODE_TYPE_NULL              0    ///< A NULL node for an unused child
+#define YA_NODE_TYPE_LEAF              1    ///< Leaf node which doesn't have data.
+#define YA_NODE_TYPE_BRANCH            2    ///< Branch node with 0 or more childs.
+#define YA_NODE_TYPE_TEXT              3    ///< Text node with null terminated UTF-8 string.
+#define YA_NODE_TYPE_POSITIVE_INTEGER  4    ///< Positive integer, encoded as a big endian unsigned integer.
+#define YA_NODE_TYPE_NEGATIVE_INTEGER  5    ///< Negative integer, encoded as a big endian unsigned integer.
+#define YA_NODE_TYPE_BINARY_FLOAT      6    ///< Binary floating point, encoded as a 'big endian' binary64 or binary128 IEEE-754.
+#define YA_NODE_TYPE_DECIMAL_FLOAT     7    ///< Decimal floating point, encoded as a 'big endian' decimal64 or decimal128 IEEE-754.
 
-#define YA_NODE_TYPE_LIST              253
-#define YA_NODE_TYPE_COUNT             254
-#define YA_NODE_TYPE_END               255
+#define YA_NODE_TYPE_LIST              254  ///< List node which links child lists together. Never encoded in the output file.
+#define YA_NODE_TYPE_COUNT             255  ///< Count node, which is never encoded in the output file.
 
 /** Position in the text file.
  */
 struct ya_position_s {
-    uint32_t        line;       //< The line number, starting from one.
-    uint32_t        column;     //< The column number, starting from one.
-    uint32_t        file;       //< The file number, starting from zero (the main file).
+    uint32_t        line;       ///< The line number, starting from one.
+    uint32_t        column;     ///< The column number, starting from one.
+    uint32_t        file;       ///< The file number, starting from zero (the main file).
 } __attribute__((packed, aligned(4)));
 typedef struct ya_position_s ya_position_t;
 
@@ -53,13 +52,13 @@ typedef struct ya_position_s ya_position_t;
  * in the end. 
  */
 struct ya_node_s {
-    ya_name_t           name;
-    uint64_t            size;
-    ya_position_t       position;
-    uint16_t            reserved_1;
-    uint8_t             reserved_2;
-    ya_type_t           type;
-    char                data[];     //< Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end.
+    ya_name_t           name;       ///< Name of the node.
+    uint64_t            size;       ///< Size of the node, including header and data. Always 64 bit aligned.
+    ya_position_t       position;   ///< The position of the node.
+    uint16_t            reserved_1; ///< Reserved, must be zero.
+    uint8_t             reserved_2; ///< Reserved, must be zero.
+    ya_type_t           type;       ///< Type of node.
+    char                data[];     ///< Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end.
 } __attribute__((packed, aligned(8)));
 typedef struct ya_node_s ya_node_t;
 

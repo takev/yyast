@@ -18,6 +18,7 @@
 #include <yyast/main.h>
 #include <yyast/utils.h>
 #include <yyast/node.h>
+#include <yyast/count.h>
 
 extern FILE *yyin;
 int yyparse();
@@ -92,19 +93,34 @@ void ya_parse_options(int argc, char *argv[], char *extension)
 
 int ya_main(int argc, char *argv[], char *extension)
 {
-    FILE *out;
+    FILE    *out;
+    char    *reposition_s;
 
     ya_parse_options(argc, argv, extension);
-    if ((yyin = fopen(ya_input_filename, "r")) == NULL) {
-        perror("Could not open input file");
-        return -1;
+
+    if (strcmp(ya_input_filename, "-") == 0) {
+        yyin = stdin;
+    } else {
+        if ((yyin = fopen(ya_input_filename, "r")) == NULL) {
+            perror("Could not open input file");
+            return -1;
+        }
     }
+
+    asprintf(&reposition_s, "1 \"%s\"", ya_input_filename);
+    ya_reposition(reposition_s, strlen(reposition_s));
+    free(reposition_s);
+
     yyparse();
     fclose(yyin);
 
-    if ((out = fopen(ya_output_filename, "w")) == NULL) {
-        perror("Could not open output file");
-        return -1;
+    if (strcmp(ya_output_filename, "-") == 0) {
+        out = stdout;
+    } else {
+        if ((out = fopen(ya_output_filename, "w")) == NULL) {
+            perror("Could not open output file");
+            return -1;
+        }
     }
     ya_node_save(out, &ya_start);
     fclose(out);

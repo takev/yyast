@@ -52,6 +52,16 @@ uint32_t ya_get_file_nr(char *filename);
  */
 void ya_reposition(char *s, size_t s_length);
 
+/** Get a list of filenames, as a node that is placed in the header.
+ * @return A node with a list of filenames.
+ */
+ya_t ya_get_filenames(void);
+
+/** Clear the position of a node.
+ * @param node  The node to clear the position of.
+ */
+void ya_clear_position(ya_t *node);
+
 /** Count columns and lines for each token found by lex.
  */
 #define YY_USER_ACTION        { yylval = ya_count(yytext, yyleng); }

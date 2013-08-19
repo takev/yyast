@@ -1,3 +1,4 @@
+.DS_Store
 Makefile
 Makefile.in
 config.h
@@ -23,5 +24,4 @@ m4/lt~obsolete.m4
 yyast/yadump
 yyast/libyyast.la
 yyast/.libs
-doxygen-doc
 
