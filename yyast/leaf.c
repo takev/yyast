@@ -61,7 +61,7 @@ typedef union {
     int64_t     i;
 } translate_t;
 
-ya_t ya_binary_float(const char * restrict name, const char * restrict buf, size_t buf_size, int base, int nr_bits)
+ya_t ya_binary_float(const char * restrict name, const char * restrict buf, size_t buf_size __attribute__((unused)), int base __attribute__((unused)), int nr_bits __attribute__((unused)))
 {
     translate_t t;
     char        *endptr;
