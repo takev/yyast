@@ -1,0 +1,258 @@
+
+/* 
+    Palet by takevos.
+
+    EFDFC5 light yellow canvas
+    EACD95 mid yellow grass
+    D1994E dark yellow grass
+    901613 mid red dress.
+    4B0102 dark red blood.
+    443A31 Black ink brown grey.
+    241917 dark brown hair.
+    645639 light green, coin side.
+    483E25 dark green, coin center.
+
+ */
+
+* {
+    /*border: 1px solid green;*/
+    color: #241917;
+    margin-top: 0px;
+}
+
+html {
+    /* Background tile: CC-BY-SA: pattern by dazzlement, palet by takev. */
+    background-color: #EACD95;
+    background-image: url('background1.png');
+}
+
+body {
+    width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    margin-bottom: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
+    padding-bottom: 40px;
+    padding-top: 40px;
+    background: #EFDFC5;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 10pt;
+
+    counter-reset: chapter;
+    counter-reset: section;
+    counter-reset: subsection;
+    counter-reset: subsubsection;
+}
+
+p, li {
+    font-size: 10pt;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    margin-top: 20px;
+    margin-bottom: 0px;
+    font-family: Lucida Sans Unicode, Lucida Sans, Lucida Grande, sans-serif;
+    font-variant: small-caps;
+    color: #901613;
+}
+
+h1 {
+    margin-top: 20px;
+}
+
+h2 {
+    /*EFDFC5 light yellow canvas
+    EACD95 mid yellow grass
+    D1994E dark yellow grass
+    901613 mid red dress.
+    4B0102 dark red blood.
+    443A31 Black ink brown grey.
+    241917 dark brown hair.
+    645639 light green, coin side.
+    483E25 dark green, coin center.*/
+
+    /*border-right: solid 10px #901613;*/
+    padding-left: 10px;
+    margin-left: -10px;
+    padding-right: 10px;
+    margin-right: -10px;
+    background-color: #EACD95;
+    background-image: url('background3.png');
+    background-position: 0% 50%;
+    color: #901613;
+    font-size: 18px;
+    margin-top: 2em;
+    counter-increment: chapter;
+    counter-reset: section;
+    counter-reset: subsection;
+    counter-reset: subsubsection;
+}
+
+h3 {
+    margin-top: 1em;
+    font-size: 14px;
+    counter-increment: section;
+    counter-reset: subsection;
+    counter-reset: subsubsection;
+}
+
+h4 {
+    font-size: 12px;
+    font-variant: normal;
+    counter-increment: subsection;
+    counter-reset: subsubsection;
+}
+
+h5 {
+    counter-increment: subsubsection;
+}
+
+h2:before {
+    content: counter(chapter) " ";
+}
+
+h3:before {
+    content: counter(chapter) "." counter(section) " ";
+}
+
+h4:before {
+    content: counter(chapter) "." counter(section) "." counter(subsection) " ";
+}
+
+h5:before {
+    content: counter(chapter) "." counter(section) "." counter(subsection) . counter(subsection) " ";
+}
+
+
+ul, ol {
+    padding-left: 20px;
+    list-style-type: square;
+}
+
+h1 {
+    text-align: center;
+}
+
+p.author {
+    text-align: center;
+    margin-bottom: 40px;
+    color: #901613;
+}
+
+p {
+
+}
+
+figure {
+    margin: 0px;
+}
+
+figcaption {
+    margin-left: 25px;
+    color: #901613;
+}
+
+pre {
+    display: block;
+    white-space: pre;
+    background-color: #EACD95;
+    margin-left: 25px;
+    margin-right: 25px;
+    margin-bottom: 20px;
+    padding-left: 5px;
+    padding-right: 5px;
+    border-top: 1px solid #901613;
+    border-bottom: 1px solid #901613;
+}
+
+span.sql {
+    /*color: #156a1c;*/
+    color: #901613;
+}
+
+
+a {
+    text-decoration: none;
+    border-bottom: 1px dotted 901613;
+    /*color: #645639;*/
+}
+
+a:visited {
+    /*color: #483E25;*/
+}
+
+a:hover {
+    color: #901613;
+}
+
+pre a, table a {
+}
+
+table {
+    /*border-collapse: collapse;*/
+    width: 760px;
+    border-spacing: 5px 0px;
+    font-family: Tahoma, Geneva, sans-serif;
+    font-size: 10pt;
+    margin-left: 20px;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+caption {
+    text-align: left;
+    font-weight: bold;
+    font-size: 8pt;
+    margin-left: -20px;
+}
+
+tr:nth-child(2) th, tr:nth-child(2) td {
+    border-top: 1px solid #901613;
+}
+
+tr:last-child th, tr:last-child td {
+    border-bottom: 1px solid #901613;
+}
+
+/*tr:nth-child(2n+0) {
+    background-color: #D1994E;
+}*/
+
+tr:nth-child(2n+3) {
+    background-color: #EACD95;
+}
+
+th {
+    font-weight: normal;
+    color: #901613;
+    text-align: left;
+}
+
+th, td {
+    empty-cells: show;
+    padding-left: 5px;
+    padding-right: 5px;
+    vertical-align: top;
+    width: 80px;
+    white-space: nowrap;
+}
+
+td:last-child, th:last-child {
+    width: auto;
+    white-space: normal;
+}
+
+
+tr.in td, tr.in th {
+    background: #8888cc;
+}
+
+tr.out td, tr.out th {
+    background: #cc8888;
+}
+
+li {
+    list-style-image: url('li_red.png');
+}
