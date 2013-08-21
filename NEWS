@@ -1,0 +1,33 @@
+
+
+                NEWS of released of the YASST library.
+                ======================================
+
+
+Version 1.0: BSD 2-Clause License
+
+    Since I am hoping that YYAST will be used in as many as project as
+    possible I have decided to release the YYAST library under a very
+    permissive and compatible license. I have chosen the BSD 2-Clause
+    License.
+
+
+
+Version 0.2: Source file tracking
+
+    In this version YYAST now tracks line numbers when in original source
+    code. This is useful if someone would generate code for your language,
+    and your compiler or debugger wants to show the original source code.
+
+    For this change the on-disk format of the AST had to change significantly.
+    I've tried to make it a lot more consistent and still easy to read. A
+    header is now required to record the source filenames, but the header
+    is build up with the same node structure as the rest of the file.
+
+
+
+Version 0.1: Original release
+
+    This is the first release of YYAST, a AST generator, a companion to
+    Lex and Yacc.
+

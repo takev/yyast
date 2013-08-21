@@ -1,6 +1,6 @@
 
 AC_PREREQ(2.61)
-AC_INIT(yyast, 0.2, take.vos@vosgames.nl)
+AC_INIT(yyast, 1.0, take.vos@vosgames.nl)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([buildutils])
 AM_INIT_AUTOMAKE()
@@ -17,7 +17,7 @@ dnl    * If any interfaces have been added, removed, or changed since the last u
 dnl      and set revision to 0.
 dnl    * If any interfaces have been added since the last public release, then increment age.
 dnl    * If any interfaces have been removed since the last public release, then set age to 0.
-SHARED_VERSION_INFO=0:1:0
+SHARED_VERSION_INFO=1:0:0
 AC_SUBST(SHARED_VERSION_INFO)
 
 DX_INIT_DOXYGEN(yyast, doxygen.cfg)
