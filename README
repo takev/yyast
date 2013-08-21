@@ -7,3 +7,5 @@ The saved AST is designed to be easily parsed by compilers.
 You can find the documentation in doc/index.html.
 The documentation is also online at: http://takev.github.io/yyast/doc/index.html
 
+This library is released under the BSD 2-Clause License.
+
