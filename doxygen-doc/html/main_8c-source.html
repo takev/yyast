@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/main.c Source File</title>
+<title>yyast-1.0.1: yyast/main.c Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -13,137 +13,149 @@
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>yyast/main.c</h1><a href="main_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*  Copyright 2011 Take Vos</span>
-<a name="l00002"></a>00002 <span class="comment"> *</span>
-<a name="l00003"></a>00003 <span class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</span>
-<a name="l00004"></a>00004 <span class="comment"> * you may not use this file except in compliance with the License.</span>
-<a name="l00005"></a>00005 <span class="comment"> * You may obtain a copy of the License at</span>
+<h1>yyast/main.c</h1><a href="main_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) 2011-2013, Take Vos</span>
+<a name="l00002"></a>00002 <span class="comment"> * All rights reserved.</span>
+<a name="l00003"></a>00003 <span class="comment"> *</span>
+<a name="l00004"></a>00004 <span class="comment"> * Redistribution and use in source and binary forms, with or without</span>
+<a name="l00005"></a>00005 <span class="comment"> * modification, are permitted provided that the following conditions are met:</span>
 <a name="l00006"></a>00006 <span class="comment"> *</span>
-<a name="l00007"></a>00007 <span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
-<a name="l00008"></a>00008 <span class="comment"> *</span>
-<a name="l00009"></a>00009 <span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
-<a name="l00010"></a>00010 <span class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</span>
-<a name="l00011"></a>00011 <span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<a name="l00012"></a>00012 <span class="comment"> * See the License for the specific language governing permissions and</span>
-<a name="l00013"></a>00013 <span class="comment"> * limitations under the License.</span>
-<a name="l00014"></a>00014 <span class="comment"> */</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#include &lt;stdlib.h&gt;</span>
-<a name="l00016"></a>00016 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &lt;getopt.h&gt;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;<a class="code" href="main_8h.html">yyast/main.h</a>&gt;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;<a class="code" href="utils_8h.html">yyast/utils.h</a>&gt;</span>
-<a name="l00020"></a>00020 <span class="preprocessor">#include &lt;<a class="code" href="node_8h.html">yyast/node.h</a>&gt;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &lt;<a class="code" href="count_8h.html">yyast/count.h</a>&gt;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a>00023 <span class="keyword">extern</span> FILE *<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a>;
-<a name="l00024"></a>00024 <span class="keywordtype">int</span> <a class="code" href="main_8c.html#cd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
-<a name="l00025"></a>00025 
-<a name="l00026"></a><a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">00026</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = NULL;
-<a name="l00027"></a><a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">00027</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a> = NULL;
-<a name="l00028"></a>00028 
-<a name="l00029"></a><a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">00029</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(<span class="keywordtype">int</span> exit_code)
-<a name="l00030"></a>00030 {
-<a name="l00031"></a>00031     fprintf(stderr, <span class="stringliteral">"Usage:\n"</span>);
-<a name="l00032"></a>00032     fprintf(stderr, <span class="stringliteral">"  application -h\n"</span>);
-<a name="l00033"></a>00033     fprintf(stderr, <span class="stringliteral">"  application [-c] [-o output file] input file\n"</span>);
-<a name="l00034"></a>00034     fprintf(stderr, <span class="stringliteral">"\n"</span>);
-<a name="l00035"></a>00035     fprintf(stderr, <span class="stringliteral">"Options:\n"</span>);
-<a name="l00036"></a>00036     fprintf(stderr, <span class="stringliteral">"  -h   Show help message\n"</span>);
-<a name="l00037"></a>00037     fprintf(stderr, <span class="stringliteral">"  -c   Compile, this option is ignored\n"</span>);
-<a name="l00038"></a>00038     fprintf(stderr, <span class="stringliteral">"  -o   Set the output file, the default is the same as the input file\n"</span>);
-<a name="l00039"></a>00039     fprintf(stderr, <span class="stringliteral">"\n"</span>);
-<a name="l00040"></a>00040     exit(exit_code);
-<a name="l00041"></a>00041 }
-<a name="l00042"></a>00042 
-<a name="l00043"></a><a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">00043</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">ya_parse_options</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <span class="keywordtype">char</span> *extension)
-<a name="l00044"></a>00044 {
-<a name="l00045"></a>00045     <span class="keywordtype">int</span>             ch;
-<a name="l00046"></a>00046     <span class="keyword">struct </span>option   longopts[] = {
-<a name="l00047"></a>00047         {<span class="stringliteral">"output"</span>,  required_argument, NULL, <span class="charliteral">'o'</span>},
-<a name="l00048"></a>00048         {<span class="stringliteral">"compile"</span>, no_argument,       NULL, <span class="charliteral">'c'</span>},
-<a name="l00049"></a>00049         {<span class="stringliteral">"help"</span>,    no_argument,       NULL, <span class="charliteral">'h'</span>},
-<a name="l00050"></a>00050         {NULL,      0,                 NULL, 0}
-<a name="l00051"></a>00051     };
-<a name="l00052"></a>00052 
-<a name="l00053"></a>00053     <span class="keywordflow">while</span> ((ch = getopt_long(argc, argv, <span class="stringliteral">"hco:"</span>, longopts, NULL)) != -1) {
-<a name="l00054"></a>00054         <span class="keywordflow">switch</span> (ch) {
-<a name="l00055"></a>00055         <span class="keywordflow">case</span> <span class="charliteral">'o'</span>:
-<a name="l00056"></a>00056             <span class="comment">// Set the output filename.</span>
-<a name="l00057"></a>00057             <a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = optarg;
-<a name="l00058"></a>00058             <span class="keywordflow">break</span>;
-<a name="l00059"></a>00059         <span class="keywordflow">case</span> <span class="charliteral">'h'</span>:
-<a name="l00060"></a>00060             <span class="comment">// Help, just shows usage without error.</span>
-<a name="l00061"></a>00061             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(0);
-<a name="l00062"></a>00062         <span class="keywordflow">case</span> <span class="charliteral">'c'</span>:
-<a name="l00063"></a>00063             <span class="comment">// Compile, which is the only mode it supports.</span>
-<a name="l00064"></a>00064             <span class="keywordflow">break</span>;
-<a name="l00065"></a>00065         <span class="keywordflow">case</span> 0:
-<a name="l00066"></a>00066             <span class="keywordflow">break</span>;
-<a name="l00067"></a>00067         <span class="keywordflow">case</span> <span class="charliteral">':'</span>:
-<a name="l00068"></a>00068             fprintf(stderr, <span class="stringliteral">"Missing option argument."</span>);
-<a name="l00069"></a>00069             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
-<a name="l00070"></a>00070         <span class="keywordflow">case</span> <span class="charliteral">'?'</span>:
-<a name="l00071"></a>00071             fprintf(stderr, <span class="stringliteral">"Unknown option."</span>);
-<a name="l00072"></a>00072             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
-<a name="l00073"></a>00073         <span class="keywordflow">default</span>:
-<a name="l00074"></a>00074             fprintf(stderr, <span class="stringliteral">"Unknown error in getopt_long()."</span>);
-<a name="l00075"></a>00075             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
-<a name="l00076"></a>00076         }
-<a name="l00077"></a>00077     }
-<a name="l00078"></a>00078     argc -= optind;
-<a name="l00079"></a>00079     argv += optind;
-<a name="l00080"></a>00080 
-<a name="l00081"></a>00081     <span class="keywordflow">if</span> (argc != 1) {
-<a name="l00082"></a>00082         fprintf(stderr, <span class="stringliteral">"Expecting a single filename.\n"</span>);
-<a name="l00083"></a>00083         <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
-<a name="l00084"></a>00084     }
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086     <a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a> = argv[0];
-<a name="l00087"></a>00087 
-<a name="l00088"></a>00088     <span class="keywordflow">if</span> (<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> == NULL) {
-<a name="l00089"></a>00089         <span class="comment">// output file was not explicityly set, therfor we generate it from the input filename.</span>
-<a name="l00090"></a>00090         <a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = <a class="code" href="utils_8c.html#942a1e1765e8711a6d87b3404ee5f505" title="Strip extension from filename and replace with new extension.">ya_new_extension</a>(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, extension);
-<a name="l00091"></a>00091     }
-<a name="l00092"></a>00092 }
-<a name="l00093"></a>00093 
-<a name="l00094"></a><a class="code" href="main_8h.html#93fa77b57f754f9af8576043654c80da">00094</a> <span class="keywordtype">int</span> <a class="code" href="main_8c.html#93fa77b57f754f9af8576043654c80da">ya_main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <span class="keywordtype">char</span> *extension)
-<a name="l00095"></a>00095 {
-<a name="l00096"></a>00096     FILE    *out;
-<a name="l00097"></a>00097     <span class="keywordtype">char</span>    *reposition_s;
+<a name="l00007"></a>00007 <span class="comment"> * - Redistributions of source code must retain the above copyright notice,</span>
+<a name="l00008"></a>00008 <span class="comment"> *   this list of conditions and the following disclaimer.</span>
+<a name="l00009"></a>00009 <span class="comment"> * - Redistributions in binary form must reproduce the above copyright notice, </span>
+<a name="l00010"></a>00010 <span class="comment"> *   this list of conditions and the following disclaimer in the documentation </span>
+<a name="l00011"></a>00011 <span class="comment"> *   and/or other materials provided with the distribution.</span>
+<a name="l00012"></a>00012 <span class="comment"> *</span>
+<a name="l00013"></a>00013 <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" </span>
+<a name="l00014"></a>00014 <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE </span>
+<a name="l00015"></a>00015 <span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE </span>
+<a name="l00016"></a>00016 <span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE </span>
+<a name="l00017"></a>00017 <span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR </span>
+<a name="l00018"></a>00018 <span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<a name="l00019"></a>00019 <span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS </span>
+<a name="l00020"></a>00020 <span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN </span>
+<a name="l00021"></a>00021 <span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<a name="l00022"></a>00022 <span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE </span>
+<a name="l00023"></a>00023 <span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span>
+<a name="l00024"></a>00024 <span class="comment"> */</span>
+<a name="l00025"></a><a class="code" href="main_8c.html#369266c24eacffb87046522897a570d5">00025</a> <span class="preprocessor">#define _GNU_SOURCE</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#include &lt;stdlib.h&gt;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#include &lt;stdio.h&gt;</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &lt;getopt.h&gt;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &lt;<a class="code" href="main_8h.html">yyast/main.h</a>&gt;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#include &lt;<a class="code" href="utils_8h.html">yyast/utils.h</a>&gt;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#include &lt;<a class="code" href="node_8h.html">yyast/node.h</a>&gt;</span>
+<a name="l00032"></a>00032 <span class="preprocessor">#include &lt;<a class="code" href="count_8h.html">yyast/count.h</a>&gt;</span>
+<a name="l00033"></a>00033 
+<a name="l00034"></a>00034 <span class="keyword">extern</span> FILE *<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a>;
+<a name="l00035"></a>00035 <span class="keywordtype">int</span> <a class="code" href="main_8c.html#cd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
+<a name="l00036"></a>00036 
+<a name="l00037"></a><a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">00037</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = NULL;
+<a name="l00038"></a><a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">00038</a> <span class="keywordtype">char</span> *<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a> = NULL;
+<a name="l00039"></a>00039 
+<a name="l00040"></a><a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">00040</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(<span class="keywordtype">int</span> exit_code)
+<a name="l00041"></a>00041 {
+<a name="l00042"></a>00042     fprintf(stderr, <span class="stringliteral">"Usage:\n"</span>);
+<a name="l00043"></a>00043     fprintf(stderr, <span class="stringliteral">"  application -h\n"</span>);
+<a name="l00044"></a>00044     fprintf(stderr, <span class="stringliteral">"  application [-c] [-o output file] input file\n"</span>);
+<a name="l00045"></a>00045     fprintf(stderr, <span class="stringliteral">"\n"</span>);
+<a name="l00046"></a>00046     fprintf(stderr, <span class="stringliteral">"Options:\n"</span>);
+<a name="l00047"></a>00047     fprintf(stderr, <span class="stringliteral">"  -h   Show help message\n"</span>);
+<a name="l00048"></a>00048     fprintf(stderr, <span class="stringliteral">"  -c   Compile, this option is ignored\n"</span>);
+<a name="l00049"></a>00049     fprintf(stderr, <span class="stringliteral">"  -o   Set the output file, the default is the same as the input file\n"</span>);
+<a name="l00050"></a>00050     fprintf(stderr, <span class="stringliteral">"\n"</span>);
+<a name="l00051"></a>00051     exit(exit_code);
+<a name="l00052"></a>00052 }
+<a name="l00053"></a>00053 
+<a name="l00054"></a><a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">00054</a> <span class="keywordtype">void</span> <a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">ya_parse_options</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <span class="keywordtype">char</span> *extension)
+<a name="l00055"></a>00055 {
+<a name="l00056"></a>00056     <span class="keywordtype">int</span>             ch;
+<a name="l00057"></a>00057     <span class="keyword">struct </span>option   longopts[] = {
+<a name="l00058"></a>00058         {<span class="stringliteral">"output"</span>,  required_argument, NULL, <span class="charliteral">'o'</span>},
+<a name="l00059"></a>00059         {<span class="stringliteral">"compile"</span>, no_argument,       NULL, <span class="charliteral">'c'</span>},
+<a name="l00060"></a>00060         {<span class="stringliteral">"help"</span>,    no_argument,       NULL, <span class="charliteral">'h'</span>},
+<a name="l00061"></a>00061         {NULL,      0,                 NULL, 0}
+<a name="l00062"></a>00062     };
+<a name="l00063"></a>00063 
+<a name="l00064"></a>00064     <span class="keywordflow">while</span> ((ch = getopt_long(argc, argv, <span class="stringliteral">"hco:"</span>, longopts, NULL)) != -1) {
+<a name="l00065"></a>00065         <span class="keywordflow">switch</span> (ch) {
+<a name="l00066"></a>00066         <span class="keywordflow">case</span> <span class="charliteral">'o'</span>:
+<a name="l00067"></a>00067             <span class="comment">// Set the output filename.</span>
+<a name="l00068"></a>00068             <a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = optarg;
+<a name="l00069"></a>00069             <span class="keywordflow">break</span>;
+<a name="l00070"></a>00070         <span class="keywordflow">case</span> <span class="charliteral">'h'</span>:
+<a name="l00071"></a>00071             <span class="comment">// Help, just shows usage without error.</span>
+<a name="l00072"></a>00072             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(0);
+<a name="l00073"></a>00073         <span class="keywordflow">case</span> <span class="charliteral">'c'</span>:
+<a name="l00074"></a>00074             <span class="comment">// Compile, which is the only mode it supports.</span>
+<a name="l00075"></a>00075             <span class="keywordflow">break</span>;
+<a name="l00076"></a>00076         <span class="keywordflow">case</span> 0:
+<a name="l00077"></a>00077             <span class="keywordflow">break</span>;
+<a name="l00078"></a>00078         <span class="keywordflow">case</span> <span class="charliteral">':'</span>:
+<a name="l00079"></a>00079             fprintf(stderr, <span class="stringliteral">"Missing option argument."</span>);
+<a name="l00080"></a>00080             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
+<a name="l00081"></a>00081         <span class="keywordflow">case</span> <span class="charliteral">'?'</span>:
+<a name="l00082"></a>00082             fprintf(stderr, <span class="stringliteral">"Unknown option."</span>);
+<a name="l00083"></a>00083             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
+<a name="l00084"></a>00084         <span class="keywordflow">default</span>:
+<a name="l00085"></a>00085             fprintf(stderr, <span class="stringliteral">"Unknown error in getopt_long()."</span>);
+<a name="l00086"></a>00086             <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
+<a name="l00087"></a>00087         }
+<a name="l00088"></a>00088     }
+<a name="l00089"></a>00089     argc -= optind;
+<a name="l00090"></a>00090     argv += optind;
+<a name="l00091"></a>00091 
+<a name="l00092"></a>00092     <span class="keywordflow">if</span> (argc != 1) {
+<a name="l00093"></a>00093         fprintf(stderr, <span class="stringliteral">"Expecting a single filename.\n"</span>);
+<a name="l00094"></a>00094         <a class="code" href="main_8c.html#1dcaed5522fdc350f81f0c307790bbee">ya_usage</a>(2);
+<a name="l00095"></a>00095     }
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097     <a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a> = argv[0];
 <a name="l00098"></a>00098 
-<a name="l00099"></a>00099     <a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">ya_parse_options</a>(argc, argv, extension);
-<a name="l00100"></a>00100 
-<a name="l00101"></a>00101     <span class="keywordflow">if</span> (strcmp(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, <span class="stringliteral">"-"</span>) == 0) {
-<a name="l00102"></a>00102         <a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a> = stdin;
-<a name="l00103"></a>00103     } <span class="keywordflow">else</span> {
-<a name="l00104"></a>00104         <span class="keywordflow">if</span> ((<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a> = fopen(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, <span class="stringliteral">"r"</span>)) == NULL) {
-<a name="l00105"></a>00105             perror(<span class="stringliteral">"Could not open input file"</span>);
-<a name="l00106"></a>00106             <span class="keywordflow">return</span> -1;
-<a name="l00107"></a>00107         }
-<a name="l00108"></a>00108     }
+<a name="l00099"></a>00099     <span class="keywordflow">if</span> (<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> == NULL) {
+<a name="l00100"></a>00100         <span class="comment">// output file was not explicityly set, therfor we generate it from the input filename.</span>
+<a name="l00101"></a>00101         <a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a> = <a class="code" href="utils_8c.html#942a1e1765e8711a6d87b3404ee5f505" title="Strip extension from filename and replace with new extension.">ya_new_extension</a>(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, extension);
+<a name="l00102"></a>00102     }
+<a name="l00103"></a>00103 }
+<a name="l00104"></a>00104 
+<a name="l00105"></a><a class="code" href="main_8h.html#93fa77b57f754f9af8576043654c80da">00105</a> <span class="keywordtype">int</span> <a class="code" href="main_8c.html#93fa77b57f754f9af8576043654c80da">ya_main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[], <span class="keywordtype">char</span> *extension)
+<a name="l00106"></a>00106 {
+<a name="l00107"></a>00107     FILE    *out;
+<a name="l00108"></a>00108     <span class="keywordtype">char</span>    *reposition_s;
 <a name="l00109"></a>00109 
-<a name="l00110"></a>00110     asprintf(&amp;reposition_s, <span class="stringliteral">"1 \"%s\""</span>, <a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>);
-<a name="l00111"></a>00111     <a class="code" href="count_8c.html#abc15ba85caf8ceb53fdd16fa5ed4e13" title="Reposition.">ya_reposition</a>(reposition_s, strlen(reposition_s));
-<a name="l00112"></a>00112     free(reposition_s);
-<a name="l00113"></a>00113 
-<a name="l00114"></a>00114     <a class="code" href="main_8c.html#cd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
-<a name="l00115"></a>00115     fclose(<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a>);
-<a name="l00116"></a>00116 
-<a name="l00117"></a>00117     <span class="keywordflow">if</span> (strcmp(<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a>, <span class="stringliteral">"-"</span>) == 0) {
-<a name="l00118"></a>00118         out = stdout;
-<a name="l00119"></a>00119     } <span class="keywordflow">else</span> {
-<a name="l00120"></a>00120         <span class="keywordflow">if</span> ((out = fopen(<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a>, <span class="stringliteral">"w"</span>)) == NULL) {
-<a name="l00121"></a>00121             perror(<span class="stringliteral">"Could not open output file"</span>);
-<a name="l00122"></a>00122             <span class="keywordflow">return</span> -1;
-<a name="l00123"></a>00123         }
+<a name="l00110"></a>00110     <a class="code" href="main_8c.html#ee529c288b0866c1e3e07fc0c7b266c2">ya_parse_options</a>(argc, argv, extension);
+<a name="l00111"></a>00111 
+<a name="l00112"></a>00112     <span class="keywordflow">if</span> (strcmp(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, <span class="stringliteral">"-"</span>) == 0) {
+<a name="l00113"></a>00113         <a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a> = stdin;
+<a name="l00114"></a>00114     } <span class="keywordflow">else</span> {
+<a name="l00115"></a>00115         <span class="keywordflow">if</span> ((<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a> = fopen(<a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>, <span class="stringliteral">"r"</span>)) == NULL) {
+<a name="l00116"></a>00116             perror(<span class="stringliteral">"Could not open input file"</span>);
+<a name="l00117"></a>00117             <span class="keywordflow">return</span> -1;
+<a name="l00118"></a>00118         }
+<a name="l00119"></a>00119     }
+<a name="l00120"></a>00120 
+<a name="l00121"></a>00121     <span class="keywordflow">if</span> (asprintf(&amp;reposition_s, <span class="stringliteral">"1 \"%s\""</span>, <a class="code" href="main_8c.html#6e7740fd5321b22a745966d79ad48533">ya_input_filename</a>) &gt;= 0) {
+<a name="l00122"></a>00122         <a class="code" href="count_8c.html#abc15ba85caf8ceb53fdd16fa5ed4e13" title="Reposition.">ya_reposition</a>(reposition_s, strlen(reposition_s));
+<a name="l00123"></a>00123         free(reposition_s);
 <a name="l00124"></a>00124     }
-<a name="l00125"></a>00125     <a class="code" href="node_8c.html#1bd01f7713a7aa4701734efe5f04a6aa" title="Save the node to a file.">ya_node_save</a>(out, &amp;<a class="code" href="types_8h.html#48b0f2197d380365db09be534b992473">ya_start</a>);
-<a name="l00126"></a>00126     fclose(out);
-<a name="l00127"></a>00127 
-<a name="l00128"></a>00128     <span class="keywordflow">return</span> 0;
-<a name="l00129"></a>00129 }
+<a name="l00125"></a>00125 
+<a name="l00126"></a>00126     <a class="code" href="main_8c.html#cd8617a8f2ac0de8bc1cc032cf449e19">yyparse</a>();
+<a name="l00127"></a>00127     fclose(<a class="code" href="main_8c.html#46af646807e0797e72b6e8945e7ea88b">yyin</a>);
+<a name="l00128"></a>00128 
+<a name="l00129"></a>00129     <span class="keywordflow">if</span> (strcmp(<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a>, <span class="stringliteral">"-"</span>) == 0) {
+<a name="l00130"></a>00130         out = stdout;
+<a name="l00131"></a>00131     } <span class="keywordflow">else</span> {
+<a name="l00132"></a>00132         <span class="keywordflow">if</span> ((out = fopen(<a class="code" href="main_8c.html#f0ce3ec97af6dd3092a230c294b88bbf">ya_output_filename</a>, <span class="stringliteral">"w"</span>)) == NULL) {
+<a name="l00133"></a>00133             perror(<span class="stringliteral">"Could not open output file"</span>);
+<a name="l00134"></a>00134             <span class="keywordflow">return</span> -1;
+<a name="l00135"></a>00135         }
+<a name="l00136"></a>00136     }
+<a name="l00137"></a>00137     <a class="code" href="node_8c.html#1bd01f7713a7aa4701734efe5f04a6aa" title="Save the node to a file.">ya_node_save</a>(out, &amp;<a class="code" href="types_8h.html#48b0f2197d380365db09be534b992473">ya_start</a>);
+<a name="l00138"></a>00138     fclose(out);
+<a name="l00139"></a>00139 
+<a name="l00140"></a>00140     <span class="keywordflow">return</span> 0;
+<a name="l00141"></a>00141 }
 </pre></div></div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

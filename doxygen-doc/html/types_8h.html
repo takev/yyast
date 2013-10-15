@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/types.h File Reference</title>
+<title>yyast-1.0.1: yyast/types.h File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -20,7 +20,7 @@
 <code>#include &lt;stddef.h&gt;</code><br>
 <code>#include &lt;stdlib.h&gt;</code><br>
 <code>#include &lt;stdint.h&gt;</code><br>
-<code>#include &lt;strings.h&gt;</code><br>
+<code>#include &lt;string.h&gt;</code><br>
 <code>#include &lt;sys/param.h&gt;</code><br>
 
 <p>
@@ -37,6 +37,10 @@
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Structure to pass around on the stack for the parser.  <a href="structya__t.html#_details">More...</a><br></td></tr>
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8h.html#369266c24eacffb87046522897a570d5">_GNU_SOURCE</a></td></tr>
+
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="types_8h.html#fa33cb38ae57c4fecc35d636a41f7bff">YA_NODE_TYPE_NULL</a>&nbsp;&nbsp;&nbsp;0</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">A NULL node for an unused child.  <a href="#fa33cb38ae57c4fecc35d636a41f7bff"></a><br></td></tr>
@@ -91,6 +95,40 @@
 
 </table>
 <hr><h2>Define Documentation</h2>
+<a class="anchor" name="369266c24eacffb87046522897a570d5"></a><!-- doxytag: member="types.h::_GNU_SOURCE" ref="369266c24eacffb87046522897a570d5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _GNU_SOURCE          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="types_8h-source.html#l00028">28</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+
+</div>
+</div><p>
+<a class="anchor" name="080abdcb9c02438f1cd2bb707af25af8"></a><!-- doxytag: member="types.h::restrict" ref="080abdcb9c02438f1cd2bb707af25af8" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define restrict          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="types_8h-source.html#l00036">36</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+
+</div>
+</div><p>
 <a class="anchor" name="ae10325c7a7b9f6fca65510d4fabbfc3"></a><!-- doxytag: member="types.h::YA_NODE_TYPE_BINARY_FLOAT" ref="ae10325c7a7b9f6fca65510d4fabbfc3" args="" -->
 <div class="memitem">
 <div class="memproto">
@@ -106,9 +144,9 @@
 Binary floating point, encoded as a 'big endian' binary64 or binary128 IEEE-754. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00035">35</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00050">50</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00064">ya_binary_float()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00075">ya_binary_float()</a>.</p>
 
 </div>
 </div><p>
@@ -127,9 +165,9 @@ Binary floating point, encoded as a 'big endian' binary64 or binary128 IEEE-754.
 Branch node with 0 or more childs. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00031">31</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00046">46</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="node_8c-source.html#l00140">ya_branch()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="node_8c-source.html#l00151">ya_branch()</a>.</p>
 
 </div>
 </div><p>
@@ -148,9 +186,9 @@ Branch node with 0 or more childs.
 Count node, which is never encoded in the output file. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00039">39</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00054">54</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00028">ya_count()</a>, and <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00040">ya_count()</a>, and <a class="el" href="node_8c-source.html#l00049">ya_generic_nodev()</a>.</p>
 
 </div>
 </div><p>
@@ -169,7 +207,7 @@ Count node, which is never encoded in the output file.
 Decimal floating point, encoded as a 'big endian' decimal64 or decimal128 IEEE-754. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00036">36</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00051">51</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -188,9 +226,9 @@ Decimal floating point, encoded as a 'big endian' decimal64 or decimal128 IEEE-7
 Leaf node which doesn't have data. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00030">30</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00045">45</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="leaf_8c-source.html#l00151">ya_leaf()</a>.</p>
+<p>Referenced by <a class="el" href="leaf_8c-source.html#l00162">ya_leaf()</a>.</p>
 
 </div>
 </div><p>
@@ -209,9 +247,9 @@ Leaf node which doesn't have data.
 List node which links child lists together. Never encoded in the output file. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00038">38</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00053">53</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>, and <a class="el" href="node_8c-source.html#l00152">ya_list()</a>.</p>
+<p>Referenced by <a class="el" href="node_8c-source.html#l00049">ya_generic_nodev()</a>, and <a class="el" href="node_8c-source.html#l00163">ya_list()</a>.</p>
 
 </div>
 </div><p>
@@ -230,9 +268,9 @@ List node which links child lists together. Never encoded in the output file.
 Negative integer, encoded as a big endian unsigned integer. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00034">34</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00049">49</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00166">ya_negative_integer()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00177">ya_negative_integer()</a>.</p>
 
 </div>
 </div><p>
@@ -251,9 +289,9 @@ Negative integer, encoded as a big endian unsigned integer.
 A NULL node for an unused child. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00029">29</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00044">44</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00156">ya_null()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00167">ya_null()</a>.</p>
 
 </div>
 </div><p>
@@ -272,9 +310,9 @@ A NULL node for an unused child.
 Positive integer, encoded as a big endian unsigned integer. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00033">33</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00048">48</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00161">ya_positive_integer()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00172">ya_positive_integer()</a>.</p>
 
 </div>
 </div><p>
@@ -293,9 +331,9 @@ Positive integer, encoded as a big endian unsigned integer.
 Text node with null terminated UTF-8 string. 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00032">32</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00047">47</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00146">ya_text()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00157">ya_text()</a>.</p>
 
 </div>
 </div><p>
@@ -314,7 +352,7 @@ Text node with null terminated UTF-8 string.
 Lex and Yacc needs to know what type should be used. 
 <p>
 To pass tokens and nodes around. 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00079">79</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00094">94</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -332,7 +370,7 @@ To pass tokens and nodes around.
 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00024">24</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00039">39</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -349,7 +387,7 @@ To pass tokens and nodes around.
 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00026">26</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00041">41</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -366,7 +404,7 @@ To pass tokens and nodes around.
 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00063">63</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00078">78</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -383,7 +421,7 @@ To pass tokens and nodes around.
 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00048">48</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00063">63</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -400,7 +438,7 @@ To pass tokens and nodes around.
 
 <p>
 
-<p>Definition at line <a class="el" href="types_8h-source.html#l00027">27</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
+<p>Definition at line <a class="el" href="types_8h-source.html#l00042">42</a> of file <a class="el" href="types_8h-source.html">types.h</a>.</p>
 
 </div>
 </div><p>
@@ -451,14 +489,14 @@ This structure is allocated and free-ed as it passed along. In priciple it shoul
 
 <p>
 
-<p>Definition at line <a class="el" href="yyast_8c-source.html#l00018">18</a> of file <a class="el" href="yyast_8c-source.html">yyast.c</a>.</p>
+<p>Definition at line <a class="el" href="yyast_8c-source.html#l00027">27</a> of file <a class="el" href="yyast_8c-source.html">yyast.c</a>.</p>
 
-<p>Referenced by <a class="el" href="main_8c-source.html#l00094">ya_main()</a>.</p>
+<p>Referenced by <a class="el" href="main_8c-source.html#l00105">ya_main()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

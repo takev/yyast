@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/utils.h File Reference</title>
+<title>yyast-1.0.1: yyast/utils.h File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -28,21 +28,10 @@
 <tr><td colspan="2"><br><h2>Data Structures</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">union &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="unionbswap128__t.html">bswap128_t</a></td></tr>
 
+<tr><td colspan="2"><br><h2>Defines</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#369266c24eacffb87046522897a570d5">_GNU_SOURCE</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#c28267c145974f5d82940f7570898a2b">bswap128</a> (<a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a> x)</td></tr>
-
-<tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#3cb25de6938ea0ed22a4578046ee8ff7">htonlll</a> (<a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a> x)</td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Host to network long long long (128).  <a href="#3cb25de6938ea0ed22a4578046ee8ff7"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned long long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#35f80325e152b9b1312ffcb6f7f7090e">htonll</a> (unsigned long long x)</td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Host to network long long.  <a href="#35f80325e152b9b1312ffcb6f7f7090e"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">unsigned long long&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9">ntohll</a> (unsigned long long x)</td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Network to host long long.  <a href="#42cb04fb7e922498e67f186fc871c2e9"></a><br></td></tr>
-<tr><td class="memItemLeft" nowrap align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#1515ccc4154cf4d3d2137e118d3f4b87">ya_align64</a> (size_t x)</td></tr>
-
-<tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Align to a 64 bit boundary.  <a href="#1515ccc4154cf4d3d2137e118d3f4b87"></a><br></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">size_t&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="utils_8h.html#6aef85dd48d325ba885eb0103c64f914">ya_string_escape</a> (uint8_t *string, size_t string_size, int raw)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Escape characters in a string.  <a href="#6aef85dd48d325ba885eb0103c64f914"></a><br></td></tr>
@@ -50,145 +39,25 @@
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Strip extension from filename and replace with new extension.  <a href="#942a1e1765e8711a6d87b3404ee5f505"></a><br></td></tr>
 </table>
+<hr><h2>Define Documentation</h2>
+<a class="anchor" name="369266c24eacffb87046522897a570d5"></a><!-- doxytag: member="utils.h::_GNU_SOURCE" ref="369266c24eacffb87046522897a570d5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _GNU_SOURCE          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="utils_8h-source.html#l00028">28</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
+
+</div>
+</div><p>
 <hr><h2>Function Documentation</h2>
-<a class="anchor" name="c28267c145974f5d82940f7570898a2b"></a><!-- doxytag: member="utils.h::bswap128" ref="c28267c145974f5d82940f7570898a2b" args="(uint128_t x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a> bswap128           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a>&nbsp;</td>
-          <td class="paramname"> <em>x</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-
-<p>Definition at line <a class="el" href="utils_8h-source.html#l00030">30</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
-
-<p>References <a class="el" href="unionbswap128__t.html#9b779a78d4303432dfacb1e81ff923e5">bswap128_t::in</a>, and <a class="el" href="utils_8h-source.html#l00024">bswap128_t::v</a>.</p>
-
-<p>Referenced by <a class="el" href="utils_8h-source.html#l00046">htonlll()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="35f80325e152b9b1312ffcb6f7f7090e"></a><!-- doxytag: member="utils.h::htonll" ref="35f80325e152b9b1312ffcb6f7f7090e" args="(unsigned long long x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned long long htonll           </td>
-          <td>(</td>
-          <td class="paramtype">unsigned long long&nbsp;</td>
-          <td class="paramname"> <em>x</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Host to network long long. 
-<p>
-
-<p>Definition at line <a class="el" href="utils_8h-source.html#l00057">57</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
-
-<p>Referenced by <a class="el" href="leaf_8c-source.html#l00064">ya_binary_float()</a>, <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>, <a class="el" href="leaf_8c-source.html#l00086">ya_integer()</a>, and <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="3cb25de6938ea0ed22a4578046ee8ff7"></a><!-- doxytag: member="utils.h::htonlll" ref="3cb25de6938ea0ed22a4578046ee8ff7" args="(uint128_t x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a> htonlll           </td>
-          <td>(</td>
-          <td class="paramtype"><a class="el" href="types_8h.html#2d00695da4b0795588770b839f9f280e">uint128_t</a>&nbsp;</td>
-          <td class="paramname"> <em>x</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Host to network long long long (128). 
-<p>
-
-<p>Definition at line <a class="el" href="utils_8h-source.html#l00046">46</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
-
-<p>References <a class="el" href="utils_8h-source.html#l00030">bswap128()</a>.</p>
-
-<p>Referenced by <a class="el" href="leaf_8c-source.html#l00086">ya_integer()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="42cb04fb7e922498e67f186fc871c2e9"></a><!-- doxytag: member="utils.h::ntohll" ref="42cb04fb7e922498e67f186fc871c2e9" args="(unsigned long long x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">unsigned long long ntohll           </td>
-          <td>(</td>
-          <td class="paramtype">unsigned long long&nbsp;</td>
-          <td class="paramname"> <em>x</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Network to host long long. 
-<p>
-
-<p>Definition at line <a class="el" href="utils_8h-source.html#l00070">70</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
-
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>.</p>
-
-</div>
-</div><p>
-<a class="anchor" name="1515ccc4154cf4d3d2137e118d3f4b87"></a><!-- doxytag: member="utils.h::ya_align64" ref="1515ccc4154cf4d3d2137e118d3f4b87" args="(size_t x)" -->
-<div class="memitem">
-<div class="memproto">
-      <table class="memname">
-        <tr>
-          <td class="memname">size_t ya_align64           </td>
-          <td>(</td>
-          <td class="paramtype">size_t&nbsp;</td>
-          <td class="paramname"> <em>x</em>          </td>
-          <td>&nbsp;)&nbsp;</td>
-          <td><code> [inline]</code></td>
-        </tr>
-      </table>
-</div>
-<div class="memdoc">
-
-<p>
-Align to a 64 bit boundary. 
-<p>
-<dl compact><dt><b>Parameters:</b></dt><dd>
-  <table border="0" cellspacing="2" cellpadding="0">
-    <tr><td valign="top"></td><td valign="top"><em>x</em>&nbsp;</td><td>A size of an object in memory </td></tr>
-  </table>
-</dl>
-<dl class="return" compact><dt><b>Returns:</b></dt><dd>Either the size if it was aligned, or the next larger size that is aligned. </dd></dl>
-
-<p>Definition at line <a class="el" href="utils_8h-source.html#l00083">83</a> of file <a class="el" href="utils_8h-source.html">utils.h</a>.</p>
-
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>, and <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>.</p>
-
-</div>
-</div><p>
 <a class="anchor" name="942a1e1765e8711a6d87b3404ee5f505"></a><!-- doxytag: member="utils.h::ya_new_extension" ref="942a1e1765e8711a6d87b3404ee5f505" args="(char *filename, char *new_extension)" -->
 <div class="memitem">
 <div class="memproto">
@@ -225,9 +94,9 @@ Strip extension from filename and replace with new extension.
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>Filename with new extension, allocated. </dd></dl>
 
-<p>Definition at line <a class="el" href="utils_8c-source.html#l00132">132</a> of file <a class="el" href="utils_8c-source.html">utils.c</a>.</p>
+<p>Definition at line <a class="el" href="utils_8c-source.html#l00142">142</a> of file <a class="el" href="utils_8c-source.html">utils.c</a>.</p>
 
-<p>Referenced by <a class="el" href="main_8c-source.html#l00043">ya_parse_options()</a>.</p>
+<p>Referenced by <a class="el" href="main_8c-source.html#l00054">ya_parse_options()</a>.</p>
 
 </div>
 </div><p>
@@ -275,14 +144,14 @@ The original string is modified by this function.<p>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The number of characters after decoding. </dd></dl>
 
-<p>Definition at line <a class="el" href="utils_8c-source.html#l00027">27</a> of file <a class="el" href="utils_8c-source.html">utils.c</a>.</p>
+<p>Definition at line <a class="el" href="utils_8c-source.html#l00037">37</a> of file <a class="el" href="utils_8c-source.html">utils.c</a>.</p>
 
-<p>References <a class="el" href="error_8c-source.html#l00022">ya_error()</a>.</p>
+<p>References <a class="el" href="error_8c-source.html#l00032">ya_error()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

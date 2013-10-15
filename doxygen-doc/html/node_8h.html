@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/node.h File Reference</title>
+<title>yyast-1.0.1: yyast/node.h File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -24,6 +24,8 @@
 <a href="node_8h-source.html">Go to the source code of this file.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Defines</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="node_8h.html#369266c24eacffb87046522897a570d5">_GNU_SOURCE</a></td></tr>
+
 <tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="node_8h.html#47fd158c08235ef375761ccb72c95b80">YA_BRANCH</a>(name,...)&nbsp;&nbsp;&nbsp;ya_branch(name, __VA_ARGS__, NULL)</td></tr>
 
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Define a new node.  <a href="#47fd158c08235ef375761ccb72c95b80"></a><br></td></tr>
@@ -48,6 +50,23 @@
 <tr><td class="mdescLeft">&nbsp;</td><td class="mdescRight">Save the node to a file.  <a href="#1bd01f7713a7aa4701734efe5f04a6aa"></a><br></td></tr>
 </table>
 <hr><h2>Define Documentation</h2>
+<a class="anchor" name="369266c24eacffb87046522897a570d5"></a><!-- doxytag: member="node.h::_GNU_SOURCE" ref="369266c24eacffb87046522897a570d5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _GNU_SOURCE          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="node_8h-source.html#l00028">28</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
+
+</div>
+</div><p>
 <a class="anchor" name="47fd158c08235ef375761ccb72c95b80"></a><!-- doxytag: member="node.h::YA_BRANCH" ref="47fd158c08235ef375761ccb72c95b80" args="(name,...)" -->
 <div class="memitem">
 <div class="memproto">
@@ -79,9 +98,9 @@ Used in a yacc action to start a new node. If a list is added to a branch, then 
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A node </dd></dl>
 
-<p>Definition at line <a class="el" href="node_8h-source.html#l00030">30</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
+<p>Definition at line <a class="el" href="node_8h-source.html#l00041">41</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>, and <a class="el" href="header_8c-source.html#l00030">ya_header()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>, and <a class="el" href="header_8c-source.html#l00040">ya_header()</a>.</p>
 
 </div>
 </div><p>
@@ -112,7 +131,7 @@ Used if a node normally has children, except in this case.<p>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A empty node. </dd></dl>
 
-<p>Definition at line <a class="el" href="node_8h-source.html#l00038">38</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
+<p>Definition at line <a class="el" href="node_8h-source.html#l00049">49</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
 
 </div>
 </div><p>
@@ -131,9 +150,9 @@ Used if a node normally has children, except in this case.<p>
 An empty list contains no nodes, but can be used to start a sequence of nodes in the grammar. 
 <p>
 
-<p>Definition at line <a class="el" href="node_8h-source.html#l00051">51</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
+<p>Definition at line <a class="el" href="node_8h-source.html#l00062">62</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>.</p>
 
 </div>
 </div><p>
@@ -164,9 +183,9 @@ Used in yacc to create a list of nodes. When adding a list to an other list or n
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A list </dd></dl>
 
-<p>Definition at line <a class="el" href="node_8h-source.html#l00047">47</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
+<p>Definition at line <a class="el" href="node_8h-source.html#l00058">58</a> of file <a class="el" href="node_8h-source.html">node.h</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>.</p>
 
 </div>
 </div><p>
@@ -208,9 +227,9 @@ Create a node from subnodes. This will free memory used by the subnodes. If a li
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A new AST NODE. </dd></dl>
 
-<p>Definition at line <a class="el" href="node_8c-source.html#l00140">140</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
+<p>Definition at line <a class="el" href="node_8c-source.html#l00151">151</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
 
-<p>References <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>, and <a class="el" href="types_8h-source.html#l00031">YA_NODE_TYPE_BRANCH</a>.</p>
+<p>References <a class="el" href="node_8c-source.html#l00049">ya_generic_nodev()</a>, and <a class="el" href="types_8h-source.html#l00046">YA_NODE_TYPE_BRANCH</a>.</p>
 
 </div>
 </div><p>
@@ -251,9 +270,9 @@ Create a list of subnodes, when included in a list or node, it expands as if the
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A new AST NODE. </dd></dl>
 
-<p>Definition at line <a class="el" href="node_8c-source.html#l00152">152</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
+<p>Definition at line <a class="el" href="node_8c-source.html#l00163">163</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
 
-<p>References <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>, and <a class="el" href="types_8h-source.html#l00038">YA_NODE_TYPE_LIST</a>.</p>
+<p>References <a class="el" href="node_8c-source.html#l00049">ya_generic_nodev()</a>, and <a class="el" href="types_8h-source.html#l00053">YA_NODE_TYPE_LIST</a>.</p>
 
 </div>
 </div><p>
@@ -292,16 +311,16 @@ Save the node to a file.
   </table>
 </dl>
 
-<p>Definition at line <a class="el" href="node_8c-source.html#l00164">164</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
+<p>Definition at line <a class="el" href="node_8c-source.html#l00175">175</a> of file <a class="el" href="node_8c-source.html">node.c</a>.</p>
 
-<p>References <a class="el" href="types_8h-source.html#l00072">ya_t::node</a>, and <a class="el" href="types_8h-source.html#l00069">ya_t::size</a>.</p>
+<p>References <a class="el" href="types_8h-source.html#l00087">ya_t::node</a>, and <a class="el" href="types_8h-source.html#l00084">ya_t::size</a>.</p>
 
-<p>Referenced by <a class="el" href="main_8c-source.html#l00094">ya_main()</a>.</p>
+<p>Referenced by <a class="el" href="main_8c-source.html#l00105">ya_main()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

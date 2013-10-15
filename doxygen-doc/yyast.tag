@@ -27,6 +27,13 @@
     </member>
     <member kind="define">
       <type>#define</type>
+      <name>HAVE_PYTHON</name>
+      <anchorfile>config_8h.html</anchorfile>
+      <anchor>693c2fe86c8ace0c706fa42efecc1b23</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
       <name>HAVE_STDINT_H</name>
       <anchorfile>config_8h.html</anchorfile>
       <anchor>b6cd6d1c63c1e26ea2d4537b77148354</anchor>
@@ -72,6 +79,13 @@
       <name>HAVE_UNISTD_H</name>
       <anchorfile>config_8h.html</anchorfile>
       <anchor>219b06937831d0da94d801ab13987639</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>HAVE___BUILTIN_BSWAP64</name>
+      <anchorfile>config_8h.html</anchorfile>
+      <anchor>a9b381cb86183a8a688cfd53adc4290f</anchor>
       <arglist></arglist>
     </member>
     <member kind="define">
@@ -160,6 +174,13 @@
     <includes id="leaf_8h" name="leaf.h" local="no" imported="no">yyast/leaf.h</includes>
     <includes id="count_8h" name="count.h" local="no" imported="no">yyast/count.h</includes>
     <includes id="utils_8h" name="utils.h" local="no" imported="no">yyast/utils.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>count_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>ya_t</type>
       <name>ya_count</name>
@@ -299,6 +320,13 @@
     <filename>error_8c</filename>
     <includes id="error_8h" name="error.h" local="no" imported="no">yyast/error.h</includes>
     <includes id="count_8h" name="count.h" local="no" imported="no">yyast/count.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>error_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>void</type>
       <name>ya_error</name>
@@ -326,6 +354,13 @@
     <includes id="node_8h" name="node.h" local="no" imported="no">yyast/node.h</includes>
     <includes id="header_8h" name="header.h" local="no" imported="no">yyast/header.h</includes>
     <includes id="count_8h" name="count.h" local="no" imported="no">yyast/count.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>header_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>ya_t</type>
       <name>ya_header</name>
@@ -339,6 +374,13 @@
     <path>/Users/takev/Projects/yyast/yyast/</path>
     <filename>header_8h</filename>
     <includes id="types_8h" name="types.h" local="no" imported="no">yyast/types.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>header_8h.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="define">
       <type>#define</type>
       <name>YA_HEADER</name>
@@ -363,6 +405,13 @@
     <includes id="utils_8h" name="utils.h" local="no" imported="no">yyast/utils.h</includes>
     <includes id="error_8h" name="error.h" local="no" imported="no">yyast/error.h</includes>
     <class kind="union">translate_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>leaf_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>ya_t</type>
       <name>ya_literal</name>
@@ -505,6 +554,13 @@
     <includes id="utils_8h" name="utils.h" local="no" imported="no">yyast/utils.h</includes>
     <includes id="node_8h" name="node.h" local="no" imported="no">yyast/node.h</includes>
     <includes id="count_8h" name="count.h" local="no" imported="no">yyast/count.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>main_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>int</type>
       <name>yyparse</name>
@@ -575,6 +631,13 @@
     <includes id="utils_8h" name="utils.h" local="no" imported="no">yyast/utils.h</includes>
     <includes id="config_8h" name="config.h" local="no" imported="no">yyast/config.h</includes>
     <includes id="count_8h" name="count.h" local="no" imported="no">yyast/count.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>node_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>ya_t</type>
       <name>ya_generic_nodev</name>
@@ -623,6 +686,13 @@
     <path>/Users/takev/Projects/yyast/yyast/</path>
     <filename>node_8h</filename>
     <includes id="types_8h" name="types.h" local="no" imported="no">yyast/types.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>node_8h.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="define">
       <type>#define</type>
       <name>YA_BRANCH</name>
@@ -680,6 +750,20 @@
     <class kind="struct">ya_position_s</class>
     <class kind="struct">ya_node_s</class>
     <class kind="struct">ya_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>types_8h.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
+    <member kind="define">
+      <type>#define</type>
+      <name>restrict</name>
+      <anchorfile>types_8h.html</anchorfile>
+      <anchor>080abdcb9c02438f1cd2bb707af25af8</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="define">
       <type>#define</type>
       <name>YA_NODE_TYPE_NULL</name>
@@ -820,6 +904,13 @@
     <filename>utils_8c</filename>
     <includes id="utils_8h" name="utils.h" local="no" imported="no">yyast/utils.h</includes>
     <includes id="error_8h" name="error.h" local="no" imported="no">yyast/error.h</includes>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>utils_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>size_t</type>
       <name>ya_string_escape</name>
@@ -842,40 +933,12 @@
     <includes id="types_8h" name="types.h" local="no" imported="no">yyast/types.h</includes>
     <includes id="config_8h" name="config.h" local="no" imported="no">yyast/config.h</includes>
     <class kind="union">bswap128_t</class>
-    <member kind="function">
-      <type>uint128_t</type>
-      <name>bswap128</name>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
       <anchorfile>utils_8h.html</anchorfile>
-      <anchor>c28267c145974f5d82940f7570898a2b</anchor>
-      <arglist>(uint128_t x)</arglist>
-    </member>
-    <member kind="function">
-      <type>uint128_t</type>
-      <name>htonlll</name>
-      <anchorfile>utils_8h.html</anchorfile>
-      <anchor>3cb25de6938ea0ed22a4578046ee8ff7</anchor>
-      <arglist>(uint128_t x)</arglist>
-    </member>
-    <member kind="function">
-      <type>unsigned long long</type>
-      <name>htonll</name>
-      <anchorfile>utils_8h.html</anchorfile>
-      <anchor>35f80325e152b9b1312ffcb6f7f7090e</anchor>
-      <arglist>(unsigned long long x)</arglist>
-    </member>
-    <member kind="function">
-      <type>unsigned long long</type>
-      <name>ntohll</name>
-      <anchorfile>utils_8h.html</anchorfile>
-      <anchor>42cb04fb7e922498e67f186fc871c2e9</anchor>
-      <arglist>(unsigned long long x)</arglist>
-    </member>
-    <member kind="function">
-      <type>size_t</type>
-      <name>ya_align64</name>
-      <anchorfile>utils_8h.html</anchorfile>
-      <anchor>1515ccc4154cf4d3d2137e118d3f4b87</anchor>
-      <arglist>(size_t x)</arglist>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
     </member>
     <member kind="function">
       <type>size_t</type>
@@ -898,6 +961,13 @@
     <filename>yadump_8c</filename>
     <includes id="yyast_8h" name="yyast.h" local="no" imported="no">yyast/yyast.h</includes>
     <class kind="union">type64_t</class>
+    <member kind="define">
+      <type>#define</type>
+      <name>_GNU_SOURCE</name>
+      <anchorfile>yadump_8c.html</anchorfile>
+      <anchor>369266c24eacffb87046522897a570d5</anchor>
+      <arglist></arglist>
+    </member>
     <member kind="function">
       <type>void</type>
       <name>indent</name>
