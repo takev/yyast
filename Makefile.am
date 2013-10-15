@@ -1,5 +1,5 @@
 ACLOCAL_AMFLAGS = -I m4
-SUBDIRS = yyast
+SUBDIRS = yyast pyext
 
 include am/doxygen.am
 

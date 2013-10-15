@@ -32,7 +32,7 @@ DX_XML_FEATURE(OFF)
 DX_PDF_FEATURE(OFF)
 DX_PS_FEATURE(OFF)
 
-AC_PROG_CXX
+AC_PROG_CC([clang gcc cc])
 AC_PROG_LEX
 AC_PROG_YACC
 AC_PROG_INSTALL
@@ -40,7 +40,10 @@ AC_PROG_LIBTOOL
 
 AC_C_BIGENDIAN
 
+AX_PYTHON_DEVEL
+AM_PATH_PYTHON
+
 AC_CONFIG_HEADERS([yyast/config.h])
-AC_CONFIG_FILES([Makefile yyast/Makefile yyast/yyast.pc])
+AC_CONFIG_FILES([Makefile yyast/Makefile yyast/yyast.pc pyext/Makefile])
 AC_OUTPUT
 
