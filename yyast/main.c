@@ -22,6 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <getopt.h>
@@ -117,9 +118,10 @@ int ya_main(int argc, char *argv[], char *extension)
         }
     }
 
-    asprintf(&reposition_s, "1 \"%s\"", ya_input_filename);
-    ya_reposition(reposition_s, strlen(reposition_s));
-    free(reposition_s);
+    if (asprintf(&reposition_s, "1 \"%s\"", ya_input_filename) >= 0) {
+        ya_reposition(reposition_s, strlen(reposition_s));
+        free(reposition_s);
+    }
 
     yyparse();
     fclose(yyin);

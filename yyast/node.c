@@ -22,6 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <inttypes.h>
@@ -32,6 +33,7 @@
 #include <unistd.h>
 #include <string.h>
 #include <stdarg.h>
+#include <arpa/inet.h>
 #include <yyast/node.h>
 #include <yyast/utils.h>
 #include <yyast/config.h>

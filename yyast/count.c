@@ -23,6 +23,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  */
 
+#define _GNU_SOURCE
+#include <string.h>
 #include <sys/types.h>
 #include <yyast/node.h>
 #include <yyast/leaf.h>

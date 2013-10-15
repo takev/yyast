@@ -1,7 +1,7 @@
 
 DEFAULT_INCLUDES=-I$(top_srcdir)
 
-AM_CFLAGS = -Wall -W -Werror -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=c99 $(DEFAULT_INCLUDES)
+AM_CFLAGS = -Wall -W -pedantic -Wno-sign-compare -Wno-long-long -Wno-unused -std=c99 $(DEFAULT_INCLUDES)
 
 lib_LTLIBRARIES = libyyast.la
 bin_PROGRAMS = yadump

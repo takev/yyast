@@ -40,6 +40,16 @@ AC_PROG_LIBTOOL
 
 AC_C_BIGENDIAN
 
+AC_MSG_CHECKING(for __builtin_bswap64)
+AC_TRY_LINK([],[
+    __builtin_bswap64(0x12345678);
+],[
+    AC_DEFINE(HAVE___BUILTIN_BSWAP64, 1, [Define to 1 if you have the '__builtin_bswap64' function.])
+    AC_MSG_RESULT(yes)
+],[
+    AC_MSG_RESULT(no)
+])
+
 AX_PYTHON_DEVEL
 AM_PATH_PYTHON
 

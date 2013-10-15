@@ -25,11 +25,16 @@
 #ifndef YA_TYPES_H
 #define YA_TYPES_H
 
+#define _GNU_SOURCE
 #include <stddef.h>
 #include <stdlib.h>
 #include <stdint.h>
-#include <strings.h>
+#include <string.h>
 #include <sys/param.h>
+
+#if __STDC_VERSION__ < 199901L
+#define restrict
+#endif
 
 typedef __uint128_t uint128_t;
 

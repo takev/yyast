@@ -22,6 +22,7 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdio.h>
 #include <stdarg.h>
@@ -32,14 +33,17 @@ void ya_error(const char *message, ...)
 {
     char *msg;
     va_list ap;
+    int nr_characters;
 
     va_start(ap, message);
-    vasprintf(&msg, message, ap);
+    nr_characters = vasprintf(&msg, message, ap);
     va_end(ap);
 
-    fprintf(stderr, "line %i:%i, %s\n", ya_current_position.line, ya_current_position.column, msg);
+    if (nr_characters >= 0) {
+        fprintf(stderr, "line %i:%i, %s\n", ya_current_position.line, ya_current_position.column, msg);
+        free(msg);
+    }
 
-    free(msg);
     exit(1);
 }
 

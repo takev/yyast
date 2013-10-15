@@ -25,6 +25,7 @@
 #ifndef YA_NODE_H
 #define YA_NODE_H
 
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <yyast/types.h>
 

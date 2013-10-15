@@ -22,11 +22,13 @@
  * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
  * POSSIBILITY OF SUCH DAMAGE.
  */
+#define _GNU_SOURCE
 #include <unistd.h>
 #include <fcntl.h>
 #include <string.h>
 #include <sys/mman.h>
 #include <sys/stat.h>
+#include <arpa/inet.h>
 #include <yyast/yyast.h>
 
 typedef union {
@@ -101,7 +103,7 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         if (inner_size == sizeof (t64)) {
             memcpy(t64.c, node->data, sizeof (t64));
             t64.u = ntohll(t64.u);
-            fprintf(stdout, " +%lli\n", t64.i);
+            fprintf(stdout, " +%lli\n", (long long int)t64.i);
         } else {
             fprintf(stdout, " +i%i\n", (int)inner_size);
         }
@@ -110,7 +112,7 @@ off_t node_decode(char *buf, size_t buf_size, unsigned int level)
         if (inner_size == sizeof (t64)) {
             memcpy(t64.c, node->data, sizeof (t64));
             t64.u = ntohll(t64.u);
-            fprintf(stdout, " -%llu\n", t64.u);
+            fprintf(stdout, " -%llu\n", (long long unsigned)t64.u);
         } else {
             fprintf(stdout, " -i%i\n", (int)inner_size);
         }

@@ -25,10 +25,20 @@
 #ifndef YA_UTILS_H
 #define YA_UTILS_H
 
+#define _GNU_SOURCE
 #include <stdlib.h>
 #include <stdint.h>
 #include <yyast/types.h>
 #include <yyast/config.h>
+
+#ifndef HAVE___BUILTIN_BSWAP64
+#ifdef __linux
+#include <byteswap.h>
+#define __builtin_bswap64(x) __bswap_64(x)
+#else
+#error "Do not know how to replace __builtin_bswap64 on this platform."
+#endif
+#endif
 
 typedef union {
     uint128_t   v;
@@ -37,7 +47,7 @@ typedef union {
     } in;
 } bswap128_t;
 
-inline uint128_t bswap128(uint128_t x)
+static inline uint128_t bswap128(uint128_t x)
 {
     bswap128_t  tmp128;
     uint64_t    tmp64;
@@ -53,7 +63,7 @@ inline uint128_t bswap128(uint128_t x)
 
 /** Host to network long long long (128)
  */
-inline uint128_t htonlll(uint128_t x)
+static inline uint128_t htonlll(uint128_t x)
 {
 #ifdef WORDS_BIGENDIAN
     return x;
@@ -64,7 +74,7 @@ inline uint128_t htonlll(uint128_t x)
 
 /** Host to network long long.
  */
-inline unsigned long long htonll(unsigned long long x)
+static inline unsigned long long htonll(unsigned long long x)
 {
 #ifdef WORDS_BIGENDIAN
     return x;
@@ -73,11 +83,9 @@ inline unsigned long long htonll(unsigned long long x)
 #endif
 }
 
-inline 
-
 /** Network to host long long.
  */
-inline unsigned long long ntohll(unsigned long long x)
+static inline unsigned long long ntohll(unsigned long long x)
 {
 #ifdef WORDS_BIGENDIAN
     return x;
@@ -90,7 +98,7 @@ inline unsigned long long ntohll(unsigned long long x)
  * @param x    A size of an object in memory
  * @returns    Either the size if it was aligned, or the next larger size that is aligned.
  */
-inline size_t ya_align64(size_t x)
+static inline size_t ya_align64(size_t x)
 {
     if (sizeof (x) == 4) {
         return (x + 7) & 0xfffffff8;
