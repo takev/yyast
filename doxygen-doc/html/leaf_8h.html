@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/leaf.h File Reference</title>
+<title>yyast-1.0.1: yyast/leaf.h File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -77,7 +77,7 @@
 Leaf node, does not contain data or children. 
 <p>
 
-<p>Definition at line <a class="el" href="leaf_8h-source.html#l00108">108</a> of file <a class="el" href="leaf_8h-source.html">leaf.h</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8h-source.html#l00118">118</a> of file <a class="el" href="leaf_8h-source.html">leaf.h</a>.</p>
 
 </div>
 </div><p>
@@ -96,7 +96,7 @@ Leaf node, does not contain data or children.
 Null node, unused child entry. 
 <p>
 
-<p>Definition at line <a class="el" href="leaf_8h-source.html#l00116">116</a> of file <a class="el" href="leaf_8h-source.html">leaf.h</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8h-source.html#l00126">126</a> of file <a class="el" href="leaf_8h-source.html">leaf.h</a>.</p>
 
 </div>
 </div><p>
@@ -221,11 +221,11 @@ The RFC 4648 is used as a guide for encoding integers.<p>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The decoded literal. </dd></dl>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00086">86</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00097">97</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="utils_8h-source.html#l00057">htonll()</a>, <a class="el" href="utils_8h-source.html#l00046">htonlll()</a>, <a class="el" href="error_8c-source.html#l00022">ya_error()</a>, and <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>.</p>
+<p>References <a class="el" href="error_8c-source.html#l00032">ya_error()</a>, and <a class="el" href="leaf_8c-source.html#l00042">ya_literal()</a>.</p>
 
-<p>Referenced by <a class="el" href="leaf_8c-source.html#l00166">ya_negative_integer()</a>, and <a class="el" href="leaf_8c-source.html#l00161">ya_positive_integer()</a>.</p>
+<p>Referenced by <a class="el" href="leaf_8c-source.html#l00177">ya_negative_integer()</a>, and <a class="el" href="leaf_8c-source.html#l00172">ya_positive_integer()</a>.</p>
 
 </div>
 </div><p>
@@ -249,9 +249,9 @@ The RFC 4648 is used as a guide for encoding integers.<p>
 Leaf node, does not contain data or children. 
 <p>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00151">151</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00162">162</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00030">YA_NODE_TYPE_LEAF</a>.</p>
+<p>References <a class="el" href="leaf_8c-source.html#l00042">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00045">YA_NODE_TYPE_LEAF</a>.</p>
 
 </div>
 </div><p>
@@ -304,11 +304,11 @@ Create an literal node.
   </table>
 </dl>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00031">31</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00042">42</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="types_8h-source.html#l00045">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00061">ya_node_s::data</a>, <a class="el" href="types_8h-source.html#l00046">ya_position_s::file</a>, <a class="el" href="utils_8h-source.html#l00057">htonll()</a>, <a class="el" href="types_8h-source.html#l00044">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00055">ya_node_s::name</a>, <a class="el" href="types_8h-source.html#l00072">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00070">ya_t::position</a>, <a class="el" href="types_8h-source.html#l00057">ya_node_s::position</a>, <a class="el" href="types_8h-source.html#l00056">ya_node_s::size</a>, <a class="el" href="types_8h-source.html#l00069">ya_t::size</a>, <a class="el" href="types_8h-source.html#l00071">ya_t::type</a>, <a class="el" href="types_8h-source.html#l00060">ya_node_s::type</a>, <a class="el" href="utils_8h-source.html#l00083">ya_align64()</a>, and <a class="el" href="count_8c-source.html#l00022">ya_previous_position</a>.</p>
+<p>References <a class="el" href="types_8h-source.html#l00060">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00076">ya_node_s::data</a>, <a class="el" href="types_8h-source.html#l00061">ya_position_s::file</a>, <a class="el" href="types_8h-source.html#l00059">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00070">ya_node_s::name</a>, <a class="el" href="types_8h-source.html#l00087">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00085">ya_t::position</a>, <a class="el" href="types_8h-source.html#l00072">ya_node_s::position</a>, <a class="el" href="types_8h-source.html#l00071">ya_node_s::size</a>, <a class="el" href="types_8h-source.html#l00084">ya_t::size</a>, <a class="el" href="types_8h-source.html#l00086">ya_t::type</a>, <a class="el" href="types_8h-source.html#l00075">ya_node_s::type</a>, and <a class="el" href="count_8c-source.html#l00034">ya_previous_position</a>.</p>
 
-<p>Referenced by <a class="el" href="leaf_8c-source.html#l00064">ya_binary_float()</a>, <a class="el" href="leaf_8c-source.html#l00086">ya_integer()</a>, <a class="el" href="leaf_8c-source.html#l00151">ya_leaf()</a>, <a class="el" href="leaf_8c-source.html#l00156">ya_null()</a>, and <a class="el" href="leaf_8c-source.html#l00146">ya_text()</a>.</p>
+<p>Referenced by <a class="el" href="leaf_8c-source.html#l00075">ya_binary_float()</a>, <a class="el" href="leaf_8c-source.html#l00097">ya_integer()</a>, <a class="el" href="leaf_8c-source.html#l00162">ya_leaf()</a>, <a class="el" href="leaf_8c-source.html#l00167">ya_null()</a>, and <a class="el" href="leaf_8c-source.html#l00157">ya_text()</a>.</p>
 
 </div>
 </div><p>
@@ -366,9 +366,9 @@ The RFC 4648 is used as a guide for encoding integers. The integer literal shoul
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The decoded literal. </dd></dl>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00166">166</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00177">177</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="leaf_8c-source.html#l00086">ya_integer()</a>, and <a class="el" href="types_8h-source.html#l00034">YA_NODE_TYPE_NEGATIVE_INTEGER</a>.</p>
+<p>References <a class="el" href="leaf_8c-source.html#l00097">ya_integer()</a>, and <a class="el" href="types_8h-source.html#l00049">YA_NODE_TYPE_NEGATIVE_INTEGER</a>.</p>
 
 </div>
 </div><p>
@@ -392,9 +392,9 @@ The RFC 4648 is used as a guide for encoding integers. The integer literal shoul
 Null node, unused child entry. 
 <p>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00156">156</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00167">167</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00029">YA_NODE_TYPE_NULL</a>.</p>
+<p>References <a class="el" href="leaf_8c-source.html#l00042">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00044">YA_NODE_TYPE_NULL</a>.</p>
 
 </div>
 </div><p>
@@ -452,9 +452,9 @@ The RFC 4648 is used as a guide for encoding integers. The integer literal shoul
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The decoded literal. </dd></dl>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00161">161</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00172">172</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="leaf_8c-source.html#l00086">ya_integer()</a>, and <a class="el" href="types_8h-source.html#l00033">YA_NODE_TYPE_POSITIVE_INTEGER</a>.</p>
+<p>References <a class="el" href="leaf_8c-source.html#l00097">ya_integer()</a>, and <a class="el" href="types_8h-source.html#l00048">YA_NODE_TYPE_POSITIVE_INTEGER</a>.</p>
 
 </div>
 </div><p>
@@ -501,16 +501,16 @@ Create text literal node for a string literal.
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The decoded literal. </dd></dl>
 
-<p>Definition at line <a class="el" href="leaf_8c-source.html#l00146">146</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
+<p>Definition at line <a class="el" href="leaf_8c-source.html#l00157">157</a> of file <a class="el" href="leaf_8c-source.html">leaf.c</a>.</p>
 
-<p>References <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00032">YA_NODE_TYPE_TEXT</a>.</p>
+<p>References <a class="el" href="leaf_8c-source.html#l00042">ya_literal()</a>, and <a class="el" href="types_8h-source.html#l00047">YA_NODE_TYPE_TEXT</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

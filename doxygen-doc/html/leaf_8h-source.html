@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/leaf.h Source File</title>
+<title>yyast-1.0.1: yyast/leaf.h Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -13,49 +13,59 @@
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>yyast/leaf.h</h1><a href="leaf_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*  Copyright 2011 Take Vos</span>
-<a name="l00002"></a>00002 <span class="comment"> *</span>
-<a name="l00003"></a>00003 <span class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</span>
-<a name="l00004"></a>00004 <span class="comment"> * you may not use this file except in compliance with the License.</span>
-<a name="l00005"></a>00005 <span class="comment"> * You may obtain a copy of the License at</span>
+<h1>yyast/leaf.h</h1><a href="leaf_8h.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) 2011-2013, Take Vos</span>
+<a name="l00002"></a>00002 <span class="comment"> * All rights reserved.</span>
+<a name="l00003"></a>00003 <span class="comment"> *</span>
+<a name="l00004"></a>00004 <span class="comment"> * Redistribution and use in source and binary forms, with or without</span>
+<a name="l00005"></a>00005 <span class="comment"> * modification, are permitted provided that the following conditions are met:</span>
 <a name="l00006"></a>00006 <span class="comment"> *</span>
-<a name="l00007"></a>00007 <span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
-<a name="l00008"></a>00008 <span class="comment"> *</span>
-<a name="l00009"></a>00009 <span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
-<a name="l00010"></a>00010 <span class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</span>
-<a name="l00011"></a>00011 <span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<a name="l00012"></a>00012 <span class="comment"> * See the License for the specific language governing permissions and</span>
-<a name="l00013"></a>00013 <span class="comment"> * limitations under the License.</span>
-<a name="l00014"></a>00014 <span class="comment"> */</span>
-<a name="l00015"></a>00015 <span class="preprocessor">#ifndef YA_LEAF_H</span>
-<a name="l00016"></a>00016 <span class="preprocessor"></span><span class="preprocessor">#define YA_LEAF_H</span>
-<a name="l00017"></a>00017 <span class="preprocessor"></span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">yyast/types.h</a>&gt;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;<a class="code" href="utils_8h.html">yyast/utils.h</a>&gt;</span>
-<a name="l00020"></a>00020 
-<a name="l00028"></a>00028 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#3d5858be2920c79cbb318d121fd1380c" title="Create an literal node.">ya_literal</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, <span class="keyword">const</span> <span class="keywordtype">void</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size);
-<a name="l00029"></a>00029 
-<a name="l00039"></a>00039 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#dd0a658602db05fc9724e64912dd148d">ya_binary_float</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <span class="keyword">const</span> <span class="keywordtype">char</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base, <span class="keywordtype">int</span> nr_bits);
-<a name="l00040"></a>00040 
-<a name="l00056"></a>00056 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#e153002eb7f3a546fcee4fd939db0a0e" title="Create literal from an integer literal string.">ya_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, <span class="keyword">const</span> <span class="keywordtype">char</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
-<a name="l00057"></a>00057 
-<a name="l00073"></a>00073 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#7325b5fed2512ce7fb010ca6e62603e0" title="Create literal from an positive integer literal string.">ya_positive_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <span class="keyword">const</span> <span class="keywordtype">char</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
-<a name="l00074"></a>00074 
-<a name="l00091"></a>00091 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#19b64920e54edc663120ab05676b915d" title="Create literal from an negative integer literal string.">ya_negative_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <span class="keyword">const</span> <span class="keywordtype">char</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
-<a name="l00092"></a>00092 
-<a name="l00100"></a>00100 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#38e2f6e5cddb88189297358e3c77927a" title="Create text literal node for a string literal.">ya_text</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name, <span class="keyword">const</span> <span class="keywordtype">char</span> * restrict buf, <span class="keywordtype">size_t</span> buf_size);
-<a name="l00101"></a>00101 
-<a name="l00104"></a>00104 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#7ee38214746de02680f07c629607b4b0" title="Leaf node, does not contain data or children.">ya_leaf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * restrict name);
-<a name="l00105"></a>00105 
-<a name="l00108"></a><a class="code" href="leaf_8h.html#fdf911c8452b09c6d74409e2374d94e7">00108</a> <span class="preprocessor">#define YA_LEAF(name) ya_leaf(name)</span>
-<a name="l00109"></a>00109 <span class="preprocessor"></span>
-<a name="l00112"></a>00112 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#94569995dd4e557d523117f5948afcd1" title="Null node, unused child entry.">ya_null</a>(<span class="keywordtype">void</span>);
-<a name="l00113"></a>00113 
-<a name="l00116"></a><a class="code" href="leaf_8h.html#30c31fb8c08ab1ec813ac484bf0cb074">00116</a> <span class="preprocessor">#define YA_NULL ya_null()</span>
-<a name="l00117"></a>00117 <span class="preprocessor"></span>
-<a name="l00118"></a>00118 <span class="preprocessor">#endif</span>
+<a name="l00007"></a>00007 <span class="comment"> * - Redistributions of source code must retain the above copyright notice,</span>
+<a name="l00008"></a>00008 <span class="comment"> *   this list of conditions and the following disclaimer.</span>
+<a name="l00009"></a>00009 <span class="comment"> * - Redistributions in binary form must reproduce the above copyright notice, </span>
+<a name="l00010"></a>00010 <span class="comment"> *   this list of conditions and the following disclaimer in the documentation </span>
+<a name="l00011"></a>00011 <span class="comment"> *   and/or other materials provided with the distribution.</span>
+<a name="l00012"></a>00012 <span class="comment"> *</span>
+<a name="l00013"></a>00013 <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" </span>
+<a name="l00014"></a>00014 <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE </span>
+<a name="l00015"></a>00015 <span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE </span>
+<a name="l00016"></a>00016 <span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE </span>
+<a name="l00017"></a>00017 <span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR </span>
+<a name="l00018"></a>00018 <span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<a name="l00019"></a>00019 <span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS </span>
+<a name="l00020"></a>00020 <span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN </span>
+<a name="l00021"></a>00021 <span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<a name="l00022"></a>00022 <span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE </span>
+<a name="l00023"></a>00023 <span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span>
+<a name="l00024"></a>00024 <span class="comment"> */</span>
+<a name="l00025"></a>00025 <span class="preprocessor">#ifndef YA_LEAF_H</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#define YA_LEAF_H</span>
+<a name="l00027"></a>00027 <span class="preprocessor"></span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &lt;<a class="code" href="types_8h.html">yyast/types.h</a>&gt;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &lt;<a class="code" href="utils_8h.html">yyast/utils.h</a>&gt;</span>
+<a name="l00030"></a>00030 
+<a name="l00038"></a>00038 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#3d5858be2920c79cbb318d121fd1380c" title="Create an literal node.">ya_literal</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, <span class="keyword">const</span> <span class="keywordtype">void</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size);
+<a name="l00039"></a>00039 
+<a name="l00049"></a>00049 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#dd0a658602db05fc9724e64912dd148d">ya_binary_float</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base, <span class="keywordtype">int</span> nr_bits);
+<a name="l00050"></a>00050 
+<a name="l00066"></a>00066 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#e153002eb7f3a546fcee4fd939db0a0e" title="Create literal from an integer literal string.">ya_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a> type, <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
+<a name="l00067"></a>00067 
+<a name="l00083"></a>00083 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#7325b5fed2512ce7fb010ca6e62603e0" title="Create literal from an positive integer literal string.">ya_positive_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
+<a name="l00084"></a>00084 
+<a name="l00101"></a>00101 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#19b64920e54edc663120ab05676b915d" title="Create literal from an negative integer literal string.">ya_negative_integer</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">int</span> base);
+<a name="l00102"></a>00102 
+<a name="l00110"></a>00110 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#38e2f6e5cddb88189297358e3c77927a" title="Create text literal node for a string literal.">ya_text</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name, <span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> buf, <span class="keywordtype">size_t</span> buf_size);
+<a name="l00111"></a>00111 
+<a name="l00114"></a>00114 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#7ee38214746de02680f07c629607b4b0" title="Leaf node, does not contain data or children.">ya_leaf</a>(<span class="keyword">const</span> <span class="keywordtype">char</span> * <a class="code" href="types_8h.html#080abdcb9c02438f1cd2bb707af25af8">restrict</a> name);
+<a name="l00115"></a>00115 
+<a name="l00118"></a><a class="code" href="leaf_8h.html#fdf911c8452b09c6d74409e2374d94e7">00118</a> <span class="preprocessor">#define YA_LEAF(name) ya_leaf(name)</span>
+<a name="l00119"></a>00119 <span class="preprocessor"></span>
+<a name="l00122"></a>00122 <a class="code" href="structya__t.html" title="Structure to pass around on the stack for the parser.">ya_t</a> <a class="code" href="leaf_8c.html#94569995dd4e557d523117f5948afcd1" title="Null node, unused child entry.">ya_null</a>(<span class="keywordtype">void</span>);
+<a name="l00123"></a>00123 
+<a name="l00126"></a><a class="code" href="leaf_8h.html#30c31fb8c08ab1ec813ac484bf0cb074">00126</a> <span class="preprocessor">#define YA_NULL ya_null()</span>
+<a name="l00127"></a>00127 <span class="preprocessor"></span>
+<a name="l00128"></a>00128 <span class="preprocessor">#endif</span>
 </pre></div></div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

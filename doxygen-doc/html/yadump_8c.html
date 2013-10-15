@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/yadump.c File Reference</title>
+<title>yyast-1.0.1: yyast/yadump.c File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -22,6 +22,7 @@
 <code>#include &lt;string.h&gt;</code><br>
 <code>#include &lt;sys/mman.h&gt;</code><br>
 <code>#include &lt;sys/stat.h&gt;</code><br>
+<code>#include &lt;arpa/inet.h&gt;</code><br>
 <code>#include &lt;<a class="el" href="yyast_8h-source.html">yyast/yyast.h</a>&gt;</code><br>
 
 <p>
@@ -29,6 +30,9 @@
 <tr><td></td></tr>
 <tr><td colspan="2"><br><h2>Data Structures</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">union &nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="uniontype64__t.html">type64_t</a></td></tr>
+
+<tr><td colspan="2"><br><h2>Defines</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="yadump_8c.html#369266c24eacffb87046522897a570d5">_GNU_SOURCE</a></td></tr>
 
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top">void&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">indent</a> (unsigned int level)</td></tr>
@@ -40,6 +44,24 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="yadump_8c.html#0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
 
 </table>
+<hr><h2>Define Documentation</h2>
+<a class="anchor" name="369266c24eacffb87046522897a570d5"></a><!-- doxytag: member="yadump.c::_GNU_SOURCE" ref="369266c24eacffb87046522897a570d5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _GNU_SOURCE          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="yadump_8c-source.html#l00025">25</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
+
+</div>
+</div><p>
 <hr><h2>Function Documentation</h2>
 <a class="anchor" name="d6420b4259ae2fa8f1ced906e0eae684"></a><!-- doxytag: member="yadump.c::indent" ref="d6420b4259ae2fa8f1ced906e0eae684" args="(unsigned int level)" -->
 <div class="memitem">
@@ -59,9 +81,9 @@
 
 <p>
 
-<p>Definition at line <a class="el" href="yadump_8c-source.html#l00030">30</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
+<p>Definition at line <a class="el" href="yadump_8c-source.html#l00041">41</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>.</p>
 
 </div>
 </div><p>
@@ -92,9 +114,9 @@
 
 <p>
 
-<p>Definition at line <a class="el" href="yadump_8c-source.html#l00143">143</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
+<p>Definition at line <a class="el" href="yadump_8c-source.html#l00154">154</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
 
-<p>References <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>.</p>
+<p>References <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>.</p>
 
 </div>
 </div><p>
@@ -131,11 +153,11 @@
 
 <p>
 
-<p>Definition at line <a class="el" href="yadump_8c-source.html#l00053">53</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
+<p>Definition at line <a class="el" href="yadump_8c-source.html#l00064">64</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
 
-<p>References <a class="el" href="yadump_8c-source.html#l00027">type64_t::c</a>, <a class="el" href="types_8h-source.html#l00045">ya_position_s::column</a>, <a class="el" href="yadump_8c-source.html#l00026">type64_t::d</a>, <a class="el" href="types_8h-source.html#l00061">ya_node_s::data</a>, <a class="el" href="types_8h-source.html#l00046">ya_position_s::file</a>, <a class="el" href="yadump_8c-source.html#l00024">type64_t::i</a>, <a class="el" href="yadump_8c-source.html#l00030">indent()</a>, <a class="el" href="types_8h-source.html#l00044">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00055">ya_node_s::name</a>, <a class="el" href="utils_8h-source.html#l00070">ntohll()</a>, <a class="el" href="types_8h-source.html#l00057">ya_node_s::position</a>, <a class="el" href="yadump_8c-source.html#l00039">print_name()</a>, <a class="el" href="types_8h-source.html#l00056">ya_node_s::size</a>, <a class="el" href="types_8h-source.html#l00060">ya_node_s::type</a>, <a class="el" href="yadump_8c-source.html#l00025">type64_t::u</a>, <a class="el" href="utils_8h-source.html#l00083">ya_align64()</a>, <a class="el" href="types_8h-source.html#l00035">YA_NODE_TYPE_BINARY_FLOAT</a>, <a class="el" href="types_8h-source.html#l00031">YA_NODE_TYPE_BRANCH</a>, <a class="el" href="types_8h-source.html#l00034">YA_NODE_TYPE_NEGATIVE_INTEGER</a>, <a class="el" href="types_8h-source.html#l00029">YA_NODE_TYPE_NULL</a>, <a class="el" href="types_8h-source.html#l00033">YA_NODE_TYPE_POSITIVE_INTEGER</a>, and <a class="el" href="types_8h-source.html#l00032">YA_NODE_TYPE_TEXT</a>.</p>
+<p>References <a class="el" href="yadump_8c-source.html#l00038">type64_t::c</a>, <a class="el" href="types_8h-source.html#l00060">ya_position_s::column</a>, <a class="el" href="yadump_8c-source.html#l00037">type64_t::d</a>, <a class="el" href="types_8h-source.html#l00076">ya_node_s::data</a>, <a class="el" href="types_8h-source.html#l00061">ya_position_s::file</a>, <a class="el" href="yadump_8c-source.html#l00035">type64_t::i</a>, <a class="el" href="yadump_8c-source.html#l00041">indent()</a>, <a class="el" href="types_8h-source.html#l00059">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00070">ya_node_s::name</a>, <a class="el" href="types_8h-source.html#l00072">ya_node_s::position</a>, <a class="el" href="yadump_8c-source.html#l00050">print_name()</a>, <a class="el" href="types_8h-source.html#l00071">ya_node_s::size</a>, <a class="el" href="types_8h-source.html#l00075">ya_node_s::type</a>, <a class="el" href="yadump_8c-source.html#l00036">type64_t::u</a>, <a class="el" href="types_8h-source.html#l00050">YA_NODE_TYPE_BINARY_FLOAT</a>, <a class="el" href="types_8h-source.html#l00046">YA_NODE_TYPE_BRANCH</a>, <a class="el" href="types_8h-source.html#l00049">YA_NODE_TYPE_NEGATIVE_INTEGER</a>, <a class="el" href="types_8h-source.html#l00044">YA_NODE_TYPE_NULL</a>, <a class="el" href="types_8h-source.html#l00048">YA_NODE_TYPE_POSITIVE_INTEGER</a>, and <a class="el" href="types_8h-source.html#l00047">YA_NODE_TYPE_TEXT</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00143">main()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00154">main()</a>.</p>
 
 </div>
 </div><p>
@@ -157,14 +179,14 @@
 
 <p>
 
-<p>Definition at line <a class="el" href="yadump_8c-source.html#l00039">39</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
+<p>Definition at line <a class="el" href="yadump_8c-source.html#l00050">50</a> of file <a class="el" href="yadump_8c-source.html">yadump.c</a>.</p>
 
-<p>Referenced by <a class="el" href="yadump_8c-source.html#l00053">node_decode()</a>.</p>
+<p>Referenced by <a class="el" href="yadump_8c-source.html#l00064">node_decode()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

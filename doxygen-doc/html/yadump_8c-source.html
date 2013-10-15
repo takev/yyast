@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/yadump.c Source File</title>
+<title>yyast-1.0.1: yyast/yadump.c Source File</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -13,192 +13,203 @@
       <li class="current"><a href="files.html"><span>Files</span></a></li>
     </ul>
   </div>
-<h1>yyast/yadump.c</h1><a href="yadump_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/*  Copyright 2011 Take Vos</span>
-<a name="l00002"></a>00002 <span class="comment"> *</span>
-<a name="l00003"></a>00003 <span class="comment"> * Licensed under the Apache License, Version 2.0 (the "License");</span>
-<a name="l00004"></a>00004 <span class="comment"> * you may not use this file except in compliance with the License.</span>
-<a name="l00005"></a>00005 <span class="comment"> * You may obtain a copy of the License at</span>
+<h1>yyast/yadump.c</h1><a href="yadump_8c.html">Go to the documentation of this file.</a><div class="fragment"><pre class="fragment"><a name="l00001"></a>00001 <span class="comment">/* Copyright (c) 2011-2013, Take Vos</span>
+<a name="l00002"></a>00002 <span class="comment"> * All rights reserved.</span>
+<a name="l00003"></a>00003 <span class="comment"> *</span>
+<a name="l00004"></a>00004 <span class="comment"> * Redistribution and use in source and binary forms, with or without</span>
+<a name="l00005"></a>00005 <span class="comment"> * modification, are permitted provided that the following conditions are met:</span>
 <a name="l00006"></a>00006 <span class="comment"> *</span>
-<a name="l00007"></a>00007 <span class="comment"> *     http://www.apache.org/licenses/LICENSE-2.0</span>
-<a name="l00008"></a>00008 <span class="comment"> *</span>
-<a name="l00009"></a>00009 <span class="comment"> * Unless required by applicable law or agreed to in writing, software</span>
-<a name="l00010"></a>00010 <span class="comment"> * distributed under the License is distributed on an "AS IS" BASIS,</span>
-<a name="l00011"></a>00011 <span class="comment"> * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.</span>
-<a name="l00012"></a>00012 <span class="comment"> * See the License for the specific language governing permissions and</span>
-<a name="l00013"></a>00013 <span class="comment"> * limitations under the License.</span>
-<a name="l00014"></a>00014 <span class="comment"> */</span>
-<a name="l00015"></a>00015 
-<a name="l00016"></a>00016 <span class="preprocessor">#include &lt;unistd.h&gt;</span>
-<a name="l00017"></a>00017 <span class="preprocessor">#include &lt;fcntl.h&gt;</span>
-<a name="l00018"></a>00018 <span class="preprocessor">#include &lt;string.h&gt;</span>
-<a name="l00019"></a>00019 <span class="preprocessor">#include &lt;sys/mman.h&gt;</span>
-<a name="l00020"></a>00020 <span class="preprocessor">#include &lt;sys/stat.h&gt;</span>
-<a name="l00021"></a>00021 <span class="preprocessor">#include &lt;<a class="code" href="yyast_8h.html">yyast/yyast.h</a>&gt;</span>
-<a name="l00022"></a>00022 
-<a name="l00023"></a><a class="code" href="uniontype64__t.html">00023</a> <span class="keyword">typedef</span> <span class="keyword">union </span>{
-<a name="l00024"></a><a class="code" href="uniontype64__t.html#6d4e12a47cc1e0ed26bb45ceb3b7bd58">00024</a>     int64_t     i;
-<a name="l00025"></a><a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">00025</a>     uint64_t    u;
-<a name="l00026"></a><a class="code" href="uniontype64__t.html#6b58959e1dfde6e58f6e14b948a15f3f">00026</a>     <span class="keywordtype">double</span>      d;
-<a name="l00027"></a><a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">00027</a>     <span class="keywordtype">char</span>        c[8];
-<a name="l00028"></a>00028 } <a class="code" href="uniontype64__t.html">type64_t</a>;
-<a name="l00029"></a>00029 
-<a name="l00030"></a><a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">00030</a> <span class="keywordtype">void</span> <a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">indent</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level)
-<a name="l00031"></a>00031 {
-<a name="l00032"></a>00032     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    i;
+<a name="l00007"></a>00007 <span class="comment"> * - Redistributions of source code must retain the above copyright notice,</span>
+<a name="l00008"></a>00008 <span class="comment"> *   this list of conditions and the following disclaimer.</span>
+<a name="l00009"></a>00009 <span class="comment"> * - Redistributions in binary form must reproduce the above copyright notice, </span>
+<a name="l00010"></a>00010 <span class="comment"> *   this list of conditions and the following disclaimer in the documentation </span>
+<a name="l00011"></a>00011 <span class="comment"> *   and/or other materials provided with the distribution.</span>
+<a name="l00012"></a>00012 <span class="comment"> *</span>
+<a name="l00013"></a>00013 <span class="comment"> * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" </span>
+<a name="l00014"></a>00014 <span class="comment"> * AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE </span>
+<a name="l00015"></a>00015 <span class="comment"> * IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE </span>
+<a name="l00016"></a>00016 <span class="comment"> * ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE </span>
+<a name="l00017"></a>00017 <span class="comment"> * LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR </span>
+<a name="l00018"></a>00018 <span class="comment"> * CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF</span>
+<a name="l00019"></a>00019 <span class="comment"> * SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS </span>
+<a name="l00020"></a>00020 <span class="comment"> * INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN </span>
+<a name="l00021"></a>00021 <span class="comment"> * CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)</span>
+<a name="l00022"></a>00022 <span class="comment"> * ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE </span>
+<a name="l00023"></a>00023 <span class="comment"> * POSSIBILITY OF SUCH DAMAGE.</span>
+<a name="l00024"></a>00024 <span class="comment"> */</span>
+<a name="l00025"></a><a class="code" href="yadump_8c.html#369266c24eacffb87046522897a570d5">00025</a> <span class="preprocessor">#define _GNU_SOURCE</span>
+<a name="l00026"></a>00026 <span class="preprocessor"></span><span class="preprocessor">#include &lt;unistd.h&gt;</span>
+<a name="l00027"></a>00027 <span class="preprocessor">#include &lt;fcntl.h&gt;</span>
+<a name="l00028"></a>00028 <span class="preprocessor">#include &lt;string.h&gt;</span>
+<a name="l00029"></a>00029 <span class="preprocessor">#include &lt;sys/mman.h&gt;</span>
+<a name="l00030"></a>00030 <span class="preprocessor">#include &lt;sys/stat.h&gt;</span>
+<a name="l00031"></a>00031 <span class="preprocessor">#include &lt;arpa/inet.h&gt;</span>
+<a name="l00032"></a>00032 <span class="preprocessor">#include &lt;<a class="code" href="yyast_8h.html">yyast/yyast.h</a>&gt;</span>
 <a name="l00033"></a>00033 
-<a name="l00034"></a>00034     <span class="keywordflow">for</span> (i = 0; i &lt; level; i++) {
-<a name="l00035"></a>00035         fprintf(stdout, <span class="stringliteral">"  "</span>);
-<a name="l00036"></a>00036     }
-<a name="l00037"></a>00037 }
-<a name="l00038"></a>00038 
-<a name="l00039"></a><a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">00039</a> <span class="keywordtype">void</span> <a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">print_name</a>(<a class="code" href="types_8h.html#b0e6c479ba8baf7d550ee36b96fb803e">ya_name_t</a> name)
-<a name="l00040"></a>00040 {
-<a name="l00041"></a>00041     fprintf(stdout, <span class="stringliteral">"'%c%c%c%c%c%c%c%c'"</span>,
-<a name="l00042"></a>00042         (<span class="keywordtype">char</span>)(name &gt;&gt; 56) &amp; 0xff,
-<a name="l00043"></a>00043         (<span class="keywordtype">char</span>)(name &gt;&gt; 48) &amp; 0xff,
-<a name="l00044"></a>00044         (<span class="keywordtype">char</span>)(name &gt;&gt; 40) &amp; 0xff,
-<a name="l00045"></a>00045         (<span class="keywordtype">char</span>)(name &gt;&gt; 32) &amp; 0xff,
-<a name="l00046"></a>00046         (<span class="keywordtype">char</span>)(name &gt;&gt; 24) &amp; 0xff,
-<a name="l00047"></a>00047         (<span class="keywordtype">char</span>)(name &gt;&gt; 16) &amp; 0xff,
-<a name="l00048"></a>00048         (<span class="keywordtype">char</span>)(name &gt;&gt;  8) &amp; 0xff,
-<a name="l00049"></a>00049         (<span class="keywordtype">char</span>)(name      ) &amp; 0xff
-<a name="l00050"></a>00050     );
-<a name="l00051"></a>00051 }
-<a name="l00052"></a>00052 
-<a name="l00053"></a><a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">00053</a> off_t <a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(<span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level)
-<a name="l00054"></a>00054 {
-<a name="l00055"></a>00055     <span class="keywordflow">if</span> (buf_size &lt; <span class="keyword">sizeof</span> (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>)) {
-<a name="l00056"></a>00056         fprintf(stdout, <span class="stringliteral">"!error size to small to decode header.\n"</span>);
-<a name="l00057"></a>00057         exit(1);
-<a name="l00058"></a>00058     }
-<a name="l00059"></a>00059 
-<a name="l00060"></a>00060     <a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>           *node = (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a> *)buf;
-<a name="l00061"></a>00061     <a class="code" href="types_8h.html#b0e6c479ba8baf7d550ee36b96fb803e">ya_name_t</a>           name = <a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(node-&gt;<a class="code" href="structya__node__s.html#f1b95f5f0c8e58e4cd4a60f93762fd87" title="Name of the node.">name</a>);
-<a name="l00062"></a>00062     <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a>           type = node-&gt;<a class="code" href="structya__node__s.html#dbddc84da165d49e95792ea04a945761" title="Type of node.">type</a>;
-<a name="l00063"></a>00063     <a class="code" href="structya__position__s.html" title="Position in the text file.">ya_position_t</a>       position = {.file = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a>), .line = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#451794b7dad01d87e5a53ec0fba91f4a" title="The line number, starting from one.">line</a>), .column = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#d5094f93ee534feda816e816fcb8941f" title="The column number, starting from one.">column</a>)};
-<a name="l00064"></a>00064     <span class="keywordtype">size_t</span>              inner_size = <a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(node-&gt;<a class="code" href="structya__node__s.html#8d2dab6ed7b9dfbf04e1ab92e13c8d25" title="Size of the node, including header and data. Always 64 bit aligned.">size</a>) - <span class="keyword">sizeof</span> (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>);
-<a name="l00065"></a>00065     off_t               inner_offset = 0;
-<a name="l00066"></a>00066     <a class="code" href="uniontype64__t.html">type64_t</a>            t64;
-<a name="l00067"></a>00067     <span class="keywordtype">char</span>                *s;
-<a name="l00068"></a>00068 
-<a name="l00069"></a>00069     <span class="keywordflow">if</span> (inner_size &gt; buf_size) {
-<a name="l00070"></a>00070         <span class="comment">// We use stdout, so that the error is synchronized to the output data.</span>
-<a name="l00071"></a>00071         fprintf(stdout, <span class="stringliteral">"!error inner_size (%llu) larger than buffer_size (%llu)\n"</span>,
-<a name="l00072"></a>00072             (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)inner_size,
-<a name="l00073"></a>00073             (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)buf_size
-<a name="l00074"></a>00074         );
-<a name="l00075"></a>00075         exit(1);
-<a name="l00076"></a>00076     }
-<a name="l00077"></a>00077 
-<a name="l00078"></a>00078     <span class="keywordflow">if</span> (position.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a> != UINT32_MAX) {
-<a name="l00079"></a>00079         fprintf(stdout, <span class="stringliteral">"%2lu:%4lu:%3lu"</span>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#451794b7dad01d87e5a53ec0fba91f4a" title="The line number, starting from one.">line</a>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#d5094f93ee534feda816e816fcb8941f" title="The column number, starting from one.">column</a>);
-<a name="l00080"></a>00080     } <span class="keywordflow">else</span> {
-<a name="l00081"></a>00081         fprintf(stdout, <span class="stringliteral">"           "</span>);
-<a name="l00082"></a>00082     }
-<a name="l00083"></a>00083 
-<a name="l00084"></a>00084     fprintf(stdout, <span class="stringliteral">" (%8llu)"</span>, (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)inner_size);
-<a name="l00085"></a>00085 
-<a name="l00086"></a>00086     <a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">indent</a>(level);
-<a name="l00087"></a>00087     fprintf(stdout, <span class="stringliteral">" "</span>);
-<a name="l00088"></a>00088     <a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">print_name</a>(name);
-<a name="l00089"></a>00089 
-<a name="l00090"></a>00090     <span class="keywordflow">switch</span> (type) {
-<a name="l00091"></a>00091     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#92176f238a133d7b8611f3dff86c7fc7" title="Positive integer, encoded as a big endian unsigned integer.">YA_NODE_TYPE_POSITIVE_INTEGER</a>:
-<a name="l00092"></a>00092         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
-<a name="l00093"></a>00093             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
-<a name="l00094"></a>00094             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = <a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
-<a name="l00095"></a>00095             fprintf(stdout, <span class="stringliteral">" +%lli\n"</span>, t64.<a class="code" href="uniontype64__t.html#6d4e12a47cc1e0ed26bb45ceb3b7bd58">i</a>);
-<a name="l00096"></a>00096         } <span class="keywordflow">else</span> {
-<a name="l00097"></a>00097             fprintf(stdout, <span class="stringliteral">" +i%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
-<a name="l00098"></a>00098         }
-<a name="l00099"></a>00099         <span class="keywordflow">break</span>;
-<a name="l00100"></a>00100     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#9ea5e64607742e1986e3806a1d9884d7" title="Negative integer, encoded as a big endian unsigned integer.">YA_NODE_TYPE_NEGATIVE_INTEGER</a>:
-<a name="l00101"></a>00101         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
-<a name="l00102"></a>00102             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
-<a name="l00103"></a>00103             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = <a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
-<a name="l00104"></a>00104             fprintf(stdout, <span class="stringliteral">" -%llu\n"</span>, t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
-<a name="l00105"></a>00105         } <span class="keywordflow">else</span> {
-<a name="l00106"></a>00106             fprintf(stdout, <span class="stringliteral">" -i%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
-<a name="l00107"></a>00107         }
-<a name="l00108"></a>00108         <span class="keywordflow">break</span>;
-<a name="l00109"></a>00109     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#ae10325c7a7b9f6fca65510d4fabbfc3" title="Binary floating point, encoded as a &amp;#39;big endian&amp;#39; binary64 or binary128 IEEE-754...">YA_NODE_TYPE_BINARY_FLOAT</a>:
-<a name="l00110"></a>00110         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
-<a name="l00111"></a>00111             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
-<a name="l00112"></a>00112             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = <a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
-<a name="l00113"></a>00113             fprintf(stdout, <span class="stringliteral">" %lf\n"</span>, t64.<a class="code" href="uniontype64__t.html#6b58959e1dfde6e58f6e14b948a15f3f">d</a>);
-<a name="l00114"></a>00114         } <span class="keywordflow">else</span> {
-<a name="l00115"></a>00115             fprintf(stdout, <span class="stringliteral">" bf%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
-<a name="l00116"></a>00116         }
-<a name="l00117"></a>00117         <span class="keywordflow">break</span>;
-<a name="l00118"></a>00118     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#25a88c47c49fe4757eeb5fc7a2821bdf" title="Text node with null terminated UTF-8 string.">YA_NODE_TYPE_TEXT</a>:
-<a name="l00119"></a>00119         s = strndup(node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, inner_size);
-<a name="l00120"></a>00120         fprintf(stdout, <span class="stringliteral">" \"%s\"\n"</span>, s);
-<a name="l00121"></a>00121         free(s);
-<a name="l00122"></a>00122         <span class="keywordflow">break</span>;
-<a name="l00123"></a>00123     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#fa33cb38ae57c4fecc35d636a41f7bff" title="A NULL node for an unused child.">YA_NODE_TYPE_NULL</a>:
-<a name="l00124"></a>00124         fprintf(stdout, <span class="stringliteral">" pass\n"</span>);
-<a name="l00125"></a>00125         <span class="keywordflow">break</span>;
-<a name="l00126"></a>00126     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#459ef51e03004c42314be17b6d1d96e3" title="Branch node with 0 or more childs.">YA_NODE_TYPE_BRANCH</a>:
-<a name="l00127"></a>00127         <span class="comment">// we continue until a header will not fit in the data anymore.</span>
-<a name="l00128"></a>00128         fprintf(stdout, <span class="stringliteral">"\n"</span>);
-<a name="l00129"></a>00129         <span class="keywordflow">while</span> (inner_offset &lt; inner_size) {
-<a name="l00130"></a>00130             <span class="comment">// decode the inner nodes.</span>
-<a name="l00131"></a>00131             inner_offset+= <a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(&amp;node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>[inner_offset], inner_size - inner_offset, level + 1);
-<a name="l00132"></a>00132         }
+<a name="l00034"></a><a class="code" href="uniontype64__t.html">00034</a> <span class="keyword">typedef</span> <span class="keyword">union </span>{
+<a name="l00035"></a><a class="code" href="uniontype64__t.html#6d4e12a47cc1e0ed26bb45ceb3b7bd58">00035</a>     int64_t     i;
+<a name="l00036"></a><a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">00036</a>     uint64_t    u;
+<a name="l00037"></a><a class="code" href="uniontype64__t.html#6b58959e1dfde6e58f6e14b948a15f3f">00037</a>     <span class="keywordtype">double</span>      d;
+<a name="l00038"></a><a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">00038</a>     <span class="keywordtype">char</span>        c[8];
+<a name="l00039"></a>00039 } <a class="code" href="uniontype64__t.html">type64_t</a>;
+<a name="l00040"></a>00040 
+<a name="l00041"></a><a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">00041</a> <span class="keywordtype">void</span> <a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">indent</a>(<span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level)
+<a name="l00042"></a>00042 {
+<a name="l00043"></a>00043     <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span>    i;
+<a name="l00044"></a>00044 
+<a name="l00045"></a>00045     <span class="keywordflow">for</span> (i = 0; i &lt; level; i++) {
+<a name="l00046"></a>00046         fprintf(stdout, <span class="stringliteral">"  "</span>);
+<a name="l00047"></a>00047     }
+<a name="l00048"></a>00048 }
+<a name="l00049"></a>00049 
+<a name="l00050"></a><a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">00050</a> <span class="keywordtype">void</span> <a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">print_name</a>(<a class="code" href="types_8h.html#b0e6c479ba8baf7d550ee36b96fb803e">ya_name_t</a> name)
+<a name="l00051"></a>00051 {
+<a name="l00052"></a>00052     fprintf(stdout, <span class="stringliteral">"'%c%c%c%c%c%c%c%c'"</span>,
+<a name="l00053"></a>00053         (<span class="keywordtype">char</span>)(name &gt;&gt; 56) &amp; 0xff,
+<a name="l00054"></a>00054         (<span class="keywordtype">char</span>)(name &gt;&gt; 48) &amp; 0xff,
+<a name="l00055"></a>00055         (<span class="keywordtype">char</span>)(name &gt;&gt; 40) &amp; 0xff,
+<a name="l00056"></a>00056         (<span class="keywordtype">char</span>)(name &gt;&gt; 32) &amp; 0xff,
+<a name="l00057"></a>00057         (<span class="keywordtype">char</span>)(name &gt;&gt; 24) &amp; 0xff,
+<a name="l00058"></a>00058         (<span class="keywordtype">char</span>)(name &gt;&gt; 16) &amp; 0xff,
+<a name="l00059"></a>00059         (<span class="keywordtype">char</span>)(name &gt;&gt;  8) &amp; 0xff,
+<a name="l00060"></a>00060         (<span class="keywordtype">char</span>)(name      ) &amp; 0xff
+<a name="l00061"></a>00061     );
+<a name="l00062"></a>00062 }
+<a name="l00063"></a>00063 
+<a name="l00064"></a><a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">00064</a> off_t <a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(<span class="keywordtype">char</span> *buf, <span class="keywordtype">size_t</span> buf_size, <span class="keywordtype">unsigned</span> <span class="keywordtype">int</span> level)
+<a name="l00065"></a>00065 {
+<a name="l00066"></a>00066     <span class="keywordflow">if</span> (buf_size &lt; <span class="keyword">sizeof</span> (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>)) {
+<a name="l00067"></a>00067         fprintf(stdout, <span class="stringliteral">"!error size to small to decode header.\n"</span>);
+<a name="l00068"></a>00068         exit(1);
+<a name="l00069"></a>00069     }
+<a name="l00070"></a>00070 
+<a name="l00071"></a>00071     <a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>           *node = (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a> *)buf;
+<a name="l00072"></a>00072     <a class="code" href="types_8h.html#b0e6c479ba8baf7d550ee36b96fb803e">ya_name_t</a>           name = ntohll(node-&gt;<a class="code" href="structya__node__s.html#f1b95f5f0c8e58e4cd4a60f93762fd87" title="Name of the node.">name</a>);
+<a name="l00073"></a>00073     <a class="code" href="types_8h.html#04a220045935e8c65f042347a7b52d20">ya_type_t</a>           type = node-&gt;<a class="code" href="structya__node__s.html#dbddc84da165d49e95792ea04a945761" title="Type of node.">type</a>;
+<a name="l00074"></a>00074     <a class="code" href="structya__position__s.html" title="Position in the text file.">ya_position_t</a>       position = {.file = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a>), .line = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#451794b7dad01d87e5a53ec0fba91f4a" title="The line number, starting from one.">line</a>), .column = ntohl(node-&gt;<a class="code" href="structya__node__s.html#7d49b9a487645f783fab813870f55b54" title="The position of the node.">position</a>.<a class="code" href="structya__position__s.html#d5094f93ee534feda816e816fcb8941f" title="The column number, starting from one.">column</a>)};
+<a name="l00075"></a>00075     <span class="keywordtype">size_t</span>              inner_size = ntohll(node-&gt;<a class="code" href="structya__node__s.html#8d2dab6ed7b9dfbf04e1ab92e13c8d25" title="Size of the node, including header and data. Always 64 bit aligned.">size</a>) - <span class="keyword">sizeof</span> (<a class="code" href="structya__node__s.html" title="The data as it will be when writing this node and its subnodes to disk.">ya_node_t</a>);
+<a name="l00076"></a>00076     off_t               inner_offset = 0;
+<a name="l00077"></a>00077     <a class="code" href="uniontype64__t.html">type64_t</a>            t64;
+<a name="l00078"></a>00078     <span class="keywordtype">char</span>                *s;
+<a name="l00079"></a>00079 
+<a name="l00080"></a>00080     <span class="keywordflow">if</span> (inner_size &gt; buf_size) {
+<a name="l00081"></a>00081         <span class="comment">// We use stdout, so that the error is synchronized to the output data.</span>
+<a name="l00082"></a>00082         fprintf(stdout, <span class="stringliteral">"!error inner_size (%llu) larger than buffer_size (%llu)\n"</span>,
+<a name="l00083"></a>00083             (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)inner_size,
+<a name="l00084"></a>00084             (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)buf_size
+<a name="l00085"></a>00085         );
+<a name="l00086"></a>00086         exit(1);
+<a name="l00087"></a>00087     }
+<a name="l00088"></a>00088 
+<a name="l00089"></a>00089     <span class="keywordflow">if</span> (position.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a> != UINT32_MAX) {
+<a name="l00090"></a>00090         fprintf(stdout, <span class="stringliteral">"%2lu:%4lu:%3lu"</span>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#798b75682bacf428ca3f7a2386780d79" title="The file number, starting from zero (the main file).">file</a>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#451794b7dad01d87e5a53ec0fba91f4a" title="The line number, starting from one.">line</a>, (<span class="keywordtype">long</span>)position.<a class="code" href="structya__position__s.html#d5094f93ee534feda816e816fcb8941f" title="The column number, starting from one.">column</a>);
+<a name="l00091"></a>00091     } <span class="keywordflow">else</span> {
+<a name="l00092"></a>00092         fprintf(stdout, <span class="stringliteral">"           "</span>);
+<a name="l00093"></a>00093     }
+<a name="l00094"></a>00094 
+<a name="l00095"></a>00095     fprintf(stdout, <span class="stringliteral">" (%8llu)"</span>, (<span class="keywordtype">unsigned</span> <span class="keywordtype">long</span> <span class="keywordtype">long</span>)inner_size);
+<a name="l00096"></a>00096 
+<a name="l00097"></a>00097     <a class="code" href="yadump_8c.html#d6420b4259ae2fa8f1ced906e0eae684">indent</a>(level);
+<a name="l00098"></a>00098     fprintf(stdout, <span class="stringliteral">" "</span>);
+<a name="l00099"></a>00099     <a class="code" href="yadump_8c.html#80d485d22dd8f44165170b2512f113f1">print_name</a>(name);
+<a name="l00100"></a>00100 
+<a name="l00101"></a>00101     <span class="keywordflow">switch</span> (type) {
+<a name="l00102"></a>00102     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#92176f238a133d7b8611f3dff86c7fc7" title="Positive integer, encoded as a big endian unsigned integer.">YA_NODE_TYPE_POSITIVE_INTEGER</a>:
+<a name="l00103"></a>00103         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
+<a name="l00104"></a>00104             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
+<a name="l00105"></a>00105             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = ntohll(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
+<a name="l00106"></a>00106             fprintf(stdout, <span class="stringliteral">" +%lli\n"</span>, (<span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">int</span>)t64.<a class="code" href="uniontype64__t.html#6d4e12a47cc1e0ed26bb45ceb3b7bd58">i</a>);
+<a name="l00107"></a>00107         } <span class="keywordflow">else</span> {
+<a name="l00108"></a>00108             fprintf(stdout, <span class="stringliteral">" +i%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
+<a name="l00109"></a>00109         }
+<a name="l00110"></a>00110         <span class="keywordflow">break</span>;
+<a name="l00111"></a>00111     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#9ea5e64607742e1986e3806a1d9884d7" title="Negative integer, encoded as a big endian unsigned integer.">YA_NODE_TYPE_NEGATIVE_INTEGER</a>:
+<a name="l00112"></a>00112         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
+<a name="l00113"></a>00113             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
+<a name="l00114"></a>00114             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = ntohll(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
+<a name="l00115"></a>00115             fprintf(stdout, <span class="stringliteral">" -%llu\n"</span>, (<span class="keywordtype">long</span> <span class="keywordtype">long</span> <span class="keywordtype">unsigned</span>)t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
+<a name="l00116"></a>00116         } <span class="keywordflow">else</span> {
+<a name="l00117"></a>00117             fprintf(stdout, <span class="stringliteral">" -i%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
+<a name="l00118"></a>00118         }
+<a name="l00119"></a>00119         <span class="keywordflow">break</span>;
+<a name="l00120"></a>00120     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#ae10325c7a7b9f6fca65510d4fabbfc3" title="Binary floating point, encoded as a &amp;#39;big endian&amp;#39; binary64 or binary128 IEEE-754...">YA_NODE_TYPE_BINARY_FLOAT</a>:
+<a name="l00121"></a>00121         <span class="keywordflow">if</span> (inner_size == <span class="keyword">sizeof</span> (t64)) {
+<a name="l00122"></a>00122             memcpy(t64.<a class="code" href="uniontype64__t.html#9e80c571d7e87119c62618d06b1f2a4b">c</a>, node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, sizeof (t64));
+<a name="l00123"></a>00123             t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a> = ntohll(t64.<a class="code" href="uniontype64__t.html#66c1517222cb5fdf33fb62a68ac84205">u</a>);
+<a name="l00124"></a>00124             fprintf(stdout, <span class="stringliteral">" %lf\n"</span>, t64.<a class="code" href="uniontype64__t.html#6b58959e1dfde6e58f6e14b948a15f3f">d</a>);
+<a name="l00125"></a>00125         } <span class="keywordflow">else</span> {
+<a name="l00126"></a>00126             fprintf(stdout, <span class="stringliteral">" bf%i\n"</span>, (<span class="keywordtype">int</span>)inner_size);
+<a name="l00127"></a>00127         }
+<a name="l00128"></a>00128         <span class="keywordflow">break</span>;
+<a name="l00129"></a>00129     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#25a88c47c49fe4757eeb5fc7a2821bdf" title="Text node with null terminated UTF-8 string.">YA_NODE_TYPE_TEXT</a>:
+<a name="l00130"></a>00130         s = strndup(node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>, inner_size);
+<a name="l00131"></a>00131         fprintf(stdout, <span class="stringliteral">" \"%s\"\n"</span>, s);
+<a name="l00132"></a>00132         free(s);
 <a name="l00133"></a>00133         <span class="keywordflow">break</span>;
-<a name="l00134"></a>00134     <span class="keywordflow">default</span>:
-<a name="l00135"></a>00135         fprintf(stderr, <span class="stringliteral">" *unknown*\n"</span>);
+<a name="l00134"></a>00134     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#fa33cb38ae57c4fecc35d636a41f7bff" title="A NULL node for an unused child.">YA_NODE_TYPE_NULL</a>:
+<a name="l00135"></a>00135         fprintf(stdout, <span class="stringliteral">" pass\n"</span>);
 <a name="l00136"></a>00136         <span class="keywordflow">break</span>;
-<a name="l00137"></a>00137     }
-<a name="l00138"></a>00138 
-<a name="l00139"></a>00139     <span class="comment">// Return the actual size occupied.</span>
-<a name="l00140"></a>00140     <span class="keywordflow">return</span> <a class="code" href="utils_8h.html#1515ccc4154cf4d3d2137e118d3f4b87" title="Align to a 64 bit boundary.">ya_align64</a>(<a class="code" href="utils_8h.html#42cb04fb7e922498e67f186fc871c2e9" title="Network to host long long.">ntohll</a>(node-&gt;<a class="code" href="structya__node__s.html#8d2dab6ed7b9dfbf04e1ab92e13c8d25" title="Size of the node, including header and data. Always 64 bit aligned.">size</a>));
-<a name="l00141"></a>00141 }
-<a name="l00142"></a>00142 
-<a name="l00143"></a><a class="code" href="yadump_8c.html#0ddf1224851353fc92bfbff6f499fa97">00143</a> <span class="keywordtype">int</span> <a class="code" href="yadump_8c.html#0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
-<a name="l00144"></a>00144 {
-<a name="l00145"></a>00145     <span class="keywordtype">int</span>         fd;
-<a name="l00146"></a>00146     <span class="keyword">struct </span>stat fd_st;
-<a name="l00147"></a>00147     <span class="keywordtype">char</span>        *buf;
-<a name="l00148"></a>00148     <span class="keywordtype">size_t</span>      buf_size;
+<a name="l00137"></a>00137     <span class="keywordflow">case</span> <a class="code" href="types_8h.html#459ef51e03004c42314be17b6d1d96e3" title="Branch node with 0 or more childs.">YA_NODE_TYPE_BRANCH</a>:
+<a name="l00138"></a>00138         <span class="comment">// we continue until a header will not fit in the data anymore.</span>
+<a name="l00139"></a>00139         fprintf(stdout, <span class="stringliteral">"\n"</span>);
+<a name="l00140"></a>00140         <span class="keywordflow">while</span> (inner_offset &lt; inner_size) {
+<a name="l00141"></a>00141             <span class="comment">// decode the inner nodes.</span>
+<a name="l00142"></a>00142             inner_offset+= <a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(&amp;node-&gt;<a class="code" href="structya__node__s.html#4070745b2cc3237f19bb336820770119" title="Data aligned to 64 bit and sized to 64 bit. Includes padding zero bytes at the end...">data</a>[inner_offset], inner_size - inner_offset, level + 1);
+<a name="l00143"></a>00143         }
+<a name="l00144"></a>00144         <span class="keywordflow">break</span>;
+<a name="l00145"></a>00145     <span class="keywordflow">default</span>:
+<a name="l00146"></a>00146         fprintf(stderr, <span class="stringliteral">" *unknown*\n"</span>);
+<a name="l00147"></a>00147         <span class="keywordflow">break</span>;
+<a name="l00148"></a>00148     }
 <a name="l00149"></a>00149 
-<a name="l00150"></a>00150     <span class="keywordflow">if</span> (argc != 2) {
-<a name="l00151"></a>00151         fprintf(stderr, <span class="stringliteral">"Expect 1 filename as argument.\n"</span>);
-<a name="l00152"></a>00152         exit(1);
-<a name="l00153"></a>00153     }
-<a name="l00154"></a>00154 
-<a name="l00155"></a>00155     <span class="keywordflow">if</span> ((fd = open(argv[1], O_RDONLY)) == -1) {
-<a name="l00156"></a>00156         perror(<span class="stringliteral">"Failed to open file."</span>);
-<a name="l00157"></a>00157         exit(1);
-<a name="l00158"></a>00158     }
-<a name="l00159"></a>00159 
-<a name="l00160"></a>00160     <span class="keywordflow">if</span> (fstat(fd, &amp;fd_st) == -1) {
-<a name="l00161"></a>00161         perror(<span class="stringliteral">"Could not stat the file."</span>);
-<a name="l00162"></a>00162         exit(1);
-<a name="l00163"></a>00163     }
-<a name="l00164"></a>00164     buf_size = fd_st.st_size;
+<a name="l00150"></a>00150     <span class="comment">// Return the actual size occupied.</span>
+<a name="l00151"></a>00151     <span class="keywordflow">return</span> ya_align64(ntohll(node-&gt;<a class="code" href="structya__node__s.html#8d2dab6ed7b9dfbf04e1ab92e13c8d25" title="Size of the node, including header and data. Always 64 bit aligned.">size</a>));
+<a name="l00152"></a>00152 }
+<a name="l00153"></a>00153 
+<a name="l00154"></a><a class="code" href="yadump_8c.html#0ddf1224851353fc92bfbff6f499fa97">00154</a> <span class="keywordtype">int</span> <a class="code" href="yadump_8c.html#0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])
+<a name="l00155"></a>00155 {
+<a name="l00156"></a>00156     <span class="keywordtype">int</span>         fd;
+<a name="l00157"></a>00157     <span class="keyword">struct </span>stat fd_st;
+<a name="l00158"></a>00158     <span class="keywordtype">char</span>        *buf;
+<a name="l00159"></a>00159     <span class="keywordtype">size_t</span>      buf_size;
+<a name="l00160"></a>00160 
+<a name="l00161"></a>00161     <span class="keywordflow">if</span> (argc != 2) {
+<a name="l00162"></a>00162         fprintf(stderr, <span class="stringliteral">"Expect 1 filename as argument.\n"</span>);
+<a name="l00163"></a>00163         exit(1);
+<a name="l00164"></a>00164     }
 <a name="l00165"></a>00165 
-<a name="l00166"></a>00166     <span class="keywordflow">if</span> ((buf = mmap(0, buf_size, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0)) == MAP_FAILED) {
-<a name="l00167"></a>00167         perror(<span class="stringliteral">"Could not map the file in memory."</span>);
+<a name="l00166"></a>00166     <span class="keywordflow">if</span> ((fd = open(argv[1], O_RDONLY)) == -1) {
+<a name="l00167"></a>00167         perror(<span class="stringliteral">"Failed to open file."</span>);
 <a name="l00168"></a>00168         exit(1);
 <a name="l00169"></a>00169     }
 <a name="l00170"></a>00170 
-<a name="l00171"></a>00171     <span class="comment">// Start decoding the file.</span>
-<a name="l00172"></a>00172     (void)<a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(buf, buf_size, 0);
-<a name="l00173"></a>00173 
-<a name="l00174"></a>00174     <span class="keywordflow">if</span> (munmap(buf, buf_size) == -1) {
-<a name="l00175"></a>00175         perror(<span class="stringliteral">"Could not unmap the file from memory."</span>);
-<a name="l00176"></a>00176         exit(1);
-<a name="l00177"></a>00177     }
-<a name="l00178"></a>00178 
-<a name="l00179"></a>00179     <span class="keywordflow">if</span> (close(fd) == -1) {
-<a name="l00180"></a>00180         perror(<span class="stringliteral">"Close the file."</span>);
-<a name="l00181"></a>00181         exit(1);
-<a name="l00182"></a>00182     }
-<a name="l00183"></a>00183 }
+<a name="l00171"></a>00171     <span class="keywordflow">if</span> (fstat(fd, &amp;fd_st) == -1) {
+<a name="l00172"></a>00172         perror(<span class="stringliteral">"Could not stat the file."</span>);
+<a name="l00173"></a>00173         exit(1);
+<a name="l00174"></a>00174     }
+<a name="l00175"></a>00175     buf_size = fd_st.st_size;
+<a name="l00176"></a>00176 
+<a name="l00177"></a>00177     <span class="keywordflow">if</span> ((buf = mmap(0, buf_size, PROT_READ, MAP_FILE | MAP_SHARED, fd, 0)) == MAP_FAILED) {
+<a name="l00178"></a>00178         perror(<span class="stringliteral">"Could not map the file in memory."</span>);
+<a name="l00179"></a>00179         exit(1);
+<a name="l00180"></a>00180     }
+<a name="l00181"></a>00181 
+<a name="l00182"></a>00182     <span class="comment">// Start decoding the file.</span>
+<a name="l00183"></a>00183     (void)<a class="code" href="yadump_8c.html#dec11ea23edddf9e6abf0f10e838df3f">node_decode</a>(buf, buf_size, 0);
 <a name="l00184"></a>00184 
+<a name="l00185"></a>00185     <span class="keywordflow">if</span> (munmap(buf, buf_size) == -1) {
+<a name="l00186"></a>00186         perror(<span class="stringliteral">"Could not unmap the file from memory."</span>);
+<a name="l00187"></a>00187         exit(1);
+<a name="l00188"></a>00188     }
+<a name="l00189"></a>00189 
+<a name="l00190"></a>00190     <span class="keywordflow">if</span> (close(fd) == -1) {
+<a name="l00191"></a>00191         perror(<span class="stringliteral">"Close the file."</span>);
+<a name="l00192"></a>00192         exit(1);
+<a name="l00193"></a>00193     }
+<a name="l00194"></a>00194 }
+<a name="l00195"></a>00195 
 </pre></div></div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>

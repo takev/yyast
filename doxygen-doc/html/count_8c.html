@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
-<title>yyast-0.2: yyast/count.c File Reference</title>
+<title>yyast-1.0.1: yyast/count.c File Reference</title>
 <link href="doxygen.css" rel="stylesheet" type="text/css">
 <link href="tabs.css" rel="stylesheet" type="text/css">
 </head><body>
@@ -17,6 +17,7 @@
 <div class="contents">
 <h1>yyast/count.c File Reference</h1>
 <p>
+<code>#include &lt;string.h&gt;</code><br>
 <code>#include &lt;sys/types.h&gt;</code><br>
 <code>#include &lt;<a class="el" href="node_8h-source.html">yyast/node.h</a>&gt;</code><br>
 <code>#include &lt;<a class="el" href="leaf_8h-source.html">yyast/leaf.h</a>&gt;</code><br>
@@ -26,6 +27,9 @@
 <p>
 <a href="count_8c-source.html">Go to the source code of this file.</a><table border="0" cellpadding="0" cellspacing="0">
 <tr><td></td></tr>
+<tr><td colspan="2"><br><h2>Defines</h2></td></tr>
+<tr><td class="memItemLeft" nowrap align="right" valign="top">#define&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="count_8c.html#369266c24eacffb87046522897a570d5">_GNU_SOURCE</a></td></tr>
+
 <tr><td colspan="2"><br><h2>Functions</h2></td></tr>
 <tr><td class="memItemLeft" nowrap align="right" valign="top"><a class="el" href="structya__t.html">ya_t</a>&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="count_8c.html#86cbaacbec507b27a9f501b5d66e4263">ya_count</a> (char *s, size_t s_length)</td></tr>
 
@@ -52,6 +56,24 @@
 <tr><td class="memItemLeft" nowrap align="right" valign="top">int&nbsp;</td><td class="memItemRight" valign="bottom"><a class="el" href="count_8c.html#42c3f97f4deaa0ecc1675762f1806029">ya_nr_filenames</a> = 0</td></tr>
 
 </table>
+<hr><h2>Define Documentation</h2>
+<a class="anchor" name="369266c24eacffb87046522897a570d5"></a><!-- doxytag: member="count.c::_GNU_SOURCE" ref="369266c24eacffb87046522897a570d5" args="" -->
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">#define _GNU_SOURCE          </td>
+        </tr>
+      </table>
+</div>
+<div class="memdoc">
+
+<p>
+
+<p>Definition at line <a class="el" href="count_8c-source.html#l00026">26</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+
+</div>
+</div><p>
 <hr><h2>Function Documentation</h2>
 <a class="anchor" name="3d19ae0c1b39b46c9a10852532abd672"></a><!-- doxytag: member="count.c::ya_clear_position" ref="3d19ae0c1b39b46c9a10852532abd672" args="(ya_t *node)" -->
 <div class="memitem">
@@ -78,11 +100,11 @@ Clear the position of a node.
   </table>
 </dl>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00134">134</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00146">146</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>References <a class="el" href="types_8h-source.html#l00045">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00046">ya_position_s::file</a>, <a class="el" href="types_8h-source.html#l00044">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00072">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00057">ya_node_s::position</a>, and <a class="el" href="types_8h-source.html#l00070">ya_t::position</a>.</p>
+<p>References <a class="el" href="types_8h-source.html#l00060">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00061">ya_position_s::file</a>, <a class="el" href="types_8h-source.html#l00059">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00087">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00072">ya_node_s::position</a>, and <a class="el" href="types_8h-source.html#l00085">ya_t::position</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>, and <a class="el" href="header_8c-source.html#l00030">ya_header()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>, and <a class="el" href="header_8c-source.html#l00040">ya_header()</a>.</p>
 
 </div>
 </div><p>
@@ -123,9 +145,9 @@ This functions keeps track of byte position, line and column. The byte, line and
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>An initialized ya structure without a node. </dd></dl>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00028">28</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00040">40</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>References <a class="el" href="types_8h-source.html#l00045">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00044">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00072">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00070">ya_t::position</a>, <a class="el" href="types_8h-source.html#l00069">ya_t::size</a>, <a class="el" href="types_8h-source.html#l00071">ya_t::type</a>, and <a class="el" href="types_8h-source.html#l00039">YA_NODE_TYPE_COUNT</a>.</p>
+<p>References <a class="el" href="types_8h-source.html#l00060">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00059">ya_position_s::line</a>, <a class="el" href="types_8h-source.html#l00087">ya_t::node</a>, <a class="el" href="types_8h-source.html#l00085">ya_t::position</a>, <a class="el" href="types_8h-source.html#l00084">ya_t::size</a>, <a class="el" href="types_8h-source.html#l00086">ya_t::type</a>, and <a class="el" href="types_8h-source.html#l00054">YA_NODE_TYPE_COUNT</a>.</p>
 
 </div>
 </div><p>
@@ -156,11 +178,11 @@ Adds the filename to the table when it was not found.<p>
 </dl>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>The index of the filename in the source file list. Or UINT32_MAX if the table is full. </dd></dl>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00068">68</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00080">80</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>References <a class="el" href="count_8c-source.html#l00025">ya_filenames</a>, <a class="el" href="count_8h-source.html#l00022">YA_MAX_NR_FILENAMES</a>, and <a class="el" href="count_8c-source.html#l00026">ya_nr_filenames</a>.</p>
+<p>References <a class="el" href="count_8c-source.html#l00037">ya_filenames</a>, <a class="el" href="count_8h-source.html#l00032">YA_MAX_NR_FILENAMES</a>, and <a class="el" href="count_8c-source.html#l00038">ya_nr_filenames</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00092">ya_reposition()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00104">ya_reposition()</a>.</p>
 
 </div>
 </div><p>
@@ -185,11 +207,11 @@ Get a list of filenames, as a node that is placed in the header.
 <p>
 <dl class="return" compact><dt><b>Returns:</b></dt><dd>A node with a list of filenames. </dd></dl>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00116">116</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00128">128</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>References <a class="el" href="node_8h-source.html#l00030">YA_BRANCH</a>, <a class="el" href="count_8c-source.html#l00134">ya_clear_position()</a>, <a class="el" href="node_8h-source.html#l00051">YA_EMPTYLIST</a>, <a class="el" href="count_8c-source.html#l00025">ya_filenames</a>, <a class="el" href="node_8h-source.html#l00047">YA_LIST</a>, <a class="el" href="count_8c-source.html#l00026">ya_nr_filenames</a>, and <a class="el" href="leaf_8c-source.html#l00146">ya_text()</a>.</p>
+<p>References <a class="el" href="node_8h-source.html#l00041">YA_BRANCH</a>, <a class="el" href="count_8c-source.html#l00146">ya_clear_position()</a>, <a class="el" href="node_8h-source.html#l00062">YA_EMPTYLIST</a>, <a class="el" href="count_8c-source.html#l00037">ya_filenames</a>, <a class="el" href="node_8h-source.html#l00058">YA_LIST</a>, <a class="el" href="count_8c-source.html#l00038">ya_nr_filenames</a>, and <a class="el" href="leaf_8c-source.html#l00157">ya_text()</a>.</p>
 
-<p>Referenced by <a class="el" href="header_8c-source.html#l00030">ya_header()</a>.</p>
+<p>Referenced by <a class="el" href="header_8c-source.html#l00040">ya_header()</a>.</p>
 
 </div>
 </div><p>
@@ -223,11 +245,11 @@ Reposition.
 <p>
 The given string is a reposition command, it contains the line number of the next line and optionally a filename.<p>
 The regex of s must match: [0-9]+\ "([^"]|\")*" 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00092">92</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00104">104</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>References <a class="el" href="types_8h-source.html#l00045">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00046">ya_position_s::file</a>, <a class="el" href="types_8h-source.html#l00044">ya_position_s::line</a>, and <a class="el" href="count_8c-source.html#l00068">ya_get_file_nr()</a>.</p>
+<p>References <a class="el" href="types_8h-source.html#l00060">ya_position_s::column</a>, <a class="el" href="types_8h-source.html#l00061">ya_position_s::file</a>, <a class="el" href="types_8h-source.html#l00059">ya_position_s::line</a>, and <a class="el" href="count_8c-source.html#l00080">ya_get_file_nr()</a>.</p>
 
-<p>Referenced by <a class="el" href="main_8c-source.html#l00094">ya_main()</a>.</p>
+<p>Referenced by <a class="el" href="main_8c-source.html#l00105">ya_main()</a>.</p>
 
 </div>
 </div><p>
@@ -245,9 +267,9 @@ The regex of s must match: [0-9]+\ "([^"]|\")*"
 
 <p>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00023">23</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00035">35</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>Referenced by <a class="el" href="error_8c-source.html#l00022">ya_error()</a>.</p>
+<p>Referenced by <a class="el" href="error_8c-source.html#l00032">ya_error()</a>.</p>
 
 </div>
 </div><p>
@@ -264,9 +286,9 @@ The regex of s must match: [0-9]+\ "([^"]|\")*"
 
 <p>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00025">25</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00037">37</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00068">ya_get_file_nr()</a>, and <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00080">ya_get_file_nr()</a>, and <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>.</p>
 
 </div>
 </div><p>
@@ -283,9 +305,9 @@ The regex of s must match: [0-9]+\ "([^"]|\")*"
 
 <p>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00026">26</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00038">38</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>Referenced by <a class="el" href="count_8c-source.html#l00068">ya_get_file_nr()</a>, and <a class="el" href="count_8c-source.html#l00116">ya_get_filenames()</a>.</p>
+<p>Referenced by <a class="el" href="count_8c-source.html#l00080">ya_get_file_nr()</a>, and <a class="el" href="count_8c-source.html#l00128">ya_get_filenames()</a>.</p>
 
 </div>
 </div><p>
@@ -302,14 +324,14 @@ The regex of s must match: [0-9]+\ "([^"]|\")*"
 
 <p>
 
-<p>Definition at line <a class="el" href="count_8c-source.html#l00022">22</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
+<p>Definition at line <a class="el" href="count_8c-source.html#l00034">34</a> of file <a class="el" href="count_8c-source.html">count.c</a>.</p>
 
-<p>Referenced by <a class="el" href="node_8c-source.html#l00038">ya_generic_nodev()</a>, and <a class="el" href="leaf_8c-source.html#l00031">ya_literal()</a>.</p>
+<p>Referenced by <a class="el" href="node_8c-source.html#l00049">ya_generic_nodev()</a>, and <a class="el" href="leaf_8c-source.html#l00042">ya_literal()</a>.</p>
 
 </div>
 </div><p>
 </div>
 <hr size="1"><address style="text-align: right;"><small>
-Generated for yyast-0.2 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
+Generated for yyast-1.0.1 by&nbsp;<a href="http://www.doxygen.org/index.html"><img src="doxygen.png" alt="doxygen" align="middle" border="0"></a> 1.5.6</small></address>
 </body>
 </html>
