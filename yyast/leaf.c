@@ -39,6 +39,8 @@
 #include <yyast/utils.h>
 #include <yyast/error.h>
 
+ya_t ya_null_singleton;
+
 ya_t ya_literal(const char * restrict name, ya_type_t type, const void * restrict buf, size_t buf_size)
 {
     size_t aligned_buf_size = ya_align64(buf_size);

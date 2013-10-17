@@ -28,6 +28,22 @@
 #include <yyast/types.h>
 #include <yyast/utils.h>
 
+/** Ya_null is a singleton, so that it can be
+ * referenced by pointer by the YA_NULL macro.
+ *
+ * The singleton is initialized in ya_main().
+ * The node functions will not free this, or any, ya_null leafs.
+ */
+extern ya_t ya_null_singleton;
+
+/** Null node, unused child entry.
+ */
+ya_t ya_null(void);
+
+/** Null node, unused child entry.
+ */
+#define YA_NULL (&ya_null_singleton)
+
 /** Create an literal node.
  *
  * @param name      name of the node.
@@ -116,13 +132,5 @@ ya_t ya_leaf(const char * restrict name);
 /** Leaf node, does not contain data or children.
  */
 #define YA_LEAF(name) ya_leaf(name)
-
-/** Null node, unused child entry.
- */
-ya_t ya_null(void);
-
-/** Null node, unused child entry.
- */
-#define YA_NULL ya_null()
 
 #endif

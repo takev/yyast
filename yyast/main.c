@@ -30,6 +30,7 @@
 #include <yyast/utils.h>
 #include <yyast/node.h>
 #include <yyast/count.h>
+#include <yyast/leaf.h>
 
 extern FILE *yyin;
 int yyparse();
@@ -37,11 +38,11 @@ int yyparse();
 char *ya_output_filename = NULL;
 char *ya_input_filename = NULL;
 
-void ya_usage(int exit_code)
+void ya_usage(char *application, int exit_code)
 {
     fprintf(stderr, "Usage:\n");
-    fprintf(stderr, "  application -h\n");
-    fprintf(stderr, "  application [-c] [-o output file] input file\n");
+    fprintf(stderr, "  %s -h\n", application);
+    fprintf(stderr, "  %s [-c] [-o output file] input file\n", application);
     fprintf(stderr, "\n");
     fprintf(stderr, "Options:\n");
     fprintf(stderr, "  -h   Show help message\n");
@@ -69,7 +70,7 @@ void ya_parse_options(int argc, char *argv[], char *extension)
             break;
         case 'h':
             // Help, just shows usage without error.
-            ya_usage(0);
+            ya_usage(argv[0], 0);
         case 'c':
             // Compile, which is the only mode it supports.
             break;
@@ -77,13 +78,13 @@ void ya_parse_options(int argc, char *argv[], char *extension)
             break;
         case ':':
             fprintf(stderr, "Missing option argument.");
-            ya_usage(2);
+            ya_usage(argv[0], 2);
         case '?':
             fprintf(stderr, "Unknown option.");
-            ya_usage(2);
+            ya_usage(argv[0], 2);
         default:
             fprintf(stderr, "Unknown error in getopt_long().");
-            ya_usage(2);
+            ya_usage(argv[0], 2);
         }
     }
     argc -= optind;
@@ -91,7 +92,7 @@ void ya_parse_options(int argc, char *argv[], char *extension)
 
     if (argc != 1) {
         fprintf(stderr, "Expecting a single filename.\n");
-        ya_usage(2);
+        ya_usage(argv[0], 2);
     }
 
     ya_input_filename = argv[0];
@@ -106,6 +107,9 @@ int ya_main(int argc, char *argv[], char *extension)
 {
     FILE    *out;
     char    *reposition_s;
+
+    // Initialize singletons.
+    ya_null_singleton = ya_null();
 
     ya_parse_options(argc, argv, extension);
 

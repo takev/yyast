@@ -123,7 +123,10 @@ ya_t ya_generic_nodev(const char * restrict name, ya_type_t type, va_list ap)
         }
 
         // Now that the child node is copied in self, we should free() it.
-        free(item->node);
+        // The singleton YA_NULL, should not be free-ed.
+        if (item->type != YA_NODE_TYPE_NULL) {
+            free(item->node);
+        }
     }
 
     va_end(ap2);
