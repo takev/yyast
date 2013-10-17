@@ -1,6 +1,6 @@
 
 AC_PREREQ(2.61)
-AC_INIT(yyast, 1.0.1, take.vos@vosgames.nl)
+AC_INIT(yyast, 1.0.2, take.vos@vosgames.nl)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([buildutils])
 AM_INIT_AUTOMAKE()
@@ -50,7 +50,7 @@ AC_TRY_LINK([],[
     AC_MSG_RESULT(no)
 ])
 
-AX_PYTHON_DEVEL
+dnl AX_PYTHON_DEVEL
 AM_PATH_PYTHON
 
 AC_CONFIG_HEADERS([yyast/config.h])
