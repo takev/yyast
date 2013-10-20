@@ -168,5 +168,5 @@ class Parser (object):
 
     def parse(self, fd):
         m = mmap.mmap(fd.fileno(), 0)
-        return parse_node(m)
+        return self.parse_node(m)
 
