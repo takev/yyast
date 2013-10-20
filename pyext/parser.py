@@ -1,3 +1,25 @@
+# Copyright (c) 2011-2013, Take Vos
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#
+# - Redistributions of source code must retain the above copyright notice,
+#   this list of conditions and the following disclaimer.
+# - Redistributions in binary form must reproduce the above copyright notice, 
+#   this list of conditions and the following disclaimer in the documentation 
+#   and/or other materials provided with the distribution.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" 
+# AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+# IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE 
+# ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE 
+# LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+# CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+# SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS 
+# INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+# CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+# ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE 
 
 import yyast
 import mmap
@@ -31,19 +53,19 @@ class Parser (object):
         """
         self.factories[node_name] = factory
 
-    def parse_null_node(self, factory, node_info, inner_data):
-        if len(inner_data) > 0:
+    def parse_null_node(self, factory, node_info, internal_data):
+        if len(internal_data) > 0:
             raise YYASTParserException("Null node should not have data.")
 
         return factory(node_info)
 
-    def parse_leaf_node(self, factory, node_info, inner_data):
-        if len(inner_data) > 0:
+    def parse_leaf_node(self, factory, node_info, internal_data):
+        if len(internal_data) > 0:
             raise YYASTParserException("Leaf node should not have data.")
 
         return factory(node_info)
 
-    def parse_branch_node(self, factory, node_info, inner_data):
+    def parse_branch_node(self, factory, node_info, internal_data):
         node = factory(node_info)
 
         # Parse the child nodes and add it to the node.
@@ -53,41 +75,41 @@ class Parser (object):
         
         return node
 
-    def parse_text_node(self, factory, node_info, inner_data):
-        value = inner_data.decode("UTF-8")
+    def parse_text_node(self, factory, node_info, internal_data):
+        value = internal_data.decode("UTF-8")
         return factory(node_info, value)
 
-    def parse_positive_integer_node(self, factory, node_info, inner_data):
-        if len(inner_data) != 8:
+    def parse_positive_integer_node(self, factory, node_info, internal_data):
+        if len(internal_data) != 8:
             raise YYASTParserException("Positive integer node should be exactly 64 bit.")
 
-        (value,) = struct.unpack(">Q", inner_data)
+        (value,) = struct.unpack(">Q", internal_data)
         return factory(node_info, value)
 
-    def parse_negative_integer_node(self, factory, node_info, inner_data):
-        if len(inner_data) != 8:
+    def parse_negative_integer_node(self, factory, node_info, internal_data):
+        if len(internal_data) != 8:
             raise YYASTParserException("Negative integer node should be exactly 64 bit.")
 
-        (value,) = struct.unpack(">Q", inner_data)
+        (value,) = struct.unpack(">Q", internal_data)
         return factory(node_info, -value)
 
-    def parse_binary_float_node(self, factory, node_info, inner_data):
-        if len(inner_data) != 8:
+    def parse_binary_float_node(self, factory, node_info, internal_data):
+        if len(internal_data) != 8:
             raise YYASTParserException("Binary float node should be exactly 64 bit.")
 
-        (value,) = struct.unpack(">d", inner_data)
+        (value,) = struct.unpack(">d", internal_data)
         return factory(node_info, value)
 
-    def parse_decimal_float_node(self, factory, node_info, inner_data):
-        if len(inner_data) != 8:
+    def parse_decimal_float_node(self, factory, node_info, internal_data):
+        if len(internal_data) != 8:
             raise YYASTParserException("Decimal float node should not have data.")
 
         raise NotImplementedError("Decimal float is not implemented in the parser.")
 
-    def parse_list_node(self, factory, node_info, inner_data):
+    def parse_list_node(self, factory, node_info, internal_data):
         raise NotImplementedError("List node should not exist in the file.")
 
-    def parse_count_node(self, factory, node_info, inner_data):
+    def parse_count_node(self, factory, node_info, internal_data):
         raise NotImplementedError("Count node should not exist in the file.")
 
     def parse_node(self, data):
@@ -140,7 +162,7 @@ class Parser (object):
         except KeyError:
             raise YYASTParserException("Unknown node type %i.", node_type)
         
-        node = subparser(factory, node_info, inner_data)
+        node = subparser(factory, node_info, internal_data)
         return node, rest_data
 
 
