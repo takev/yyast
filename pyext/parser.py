@@ -26,6 +26,14 @@ import mmap
 import struct
 import NodeInfo
 
+def strip_null(x):
+    """Strip null bytes at the end of a string that is located in memory.
+    """
+    for i in range(len(x) -1, -1, -1):
+        if x[i] != '\0':
+            break
+    return x[0:i+1]
+
 class YYASTParserException (Exception):
     def __init__(self, message):
         Exeption.__init__(self, args=(message,))
@@ -82,6 +90,7 @@ class Parser (object):
         return node
 
     def parse_text_node(self, factory, node_info, internal_data):
+        internal_data = strip_null(internal_data)
         value = internal_data.decode("UTF-8")
         node = factory(node_info, value)
         node.parsing_done()
@@ -169,19 +178,22 @@ class Parser (object):
         )
 
         # Get the factory class for the node.
-        factory = self.factories[node_name]
+        try:
+            factory = self.factories[node_name]
+        except KeyError:
+            raise YYASTParserException("Could not find factory for '%s' node" % node_name)
 
         try:
             subparser = self.subparsers[node_type]
         except KeyError:
-            raise YYASTParserException("Unknown node type %i.", node_type)
+            raise YYASTParserException("Unknown node type %i." % node_type)
         
         node = subparser(factory, node_info, internal_data)
         return node, rest_data
 
 
     def parse(self, fd):
-        m = mmap.mmap(fd.fileno(), 0)
+        m = mmap.mmap(fd.fileno(), 0, access=mmap.ACCESS_READ)
         node, rest_data = self.parse_node(m)
 
         if len(rest_data) != 0:
