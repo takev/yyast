@@ -24,6 +24,7 @@
 import yyast
 import mmap
 import struct
+import NodeInfo
 
 class YYASTParserException (Exception):
     def __init__(self, message):
@@ -57,13 +58,17 @@ class Parser (object):
         if len(internal_data) > 0:
             raise YYASTParserException("Null node should not have data.")
 
-        return factory(node_info)
+        node = factory(node_info)
+        node.parsing_done()
+        return node
 
     def parse_leaf_node(self, factory, node_info, internal_data):
         if len(internal_data) > 0:
             raise YYASTParserException("Leaf node should not have data.")
 
-        return factory(node_info)
+        node = factory(node_info)
+        node.parsing_done()
+        return node
 
     def parse_branch_node(self, factory, node_info, internal_data):
         node = factory(node_info)
@@ -72,33 +77,42 @@ class Parser (object):
         while internal_data:
             child_node, internal_data = self.parse_node(internal_data)
             node.add_child(child_node)
-        
+      
+        node.parsing_done()   
         return node
 
     def parse_text_node(self, factory, node_info, internal_data):
         value = internal_data.decode("UTF-8")
-        return factory(node_info, value)
+        node = factory(node_info, value)
+        node.parsing_done()
+        return node
 
     def parse_positive_integer_node(self, factory, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Positive integer node should be exactly 64 bit.")
 
         (value,) = struct.unpack(">Q", internal_data)
-        return factory(node_info, value)
+        node = factory(node_info, value)
+        node.parsing_done()
+        return node
 
     def parse_negative_integer_node(self, factory, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Negative integer node should be exactly 64 bit.")
 
         (value,) = struct.unpack(">Q", internal_data)
-        return factory(node_info, -value)
+        node = factory(node_info, -value)
+        node.parsing_done()
+        return node
 
     def parse_binary_float_node(self, factory, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Binary float node should be exactly 64 bit.")
 
         (value,) = struct.unpack(">d", internal_data)
-        return factory(node_info, value)
+        node = factory(node_info, value)
+        node.parsing_done()
+        return node
 
     def parse_decimal_float_node(self, factory, node_info, internal_data):
         if len(internal_data) != 8:
@@ -145,14 +159,14 @@ class Parser (object):
         if file_nr   == 0xffffffff: file_nr   = None
         node_name = node_name.strip()
 
-        node_info = {
-            "node_name":    node_name,
-            "node_size":    node_size,
-            "line_nr":      line_nr,
-            "column_nr":    column_nr,
-            "file_nr":      file_nr,
-            "node_type":    node_type,
-        }
+        node_info = NodeInfo(
+            node_type=node_type,
+            node_name=node_name,
+            node_size=node_size,
+            line_nr=line_nr,
+            column_nr=column_nr,
+            file_nr=file_nr
+        )
 
         # Get the factory class for the node.
         factory = self.factories[node_name]
@@ -168,5 +182,10 @@ class Parser (object):
 
     def parse(self, fd):
         m = mmap.mmap(fd.fileno(), 0)
-        return self.parse_node(m)
+        node, rest_data = self.parse_node(m)
+
+        if len(rest_data) != 0:
+            raise YYASTParserException("More data at end of file")
+
+        return node
 
