@@ -14,6 +14,7 @@ stamp-h1
 *.lo
 *.bak
 *.tar.gz
+*.pyc
 autom4te.cache
 buildutils
 m4/libtool.m4
