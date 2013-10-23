@@ -24,7 +24,7 @@
 import yyast
 import mmap
 import struct
-import NodeInfo
+from NodeInfo import NodeInfo
 
 def strip_null(x):
     """Strip null bytes at the end of a string that is located in memory.
@@ -36,11 +36,11 @@ def strip_null(x):
 
 class YYASTParserException (Exception):
     def __init__(self, message):
-        Exeption.__init__(self, args=(message,))
+        Exception.__init__(self, args=(message,))
 
 class Parser (object):
     def __init__(self):
-        self.classes = {}
+        self.factories = {}
         self.subparsers = {
             yyast.NODE_TYPE_NULL:               self.parse_null_node,
             yyast.NODE_TYPE_LEAF:               self.parse_leaf_node,

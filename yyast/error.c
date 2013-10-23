@@ -40,7 +40,7 @@ void ya_error(const char *message, ...)
     va_end(ap);
 
     if (nr_characters >= 0) {
-        fprintf(stderr, "line %i:%i, %s\n", ya_current_position.line, ya_current_position.column, msg);
+        fprintf(stderr, "line %i:%i, %s\n", ya_current_position.line + 1, ya_current_position.column + 1, msg);
         free(msg);
     }
 

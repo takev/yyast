@@ -51,6 +51,13 @@ ya_t ya_literal(const char * restrict name, ya_type_t type, const void * restric
         .position = ya_previous_position,
     };
 
+    if (type == YA_NODE_TYPE_NULL) {
+        // YA_NODE_NULL is a singleton, so its position is wrong. We set the position to undefined here.
+        r.position.file = UINT32_MAX;
+        r.position.line = UINT32_MAX;
+        r.position.column = UINT32_MAX;
+    }
+
     // Allocate memory aligned to 32 bit. We need to use calloc so that we don't accidently
     // leak information into the output file.
     r.node = calloc(1, r.size);
