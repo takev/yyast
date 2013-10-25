@@ -1,4 +1,9 @@
 
+2013-10-26  Take Vos  <take.vos@vosgames.nl>
+
+    * You can now pass a symbol table to the parser, so that your AST object can save
+      themselves in a symbol table.
+
 2013-10-15  Take Vos  <take.vos@vosgames.nl>
 
 	* Make project compilable on Linux.
