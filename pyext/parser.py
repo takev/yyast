@@ -62,7 +62,7 @@ class Parser (object):
         """
         self.factories[node_name] = factory
 
-    def parse_null_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_null_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) > 0:
             raise YYASTParserException("Null node should not have data.")
 
@@ -70,7 +70,7 @@ class Parser (object):
         node.parsing_done()
         return node
 
-    def parse_leaf_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_leaf_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) > 0:
             raise YYASTParserException("Leaf node should not have data.")
 
@@ -78,25 +78,25 @@ class Parser (object):
         node.parsing_done()
         return node
 
-    def parse_branch_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_branch_node(self, factory, symbol_table, node_info, internal_data):
         node = factory(symbol_table, node_info)
 
         # Parse the child nodes and add it to the node.
         while internal_data:
-            child_node, internal_data = self.parse_node(internal_data)
+            child_node, internal_data = self.parse_node(symbol_table, internal_data)
             node.add_child(child_node)
       
         node.parsing_done()   
         return node
 
-    def parse_text_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_text_node(self, factory, symbol_table, node_info, internal_data):
         internal_data = strip_null(internal_data)
         value = internal_data.decode("UTF-8")
         node = factory(symbol_table, node_info, value)
         node.parsing_done()
         return node
 
-    def parse_positive_integer_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_positive_integer_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Positive integer node should be exactly 64 bit.")
 
@@ -105,7 +105,7 @@ class Parser (object):
         node.parsing_done()
         return node
 
-    def parse_negative_integer_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_negative_integer_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Negative integer node should be exactly 64 bit.")
 
@@ -114,7 +114,7 @@ class Parser (object):
         node.parsing_done()
         return node
 
-    def parse_binary_float_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_binary_float_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Binary float node should be exactly 64 bit.")
 
@@ -123,16 +123,16 @@ class Parser (object):
         node.parsing_done()
         return node
 
-    def parse_decimal_float_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_decimal_float_node(self, factory, symbol_table, node_info, internal_data):
         if len(internal_data) != 8:
             raise YYASTParserException("Decimal float node should not have data.")
 
         raise NotImplementedError("Decimal float is not implemented in the parser.")
 
-    def parse_list_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_list_node(self, factory, symbol_table, node_info, internal_data):
         raise NotImplementedError("List node should not exist in the file.")
 
-    def parse_count_node(self, symbol_table, factory, node_info, internal_data):
+    def parse_count_node(self, factory, symbol_table, node_info, internal_data):
         raise NotImplementedError("Count node should not exist in the file.")
 
     def parse_node(self, symbol_table, data):

@@ -1,4 +1,8 @@
 
+2013-10-28  Take Vos  <take.vos@vosgames.nl>
+
+    * Bug fix, switched arguments on sub-parser methods.
+
 2013-10-26  Take Vos  <take.vos@vosgames.nl>
 
     * You can now pass a symbol table to the parser, so that your AST object can save
