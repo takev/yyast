@@ -77,6 +77,21 @@ ya_t ya_count(char *s, size_t s_length)
     return r;
 }
 
+void ya_reverse_count(char *s, size_t s_length)
+{
+    uint32_t i;
+
+    // The previous position remains, the previous position.
+    // We reverse all the linefeeds that we received before.
+    for (i = 0; i < s_length; i++) {
+        if (s[i] == '\n') {
+            ya_current_position.line--;
+        }
+    }
+    // We have no idea what position on the line we are.
+    ya_current_position.column = 0;
+}
+
 uint32_t ya_get_file_nr(char *filename)
 {
     int i;

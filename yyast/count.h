@@ -45,6 +45,11 @@ extern ya_position_t ya_current_position;
  */
 ya_t ya_count(char *s, size_t s_length);
 
+/** Reverse count characters.
+ * This is a replacement function for yy_more() which throws of our line counting.
+ */
+void ya_reverse_count(char *s, size_t s_length);
+
 /** Get the file number of a filename.
  * Adds the filename to the table when it was not found.
  *
@@ -75,5 +80,7 @@ void ya_clear_position(ya_t *node);
 /** Count columns and lines for each token found by lex.
  */
 #define YY_USER_ACTION        { yylval = ya_count(yytext, yyleng); }
+
+#define YA_MORE               { ya_reverse_count(yytext, yyleng); yymore(); }
 
 #endif

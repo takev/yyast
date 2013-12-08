@@ -1,6 +1,6 @@
 
 AC_PREREQ(2.61)
-AC_INIT(yyast, 1.2.1, take.vos@vosgames.nl)
+AC_INIT(yyast, 1.3.0, take.vos@vosgames.nl)
 AC_CONFIG_MACRO_DIR([m4])
 AC_CONFIG_AUX_DIR([buildutils])
 AM_INIT_AUTOMAKE()
